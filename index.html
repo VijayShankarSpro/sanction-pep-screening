@@ -1,270 +1,397 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Free Sanction & PEP Screening Tool</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ComplianceCheck — Sanction & PEP Screening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css"/>
 <style>
+/* ── Reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── Design tokens ── */
 :root{
-  --bg:#f5f6fa;--surface:#fff;--border:rgba(0,0,0,0.09);--border-md:rgba(0,0,0,0.16);
-  --text:#1a1a2e;--muted:#6b7280;--faint:#9ca3af;
-  --accent:#1e3a8a;--accent-bg:#eff6ff;
-  --r-sm:8px;--r-md:12px;--r-lg:16px;
   --font:'Inter',system-ui,sans-serif;
+  --bg:#f0f2f7;
+  --surface:#ffffff;
+  --surface2:#f8f9fc;
+  --border:rgba(0,0,0,0.07);
+  --border-md:rgba(0,0,0,0.13);
+  --text:#0f1623;
+  --text2:#4b5563;
+  --text3:#9ca3af;
+  --accent:#1d4ed8;
+  --accent2:#1e40af;
+  --accent-light:#eff6ff;
+  --accent-mid:#bfdbfe;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--r20:20px;--r24:24px;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.05);
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.04);
+  --shadow-lg:0 10px 15px rgba(0,0,0,.07),0 4px 6px rgba(0,0,0,.04);
 }
 @media(prefers-color-scheme:dark){
   :root{
-    --bg:#0f1117;--surface:#1a1d27;--border:rgba(255,255,255,0.08);--border-md:rgba(255,255,255,0.15);
-    --text:#e8eaf0;--muted:#8b95a8;--faint:#555e6e;
-    --accent:#60a5fa;--accent-bg:#1e2d4a;
+    --bg:#080c14;
+    --surface:#111827;
+    --surface2:#0d1520;
+    --border:rgba(255,255,255,0.07);
+    --border-md:rgba(255,255,255,0.13);
+    --text:#f1f5f9;
+    --text2:#94a3b8;
+    --text3:#475569;
+    --accent:#3b82f6;
+    --accent2:#60a5fa;
+    --accent-light:#0f1f3d;
+    --accent-mid:#1e3a5f;
+    --shadow-xs:0 1px 2px rgba(0,0,0,.4);
+    --shadow-sm:0 1px 3px rgba(0,0,0,.5);
+    --shadow-md:0 4px 6px rgba(0,0,0,.5);
+    --shadow-lg:0 10px 15px rgba(0,0,0,.6);
   }
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
-.page{max-width:880px;margin:0 auto;padding:2rem 1.25rem 4rem}
 
-/* Header */
-.hdr{display:flex;align-items:center;gap:14px;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:.5px solid var(--border)}
-.logo{width:46px;height:46px;background:var(--accent);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;flex-shrink:0}
-.hdr h1{font-size:20px;font-weight:600;letter-spacing:-0.3px}
-.hdr p{font-size:13px;color:var(--muted);margin-top:2px}
-.badge-free{margin-left:auto;display:flex;align-items:center;gap:5px;background:#f0fdf4;color:#166534;border-radius:20px;padding:5px 13px;font-size:12px;font-weight:600}
-@media(prefers-color-scheme:dark){.badge-free{background:#052e16;color:#86efac}}
+/* ── Base ── */
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
 
-/* Sources bar */
-.sources-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;padding:12px 14px;background:var(--surface);border:.5px solid var(--border);border-radius:var(--r-md)}
-.src-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:12px;font-weight:500;border:.5px solid var(--border-md);color:var(--muted);background:var(--bg)}
-.src-chip.live{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
-.src-chip.offline{background:#fef9c3;color:#854d0e;border-color:#fde047}
+/* ── Hero banner ── */
+.hero{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#1d4ed8 100%);padding:2.5rem 1.5rem 3.5rem;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-inner{max-width:900px;margin:0 auto;position:relative}
+.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-icon{width:40px;height:40px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;backdrop-filter:blur(8px)}
+.brand-name{font-size:17px;font-weight:700;color:#fff;letter-spacing:-0.3px}
+.brand-sub{font-size:12px;color:rgba(255,255,255,0.55);margin-top:1px}
+.hero-badges{display:flex;gap:8px;flex-wrap:wrap}
+.hbadge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.3px;text-transform:uppercase;backdrop-filter:blur(8px)}
+.hbadge-green{background:rgba(34,197,94,0.2);color:#86efac;border:1px solid rgba(34,197,94,0.3)}
+.hbadge-blue{background:rgba(96,165,250,0.15);color:#93c5fd;border:1px solid rgba(96,165,250,0.25)}
+.hero-h{font-size:28px;font-weight:700;color:#fff;letter-spacing:-0.5px;margin-bottom:8px;line-height:1.25}
+.hero-p{font-size:14px;color:rgba(255,255,255,0.65);max-width:520px;line-height:1.65}
+.hero-sources{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:1.5rem}
+.hero-src-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:rgba(255,255,255,0.4);margin-right:4px}
+.src-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);transition:all .2s}
+.src-pill.live{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.3);color:#86efac}
+.src-pill .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);flex-shrink:0}
+.src-pill.live .dot{background:#22c55e;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+#srcNote{font-size:11px;color:rgba(255,255,255,0.35);margin-left:8px}
+
+/* ── Page layout ── */
+.page{max-width:900px;margin:0 auto;padding:0 1.25rem 4rem}
+
+/* ── Search section ── */
+.search-section{margin-top:-1.5rem;margin-bottom:1.5rem;position:relative;z-index:10}
+.search-card{background:var(--surface);border-radius:var(--r20);box-shadow:var(--shadow-lg);border:1px solid var(--border);overflow:hidden}
+.search-top{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.search-input-row{display:flex;gap:0;margin-bottom:0}
+.input-wrap{flex:1;display:flex;align-items:center;gap:10px;background:var(--surface2);border:1.5px solid var(--border-md);border-radius:var(--r12);padding:0 14px;transition:border-color .15s,box-shadow .15s}
+.input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(29,78,216,.12)}
+.input-wrap i{font-size:18px;color:var(--text3);flex-shrink:0}
+.input-wrap input{flex:1;border:none;background:transparent;font-size:15px;color:var(--text);padding:12px 0;outline:none;font-family:var(--font)}
+.input-wrap input::placeholder{color:var(--text3)}
+.btn-screen{margin-left:10px;padding:0 28px;height:52px;background:var(--accent);color:#fff;border:none;border-radius:var(--r12);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.btn-screen:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(29,78,216,.35)}
+.btn-screen:active{transform:translateY(0)}
+.btn-screen:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+.search-filters{padding:1rem 1.5rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface2)}
+.filter-group{display:flex;align-items:center;gap:8px}
+.filter-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);white-space:nowrap}
+.sel-wrap select{padding:7px 12px;font-size:13px;background:var(--surface);border:1px solid var(--border-md);border-radius:var(--r8);color:var(--text);cursor:pointer;font-family:var(--font);outline:none;transition:border-color .15s}
+.sel-wrap select:focus{border-color:var(--accent)}
+.sep{width:1px;height:20px;background:var(--border-md);flex-shrink:0}
+
+.lists-wrap{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ltog{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;font-size:12px;font-weight:500;border:1px solid var(--border-md);border-radius:var(--r8);cursor:pointer;user-select:none;transition:all .15s;color:var(--text2);background:var(--surface)}
+.ltog:hover{border-color:var(--accent);color:var(--accent)}
+.ltog.on{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 6px rgba(29,78,216,.25)}
+.ltog i{font-size:13px}
+
+.thresh-wrap{display:flex;align-items:center;gap:8px;margin-left:auto}
+.thresh-wrap label{font-size:12px;color:var(--text2);white-space:nowrap}
+.thresh-wrap input[type=range]{width:90px;accent-color:var(--accent)}
+.thresh-val{font-size:13px;font-weight:600;color:var(--text);min-width:36px;text-align:right}
+
+/* ── Stats grid ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r16);padding:1.1rem 1.25rem;box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:6px}
+.stat-top{display:flex;align-items:center;justify-content:space-between}
+.stat-icon{width:32px;height:32px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:16px}
+.si-blue{background:#eff6ff;color:#1d4ed8}
+.si-red{background:#fff1f2;color:#be123c}
+.si-amber{background:#fffbeb;color:#b45309}
+.si-green{background:#f0fdf4;color:#15803d}
 @media(prefers-color-scheme:dark){
-  .src-chip.live{background:#052e16;color:#86efac;border-color:rgba(134,239,172,.25)}
-  .src-chip.offline{background:#422006;color:#fde68a;border-color:rgba(253,230,138,.25)}
+  .si-blue{background:#0f1f3d;color:#60a5fa}
+  .si-red{background:#2d0a14;color:#fb7185}
+  .si-amber{background:#2d1a00;color:#fbbf24}
+  .si-green{background:#052e16;color:#4ade80}
 }
-.src-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.dot-live{background:#22c55e;animation:pulse 2s infinite}
-.dot-offline{background:#eab308}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.stat-val{font-size:30px;font-weight:700;letter-spacing:-1px;line-height:1}
+.sv-blue{color:#1d4ed8}.sv-red{color:#be123c}.sv-amber{color:#b45309}.sv-green{color:#15803d}
+@media(prefers-color-scheme:dark){.sv-blue{color:#60a5fa}.sv-red{color:#fb7185}.sv-amber{color:#fbbf24}.sv-green{color:#4ade80}}
+.stat-label{font-size:12px;color:var(--text3);font-weight:500}
+@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
 
-/* Search card */
-.sc{background:var(--surface);border:.5px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;margin-bottom:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.sr{display:flex;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
-.sr input{flex:1;min-width:220px;padding:10px 14px;font-size:15px;background:var(--bg);border:1px solid var(--border-md);border-radius:var(--r-sm);color:var(--text)}
-.sr input:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
-.sr input::placeholder{color:var(--faint)}
-.sel select{padding:10px 14px;font-size:14px;background:var(--bg);border:1px solid var(--border-md);border-radius:var(--r-sm);color:var(--text);min-width:140px}
-.sel select:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
-.lr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
-.ll{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
-.lt{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;font-size:12px;font-weight:500;border:1px solid var(--border-md);border-radius:20px;cursor:pointer;user-select:none;transition:all .15s;color:var(--muted);background:var(--bg)}
-.lt.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-.sf{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.thr{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
-.thr input[type=range]{width:100px;accent-color:var(--accent)}
-.tv{font-weight:600;color:var(--text);min-width:32px}
-.btn-screen{display:flex;align-items:center;gap:7px;padding:10px 26px;font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:none;border-radius:var(--r-sm);cursor:pointer;transition:opacity .15s}
-.btn-screen:hover{opacity:.88}
-.btn-screen:disabled{opacity:.45;cursor:not-allowed}
+/* ── Results panel ── */
+.results-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r20);box-shadow:var(--shadow-sm);overflow:hidden}
+.rp-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--surface2)}
+.rp-title{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.rp-title i{font-size:16px;color:#b45309}
+.rp-actions{display:flex;gap:8px}
+.act-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;font-size:12px;font-weight:500;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .12s;font-family:var(--font)}
+.act-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
 
-/* Stats */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.25rem}
-.sc2{background:var(--surface);border:.5px solid var(--border);border-radius:var(--r-md);padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.sc2 .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px}
-.sc2 .val{font-size:28px;font-weight:700;letter-spacing:-.5px}
-.c-red{color:#dc2626}.c-amber{color:#d97706}.c-green{color:#16a34a}.c-blue{color:var(--accent)}
+.filter-bar{padding:10px 20px;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.fb-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-right:4px}
+.fchip{padding:5px 14px;font-size:12px;font-weight:500;border-radius:20px;border:1px solid var(--border-md);background:transparent;color:var(--text2);cursor:pointer;transition:all .12s;font-family:var(--font)}
+.fchip:hover{background:var(--surface2)}
+.fchip.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 6px rgba(29,78,216,.2)}
 
-/* Results */
-.rp{background:var(--surface);border:.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.ph{padding:14px 18px;border-bottom:.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-.pt{font-size:14px;font-weight:600;display:flex;align-items:center;gap:7px}
-.pa{display:flex;gap:8px}
-.bo{display:flex;align-items:center;gap:5px;padding:5px 12px;font-size:12px;font-weight:500;border:1px solid var(--border-md);border-radius:var(--r-sm);background:transparent;color:var(--muted);cursor:pointer}
-.bo:hover{background:var(--bg);color:var(--text)}
-.fb{padding:10px 18px;border-bottom:.5px solid var(--border);display:flex;gap:6px;flex-wrap:wrap}
-.fc{padding:4px 12px;font-size:12px;border-radius:20px;border:1px solid var(--border-md);background:transparent;color:var(--muted);cursor:pointer;transition:all .12s}
-.fc.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* ── Match item ── */
+.match-item{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:flex-start;transition:background .12s}
+.match-item:last-child{border-bottom:none}
+.match-item:hover{background:var(--surface2)}
 
-/* Match item */
-.mi{padding:16px 18px;border-bottom:.5px solid var(--border);display:flex;gap:14px;align-items:flex-start}
-.mi:last-child{border-bottom:none}
-.rc{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;width:64px}
-.rb{padding:4px 0;width:100%;text-align:center;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.3px}
-.rH{background:#fee2e2;color:#991b1b}.rM{background:#fef3c7;color:#92400e}.rL{background:#dcfce7;color:#166534}
-@media(prefers-color-scheme:dark){.rH{background:#450a0a;color:#fca5a5}.rM{background:#451a03;color:#fcd34d}.rL{background:#052e16;color:#86efac}}
-.sr2{font-size:12px;font-weight:700;color:var(--muted)}
-.mb2{width:100%;height:3px;border-radius:2px;background:var(--border);overflow:hidden}
-.mf{height:100%;border-radius:2px}
-.fH{background:#dc2626}.fM{background:#d97706}.fL{background:#16a34a}
-.mbody{flex:1;min-width:0}
-.mn{font-size:15px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.pp{font-size:10px;font-weight:600;padding:2px 8px;background:#ede9fe;color:#5b21b6;border-radius:10px}
-@media(prefers-color-scheme:dark){.pp{background:#2e1065;color:#c4b5fd}}
-.mm{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:6px}
-.mm span{display:flex;align-items:center;gap:4px}
-.mr2{font-size:13px;color:var(--muted);margin-bottom:8px;line-height:1.5}
-.ma{font-size:12px;color:var(--faint);margin-bottom:7px}
-.tags{display:flex;gap:5px;flex-wrap:wrap}
-.tag{padding:2px 9px;border-radius:6px;font-size:11px;font-weight:500;background:var(--accent-bg);color:var(--accent);border:1px solid rgba(30,58,138,.15)}
-.ptag{background:#ede9fe;color:#5b21b6;border-color:rgba(91,33,182,.2)}
-@media(prefers-color-scheme:dark){.tag{background:#1e2d4a;border-color:rgba(96,165,250,.2)}.ptag{background:#2e1065;color:#c4b5fd}}
-.src-indicator{font-size:10px;padding:1px 6px;border-radius:4px;font-weight:600}
-.si-ofac{background:#fee2e2;color:#991b1b}.si-un{background:#e0f2fe;color:#0c4a6e}.si-eu{background:#ede9fe;color:#5b21b6}.si-uk{background:#fef3c7;color:#92400e}.si-pep{background:#f0fdf4;color:#166534}.si-built{background:#f1f5f9;color:#475569}
-
-/* Empty/loading */
-.sb{padding:3.5rem 2rem;text-align:center;color:var(--muted)}
-.sb .ic{font-size:44px;display:block;margin-bottom:14px;opacity:.35}
-.sb h3{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
-.sb p{font-size:13px;max-width:380px;margin:0 auto}
-.spin{width:26px;height:26px;margin:0 auto 14px;border:2.5px solid var(--border-md);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.prog{width:100%;height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:12px}
-.prog-fill{height:100%;border-radius:2px;background:var(--accent);transition:width .4s}
-
-/* Alert */
-.al{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-radius:var(--r-sm);font-size:13px;margin-bottom:1rem}
-.al i{font-size:16px;flex-shrink:0;margin-top:1px}
-.ali{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
-.ale{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
-.alw{background:#fefce8;color:#854d0e;border:1px solid #fde047}
+.risk-col{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px;width:68px}
+.risk-badge{width:100%;text-align:center;padding:5px 0;border-radius:var(--r8);font-size:10px;font-weight:700;letter-spacing:.8px}
+.rb-H{background:#fff1f2;color:#be123c;border:1px solid #fecdd3}
+.rb-M{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+.rb-L{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
 @media(prefers-color-scheme:dark){
-  .ali{background:#1e2d4a;color:#93c5fd;border-color:rgba(96,165,250,.25)}
-  .ale{background:#450a0a;color:#fca5a5;border-color:rgba(252,165,165,.25)}
-  .alw{background:#422006;color:#fde68a;border-color:rgba(253,230,138,.25)}
+  .rb-H{background:#2d0a14;color:#fb7185;border-color:rgba(251,113,133,.2)}
+  .rb-M{background:#2d1a00;color:#fbbf24;border-color:rgba(251,191,36,.2)}
+  .rb-L{background:#052e16;color:#4ade80;border-color:rgba(74,222,128,.2)}
+}
+.score-num{font-size:13px;font-weight:700;color:var(--text2)}
+.score-track{width:100%;height:3px;border-radius:2px;background:var(--border-md);overflow:hidden}
+.score-fill{height:100%;border-radius:2px}
+.sf-H{background:#be123c}.sf-M{background:#b45309}.sf-L{background:#15803d}
+
+.match-body{flex:1;min-width:0}
+.match-name{font-size:15px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;line-height:1.3}
+.pep-tag{font-size:10px;font-weight:700;padding:2px 8px;background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;border-radius:20px;letter-spacing:.3px}
+@media(prefers-color-scheme:dark){.pep-tag{background:#1e1040;color:#a78bfa;border-color:rgba(167,139,250,.2)}}
+
+.match-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--text2);margin-bottom:6px}
+.match-meta span{display:flex;align-items:center;gap:4px}
+.match-meta i{font-size:13px;color:var(--text3)}
+.match-role{font-size:12px;color:var(--text2);margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.match-reason{font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.5}
+.match-aliases{font-size:11px;color:var(--text3);margin-bottom:7px;font-style:italic}
+
+.tag-row{display:flex;gap:5px;flex-wrap:wrap}
+.stag{padding:3px 9px;border-radius:var(--r4);font-size:11px;font-weight:500}
+.stag-src{background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-mid)}
+.stag-pep{background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe}
+.stag-prog{background:var(--surface2);color:var(--text2);border:1px solid var(--border-md)}
+@media(prefers-color-scheme:dark){
+  .stag-src{background:#0f1f3d;border-color:rgba(96,165,250,.2)}
+  .stag-pep{background:#1e1040;border-color:rgba(167,139,250,.2)}
 }
 
-/* Footer */
-.ft{margin-top:3rem;padding-top:1.5rem;border-top:.5px solid var(--border);font-size:12px;color:var(--faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+/* ── States ── */
+.state-box{padding:4rem 2rem;text-align:center;color:var(--text2)}
+.state-icon{font-size:48px;display:block;margin-bottom:16px;opacity:.25}
+.state-title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:8px}
+.state-sub{font-size:13px;max-width:360px;margin:0 auto;line-height:1.65}
+.spinner{width:28px;height:28px;margin:0 auto 16px;border:2.5px solid var(--border-md);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.prog-bar{width:100%;max-width:220px;height:3px;background:var(--border-md);border-radius:2px;overflow:hidden;margin:14px auto 0}
+.prog-inner{height:100%;border-radius:2px;background:var(--accent);transition:width .4s}
+
+/* ── Footer ── */
+.footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--text3)}
+.footer a{color:var(--text3);text-decoration:underline;text-underline-offset:2px}
+
+/* ── Disclaimer banner ── */
+.disclaimer{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--r8);padding:10px 14px;margin:1.5rem 0;font-size:12px;color:var(--text2);display:flex;gap:10px;align-items:flex-start;line-height:1.6}
+.disclaimer i{font-size:15px;color:var(--accent);flex-shrink:0;margin-top:1px}
+
+@media(max-width:640px){
+  .hero-h{font-size:22px}
+  .search-filters{flex-direction:column;align-items:flex-start}
+  .thresh-wrap{margin-left:0}
+  .btn-screen{padding:0 20px}
+}
 </style>
 </head>
 <body>
-<main class="page">
 
-<header class="hdr">
-  <div class="logo"><i class="ti ti-shield-search"></i></div>
-  <div>
-    <h1>Sanction &amp; PEP Screening Tool</h1>
-    <p>OFAC · UN · EU · UK HMT · PEP — 100% free, no API key required</p>
-  </div>
-  <div class="badge-free"><i class="ti ti-lock-open" style="font-size:14px"></i> Free &amp; Open</div>
-</header>
-
-<!-- Data sources status -->
-<div class="sources-bar" id="sourcesBar">
-  <span style="font-size:12px;font-weight:600;color:var(--muted);margin-right:4px">Data sources:</span>
-  <div class="src-chip offline" id="src-ofac"><div class="src-dot dot-offline"></div>OFAC SDN</div>
-  <div class="src-chip offline" id="src-un"><div class="src-dot dot-offline"></div>UN List</div>
-  <div class="src-chip offline" id="src-eu"><div class="src-dot dot-offline"></div>EU Sanctions</div>
-  <div class="src-chip offline" id="src-uk"><div class="src-dot dot-offline"></div>UK HMT</div>
-  <div class="src-chip offline" id="src-pep"><div class="src-dot dot-offline"></div>PEP Database</div>
-  <span id="srcNote" style="font-size:11px;color:var(--faint);margin-left:auto;align-self:center">Loading datasets…</span>
-</div>
-
-<div class="al ali">
-  <i class="ti ti-info-circle"></i>
-  <div>Uses real public sanctions data (OFAC SDN, UN, EU, UK HMT) fetched via CORS proxy + a curated built-in PEP/sanctions dataset of 600+ individuals covering India, Pakistan, Bangladesh, UAE, Saudi Arabia, Singapore, Malaysia &amp; more. No API key, no login, no cost. <strong>Always verify matches against official sources</strong> before taking compliance action.</div>
-</div>
-
-<!-- Search -->
-<div class="sc">
-  <div class="sr">
-    <input type="text" id="ni" placeholder="Enter name, entity, alias, vessel…" />
-    <div class="sel"><select id="ts">
-      <option value="all">All types</option>
-      <option value="individual">Individual</option>
-      <option value="entity">Entity / Org</option>
-      <option value="vessel">Vessel</option>
-    </select></div>
-    <div class="sel"><select id="cs">
-      <option value="">All countries</option>
-      <optgroup label="── South Asia ──">
-      <option value="india">India</option>
-      <option value="pakistan">Pakistan</option>
-      <option value="bangladesh">Bangladesh</option>
-      <option value="sri lanka">Sri Lanka</option>
-      <option value="nepal">Nepal</option>
-      <option value="afghanistan">Afghanistan</option>
-      </optgroup>
-      <optgroup label="── Southeast Asia ──">
-      <option value="singapore">Singapore</option>
-      <option value="malaysia">Malaysia</option>
-      <option value="myanmar">Myanmar</option>
-      <option value="indonesia">Indonesia</option>
-      <option value="philippines">Philippines</option>
-      <option value="thailand">Thailand</option>
-      </optgroup>
-      <optgroup label="── Gulf / Middle East ──">
-      <option value="uae">UAE</option>
-      <option value="saudi arabia">Saudi Arabia</option>
-      <option value="qatar">Qatar</option>
-      <option value="kuwait">Kuwait</option>
-      <option value="bahrain">Bahrain</option>
-      <option value="iran">Iran</option>
-      <option value="syria">Syria</option>
-      </optgroup>
-      <optgroup label="── East Asia ──">
-      <option value="china">China</option>
-      <option value="north korea">North Korea</option>
-      </optgroup>
-      <optgroup label="── Europe / Eurasia ──">
-      <option value="russia">Russia</option>
-      <option value="belarus">Belarus</option>
-      <option value="ukraine">Ukraine</option>
-      </optgroup>
-      <optgroup label="── Americas ──">
-      <option value="venezuela">Venezuela</option>
-      <option value="cuba">Cuba</option>
-      <option value="nicaragua">Nicaragua</option>
-      </optgroup>
-      <optgroup label="── Africa ──">
-      <option value="sudan">Sudan</option>
-      <option value="zimbabwe">Zimbabwe</option>
-      <option value="libya">Libya</option>
-      </optgroup>
-    </select></div>
-  </div>
-  <div class="lr">
-    <span class="ll">Lists</span>
-    <div class="lt on" data-list="ofac"><i class="ti ti-flag"></i>OFAC SDN</div>
-    <div class="lt on" data-list="un"><i class="ti ti-globe"></i>UN</div>
-    <div class="lt on" data-list="eu"><i class="ti ti-building"></i>EU</div>
-    <div class="lt on" data-list="uk"><i class="ti ti-crown"></i>UK HMT</div>
-    <div class="lt on" data-list="pep"><i class="ti ti-user-shield"></i>PEP</div>
-  </div>
-  <div class="sf">
-    <div class="thr">
-      <label for="tsl">Min match:</label>
-      <input type="range" id="tsl" min="30" max="95" value="50" step="5" oninput="document.getElementById('tv').textContent=this.value+'%'" />
-      <span class="tv" id="tv">50%</span>
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="brand">
+        <div class="brand-icon"><i class="ti ti-shield-check"></i></div>
+        <div>
+          <div class="brand-name">ComplianceCheck</div>
+          <div class="brand-sub">Sanction &amp; PEP Screening Platform</div>
+        </div>
+      </div>
+      <div class="hero-badges">
+        <span class="hbadge hbadge-green"><i class="ti ti-lock-open" style="font-size:12px"></i>Free &amp; Open</span>
+        <span class="hbadge hbadge-blue"><i class="ti ti-database" style="font-size:12px"></i>600+ Records</span>
+      </div>
     </div>
-    <button class="btn-screen" id="sb2" onclick="doScreen()">
-      <i class="ti ti-search"></i> Screen
-    </button>
+    <div class="hero-h">Global Sanctions &amp; PEP Screening</div>
+    <p class="hero-p">Screen individuals and entities against OFAC SDN, UN Consolidated, EU Sanctions, UK HMT and Politically Exposed Persons databases — free, real-time, no API key required.</p>
+    <div class="hero-sources">
+      <span class="hero-src-label">Data sources</span>
+      <div class="src-pill offline" id="src-ofac"><div class="dot"></div>OFAC SDN</div>
+      <div class="src-pill offline" id="src-un"><div class="dot"></div>UN List</div>
+      <div class="src-pill offline" id="src-eu"><div class="dot"></div>EU Sanctions</div>
+      <div class="src-pill offline" id="src-uk"><div class="dot"></div>UK HMT</div>
+      <div class="src-pill offline" id="src-pep"><div class="dot"></div>PEP Database</div>
+      <span id="srcNote"></span>
+    </div>
   </div>
 </div>
 
-<!-- Stats -->
-<div class="stats" id="statsRow" style="display:none">
-  <div class="sc2"><div class="lbl">Total matches</div><div class="val c-blue" id="st">0</div></div>
-  <div class="sc2"><div class="lbl">High risk</div><div class="val c-red" id="sh">0</div></div>
-  <div class="sc2"><div class="lbl">Medium risk</div><div class="val c-amber" id="sm2">0</div></div>
-  <div class="sc2"><div class="lbl">PEP / Low</div><div class="val c-green" id="sl">0</div></div>
-</div>
+<!-- ── Page ── -->
+<div class="page">
 
-<!-- Results -->
-<div class="rp" id="rp">
-  <div class="sb">
-    <i class="ti ti-shield-search ic"></i>
-    <h3>Ready to screen</h3>
-    <p>Enter any name above. Data loads from official free public sources — no API key needed.</p>
+  <!-- Search card -->
+  <div class="search-section">
+    <div class="search-card">
+      <div class="search-top">
+        <div class="search-input-row">
+          <div class="input-wrap">
+            <i class="ti ti-search"></i>
+            <input type="text" id="ni" placeholder="Enter full name, entity, alias or vessel to screen…"/>
+          </div>
+          <button class="btn-screen" id="sb2" onclick="doScreen()">
+            <i class="ti ti-shield-search"></i>Screen now
+          </button>
+        </div>
+      </div>
+      <div class="search-filters">
+        <div class="filter-group">
+          <span class="filter-label">Type</span>
+          <div class="sel-wrap"><select id="ts">
+            <option value="all">All types</option>
+            <option value="individual">Individual</option>
+            <option value="entity">Entity / Org</option>
+            <option value="vessel">Vessel</option>
+          </select></div>
+        </div>
+        <div class="sep"></div>
+        <div class="filter-group">
+          <span class="filter-label">Country</span>
+          <div class="sel-wrap"><select id="cs">
+            <option value="">All countries</option>
+            <optgroup label="South Asia">
+              <option value="india">India</option>
+              <option value="pakistan">Pakistan</option>
+              <option value="bangladesh">Bangladesh</option>
+              <option value="sri lanka">Sri Lanka</option>
+              <option value="nepal">Nepal</option>
+              <option value="afghanistan">Afghanistan</option>
+            </optgroup>
+            <optgroup label="Southeast Asia">
+              <option value="singapore">Singapore</option>
+              <option value="malaysia">Malaysia</option>
+              <option value="myanmar">Myanmar</option>
+              <option value="indonesia">Indonesia</option>
+              <option value="philippines">Philippines</option>
+              <option value="thailand">Thailand</option>
+            </optgroup>
+            <optgroup label="Gulf / Middle East">
+              <option value="uae">UAE</option>
+              <option value="saudi arabia">Saudi Arabia</option>
+              <option value="qatar">Qatar</option>
+              <option value="iran">Iran</option>
+              <option value="syria">Syria</option>
+            </optgroup>
+            <optgroup label="East Asia">
+              <option value="china">China</option>
+              <option value="north korea">North Korea</option>
+            </optgroup>
+            <optgroup label="Europe / Eurasia">
+              <option value="russia">Russia</option>
+              <option value="belarus">Belarus</option>
+              <option value="ukraine">Ukraine</option>
+            </optgroup>
+            <optgroup label="Americas">
+              <option value="venezuela">Venezuela</option>
+              <option value="cuba">Cuba</option>
+              <option value="nicaragua">Nicaragua</option>
+            </optgroup>
+            <optgroup label="Africa">
+              <option value="sudan">Sudan</option>
+              <option value="zimbabwe">Zimbabwe</option>
+              <option value="libya">Libya</option>
+            </optgroup>
+          </select></div>
+        </div>
+        <div class="sep"></div>
+        <div class="filter-group">
+          <span class="filter-label">Lists</span>
+          <div class="lists-wrap">
+            <div class="ltog on" data-list="ofac"><i class="ti ti-flag"></i>OFAC</div>
+            <div class="ltog on" data-list="un"><i class="ti ti-globe"></i>UN</div>
+            <div class="ltog on" data-list="eu"><i class="ti ti-building"></i>EU</div>
+            <div class="ltog on" data-list="uk"><i class="ti ti-crown"></i>UK HMT</div>
+            <div class="ltog on" data-list="pep"><i class="ti ti-user-shield"></i>PEP</div>
+          </div>
+        </div>
+        <div class="thresh-wrap">
+          <label for="tsl">Min match</label>
+          <input type="range" id="tsl" min="30" max="95" value="50" step="5" oninput="document.getElementById('tv').textContent=this.value+'%'"/>
+          <span class="thresh-val" id="tv">50%</span>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <i class="ti ti-info-circle"></i>
+    <span>For research &amp; portfolio demonstration only. Not certified for regulatory compliance. Always verify results against official <a href="https://sanctionssearch.ofac.treas.gov/" target="_blank">OFAC</a>, <a href="https://www.un.org/securitycouncil/content/un-sc-consolidated-list" target="_blank">UN</a>, <a href="https://www.eeas.europa.eu/eeas/european-union-sanctions_en" target="_blank">EU</a> and <a href="https://www.gov.uk/government/publications/financial-sanctions-consolidated-list-of-targets" target="_blank">UK HMT</a> lists before taking compliance action.</span>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid" id="statsRow" style="display:none">
+    <div class="stat-card">
+      <div class="stat-top"><span class="stat-label">Total matches</span><div class="stat-icon si-blue"><i class="ti ti-list-search"></i></div></div>
+      <div class="stat-val sv-blue" id="st">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top"><span class="stat-label">High risk</span><div class="stat-icon si-red"><i class="ti ti-alert-octagon"></i></div></div>
+      <div class="stat-val sv-red" id="sh">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top"><span class="stat-label">Medium risk</span><div class="stat-icon si-amber"><i class="ti ti-alert-triangle"></i></div></div>
+      <div class="stat-val sv-amber" id="sm2">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top"><span class="stat-label">PEP / Low risk</span><div class="stat-icon si-green"><i class="ti ti-user-check"></i></div></div>
+      <div class="stat-val sv-green" id="sl">0</div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="results-panel" id="rp">
+    <div class="state-box">
+      <i class="ti ti-shield-search state-icon"></i>
+      <div class="state-title">Ready to screen</div>
+      <p class="state-sub">Enter any name above and click "Screen now". Checks 600+ built-in records plus live OFAC &amp; OpenSanctions data — no API key needed.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span>Disclaimer: For portfolio &amp; research use only. Not a substitute for certified AML compliance screening.</span>
+    <span>Free &amp; Open Source · Built with public data · <strong>ComplianceCheck v2.0</strong></span>
+  </footer>
 </div>
 
-<footer class="ft">
-  <span style="max-width:560px">Disclaimer: For research and portfolio demonstration only. Not certified for regulatory compliance. Always verify against official OFAC, UN, EU and UK HMT lists.</span>
-  <span>Free &amp; Open Source · Built with public data</span>
-</footer>
-</main>
-
+<script>
 <script>
 // ═══════════════════════════════════════════
 // BUILT-IN DATASET — 300+ real sanctioned individuals & PEPs
@@ -538,13 +665,23 @@ function matchEntry(query,entry){
 }
 
 // ═══════════════════════════════════════════
-// DATA FETCHING — real public sources via CORS proxy
+
+// ═══════════════════════════════════════════
+// FUZZY MATCHING ENGINE
+// ═══════════════════════════════════════════
+function normalize(s){return(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim()}
+function tokenSort(s){return normalize(s).split(" ").sort().join(" ")}
+function levenshtein(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i?j?0:j:i));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n]}
+function similarityScore(a,b){const na=normalize(a),nb=normalize(b);if(na===nb)return 100;const ta=tokenSort(a),tb=tokenSort(b);if(ta===tb)return 98;if(na.startsWith(nb)||nb.startsWith(na))return 92;if(na.includes(nb)||nb.includes(na))return 85;const maxLen=Math.max(ta.length,tb.length)||1;const lev=levenshtein(ta,tb);const levScore=Math.round((1-lev/maxLen)*100);const tokA=new Set(na.split(" ")),tokB=new Set(nb.split(" "));const inter=[...tokA].filter(t=>tokB.has(t)&&t.length>1).length;const union=new Set([...tokA,...tokB]).size;const jaccard=union?Math.round(inter/union*100):0;return Math.max(levScore,jaccard)}
+function matchEntry(query,entry){const names=[entry.name,...(entry.aliases||[])];let best=0;for(const n of names){const s=similarityScore(query,n);if(s>best)best=s}return best}
+
+// ═══════════════════════════════════════════
+// DATA FETCHING
 // ═══════════════════════════════════════════
 let liveData=[];
 const PROXY="https://api.allorigins.win/get?url=";
 
 async function fetchOFAC(){
-  // OFAC publishes a mini SDN CSV — simplified but real
   try{
     const url=encodeURIComponent("https://www.treasury.gov/ofac/downloads/sdn.csv");
     const r=await fetch(PROXY+url,{signal:AbortSignal.timeout(8000)});
@@ -552,31 +689,20 @@ async function fetchOFAC(){
     const lines=(j.contents||"").split("\n").slice(0,2000);
     const parsed=[];
     for(const line of lines){
-      if(!line.trim()) continue;
+      if(!line.trim())continue;
       const cols=line.split(",");
-      if(cols.length<3) continue;
+      if(cols.length<3)continue;
       const name=cols[1]?.replace(/"/g,"").trim();
       const type=cols[2]?.replace(/"/g,"").trim();
-      if(!name||name.length<3) continue;
-      parsed.push({
-        name,type:type==="individual"?"Individual":type==="entity"?"Entity":"Individual",
-        risk:"HIGH",sources:["OFAC SDN"],programs:["SDN"],
-        nationality:cols[3]?.replace(/"/g,"").trim()||null,
-        reason:"Listed on OFAC Specially Designated Nationals list",
-        aliases:[],is_pep:false
-      });
+      if(!name||name.length<3)continue;
+      parsed.push({name,type:type==="individual"?"Individual":type==="entity"?"Entity":"Individual",risk:"HIGH",sources:["OFAC SDN"],programs:["SDN"],nationality:cols[3]?.replace(/"/g,"").trim()||null,reason:"Listed on OFAC Specially Designated Nationals list",aliases:[],is_pep:false});
     }
     liveData.push(...parsed);
     markLive("ofac");
-    console.log(`OFAC: loaded ${parsed.length} entries`);
-  }catch(e){ console.warn("OFAC fetch failed:",e.message); }
+  }catch(e){console.warn("OFAC:",e.message)}
 }
 
-async function fetchOpenSanctions(){
-  // OpenSanctions has a free simple search API (no key for basic use)
-  // We will use it per-query instead of bulk fetch
-  markLive("un"); markLive("eu"); markLive("uk"); markLive("pep");
-}
+async function fetchOpenSanctions(){markLive("un");markLive("eu");markLive("uk");markLive("pep")}
 
 async function searchOpenSanctions(query){
   try{
@@ -585,7 +711,7 @@ async function searchOpenSanctions(query){
     const j=await r.json();
     const data=JSON.parse(j.contents||"{}");
     const results=[];
-    for(const r2 of (data.results||[])){
+    for(const r2 of(data.results||[])){
       const props=r2.properties||{};
       const name=(props.name||[])[0]||r2.caption||"";
       const aliases=(props.alias||[]);
@@ -593,134 +719,102 @@ async function searchOpenSanctions(query){
       const dob=(props.birthDate||[])[0]||null;
       const datasets=r2.datasets||[];
       const sources=[];
-      if(datasets.some(d=>d.includes("ofac"))) sources.push("OFAC SDN");
-      if(datasets.some(d=>d.includes("un_")||d==="un_sc_sanctions")) sources.push("UN");
-      if(datasets.some(d=>d.includes("eu_"))) sources.push("EU");
-      if(datasets.some(d=>d.includes("gb_")||d.includes("uk_"))) sources.push("UK HMT");
-      if(datasets.some(d=>d.includes("pep"))) sources.push("PEP");
-      if(!sources.length) sources.push("OpenSanctions");
+      if(datasets.some(d=>d.includes("ofac")))sources.push("OFAC SDN");
+      if(datasets.some(d=>d.includes("un_")||d==="un_sc_sanctions"))sources.push("UN");
+      if(datasets.some(d=>d.includes("eu_")))sources.push("EU");
+      if(datasets.some(d=>d.includes("gb_")||d.includes("uk_")))sources.push("UK HMT");
+      if(datasets.some(d=>d.includes("pep")))sources.push("PEP");
+      if(!sources.length)sources.push("OpenSanctions");
       const isPep=datasets.some(d=>d.includes("pep"));
       const isSanctioned=sources.some(s=>s!=="PEP"&&s!=="OpenSanctions");
-      results.push({
-        name, aliases, type:r2.schema==="Person"?"Individual":"Entity",
-        nationality, dob,
-        risk:isSanctioned?"HIGH":isPep?"LOW":"MEDIUM",
-        sources, programs:[],
-        reason:(props.program||[]).join("; ")||"OpenSanctions database match",
-        is_pep:isPep,
-        pep_role:(props.position||[])[0]||null,
-        _osScore:r2.score||0
-      });
+      results.push({name,aliases,type:r2.schema==="Person"?"Individual":"Entity",nationality,dob,risk:isSanctioned?"HIGH":isPep?"LOW":"MEDIUM",sources,programs:[],reason:(props.program||[]).join("; ")||"OpenSanctions database match",is_pep:isPep,pep_role:(props.position||[])[0]||null,_osScore:r2.score||0});
     }
     return results;
-  }catch(e){
-    console.warn("OpenSanctions search failed:",e.message);
-    return [];
-  }
+  }catch(e){console.warn("OpenSanctions:",e.message);return[]}
 }
 
 function markLive(id){
   const el=document.getElementById("src-"+id);
-  if(el){
-    el.className="src-chip live";
-    el.querySelector(".src-dot").className="src-dot dot-live";
-  }
+  if(el){el.className="src-pill live";const d=el.querySelector(".dot");if(d)d.style.background="#22c55e"}
 }
 
 // ═══════════════════════════════════════════
-// APP STATE
+// STATE
 // ═══════════════════════════════════════════
 let activeLists=new Set(["ofac","un","eu","uk","pep"]);
 let allResults=[];
 let activeFilter="all";
 
-document.querySelectorAll(".lt").forEach(el=>{
+document.querySelectorAll(".ltog").forEach(el=>{
   el.addEventListener("click",()=>{
     const l=el.dataset.list;
     if(activeLists.has(l)){activeLists.delete(l);el.classList.remove("on")}
     else{activeLists.add(l);el.classList.add("on")}
   });
 });
-document.getElementById("ni").addEventListener("keydown",e=>{ if(e.key==="Enter") doScreen(); });
+document.getElementById("ni").addEventListener("keydown",e=>{if(e.key==="Enter")doScreen()});
 
 // ═══════════════════════════════════════════
 // SCREENING
 // ═══════════════════════════════════════════
 async function doScreen(){
   const query=document.getElementById("ni").value.trim();
-  if(!query) return document.getElementById("ni").focus();
+  if(!query)return document.getElementById("ni").focus();
   const threshold=parseInt(document.getElementById("tsl").value)||50;
   const typeFilter=document.getElementById("ts").value;
   const countryFilter=document.getElementById("cs").value.toLowerCase();
-
   const btn=document.getElementById("sb2");
   btn.disabled=true;
   document.getElementById("statsRow").style.display="none";
   setLoading(query);
 
-  // 1. Search OpenSanctions live
   let liveResults=await searchOpenSanctions(query);
-
-  // 2. Match against built-in dataset
   const builtinResults=[];
   for(const entry of BUILTIN_DATA){
     const score=matchEntry(query,entry);
-    if(score>=threshold) builtinResults.push({...entry,match_score:score,_source:"builtin"});
+    if(score>=threshold)builtinResults.push({...entry,match_score:score});
   }
-
-  // 3. Match against OFAC live data
   for(const entry of liveData){
     const score=matchEntry(query,entry);
-    if(score>=threshold) liveResults.push({...entry,match_score:score,_source:"ofac_live"});
+    if(score>=threshold)liveResults.push({...entry,match_score:score});
   }
-
-  // 4. Score live results
   for(const r of liveResults){
     const score=matchEntry(query,r);
     r.match_score=Math.max(score,Math.round((r._osScore||0.5)*100));
-    if(r.match_score<threshold) continue;
   }
   liveResults=liveResults.filter(r=>r.match_score>=threshold);
-
-  // 5. Merge, deduplicate by name similarity, sort
   const merged=[...builtinResults];
   for(const lr of liveResults){
     const dup=merged.some(m=>similarityScore(m.name,lr.name)>85);
-    if(!dup) merged.push(lr);
+    if(!dup)merged.push(lr);
   }
-
-  // 6. Apply filters
   let filtered=merged;
-  if(typeFilter!=="all") filtered=filtered.filter(r=>(r.type||"").toLowerCase().includes(typeFilter));
-  if(countryFilter) filtered=filtered.filter(r=>(r.nationality||"").toLowerCase().includes(countryFilter));
+  if(typeFilter!=="all")filtered=filtered.filter(r=>(r.type||"").toLowerCase().includes(typeFilter));
+  if(countryFilter)filtered=filtered.filter(r=>(r.nationality||"").toLowerCase().includes(countryFilter));
   filtered=filtered.filter(r=>isListActive(r));
   filtered.sort((a,b)=>b.match_score-a.match_score).splice(30);
 
-  allResults=filtered;
-  activeFilter="all";
-
+  allResults=filtered;activeFilter="all";
   const high=filtered.filter(r=>r.risk==="HIGH").length;
   const med=filtered.filter(r=>r.risk==="MEDIUM").length;
   const low=filtered.filter(r=>r.risk==="LOW").length;
-
   document.getElementById("st").textContent=filtered.length;
   document.getElementById("sh").textContent=high;
   document.getElementById("sm2").textContent=med;
   document.getElementById("sl").textContent=low;
   document.getElementById("statsRow").style.display=filtered.length>0?"grid":"none";
-
-  render(filtered,"");
+  render(filtered);
   btn.disabled=false;
 }
 
 function isListActive(r){
   const s=r.sources||[];
-  if(activeLists.has("ofac")&&s.some(x=>x.includes("OFAC"))) return true;
-  if(activeLists.has("un")&&s.some(x=>x.includes("UN"))) return true;
-  if(activeLists.has("eu")&&s.some(x=>x.includes("EU"))) return true;
-  if(activeLists.has("uk")&&s.some(x=>x.includes("UK"))) return true;
-  if(activeLists.has("pep")&&r.is_pep) return true;
-  if(s.some(x=>x.includes("OpenSanctions"))) return true;
+  if(activeLists.has("ofac")&&s.some(x=>x.includes("OFAC")))return true;
+  if(activeLists.has("un")&&s.some(x=>x.includes("UN")))return true;
+  if(activeLists.has("eu")&&s.some(x=>x.includes("EU")))return true;
+  if(activeLists.has("uk")&&s.some(x=>x.includes("UK")))return true;
+  if(activeLists.has("pep")&&r.is_pep)return true;
+  if(s.some(x=>x.includes("OpenSanctions")))return true;
   return false;
 }
 
@@ -728,105 +822,88 @@ function isListActive(r){
 // RENDER
 // ═══════════════════════════════════════════
 function setLoading(q){
-  document.getElementById("rp").innerHTML=`<div class="sb"><div class="spin"></div><h3>Screening "${esc(q)}"</h3><p>Checking built-in database + live OpenSanctions search…</p><div class="prog" style="max-width:200px;margin:12px auto 0"><div class="prog-fill" id="pf" style="width:30%"></div></div></div>`;
-  let w=30; const iv=setInterval(()=>{ w=Math.min(w+10,90); const pf=document.getElementById("pf"); if(pf)pf.style.width=w+"%"; else clearInterval(iv); },400);
+  document.getElementById("rp").innerHTML=`<div class="state-box"><div class="spinner"></div><div class="state-title">Screening "${esc(q)}"</div><p class="state-sub">Checking 600+ built-in records and querying live OFAC &amp; OpenSanctions…</p><div class="prog-bar"><div class="prog-inner" id="pf" style="width:25%"></div></div></div>`;
+  let w=25;const iv=setInterval(()=>{w=Math.min(w+8,88);const pf=document.getElementById("pf");if(pf)pf.style.width=w+"%";else clearInterval(iv)},350);
 }
 
-function render(results,summary){
+function render(results){
   if(!results||results.length===0){
-    document.getElementById("rp").innerHTML=`<div class="sb"><i class="ti ti-shield-check ic" style="opacity:.7;color:#16a34a"></i><h3>No matches found</h3><p>"${esc(document.getElementById("ni").value)}" does not appear on any active sanctions or PEP list in our database.</p></div>`;
+    document.getElementById("rp").innerHTML=`<div class="state-box"><i class="ti ti-shield-check state-icon" style="color:#15803d;opacity:.6"></i><div class="state-title">No matches found</div><p class="state-sub">"${esc(document.getElementById("ni").value)}" does not appear on any active sanctions or PEP list.</p></div>`;
     return;
   }
-  let html=`<div class="ph"><div class="pt"><i class="ti ti-alert-triangle"></i>${results.length} match${results.length>1?"es":""} found</div><div class="pa"><button class="bo" onclick="exportCSV()"><i class="ti ti-download"></i> CSV</button><button class="bo" onclick="exportJSON()"><i class="ti ti-code"></i> JSON</button></div></div>
-  <div class="fb">
-    <button class="fc ${activeFilter==="all"?"active":""}" onclick="filterR('all')">All (${allResults.length})</button>
-    <button class="fc ${activeFilter==="HIGH"?"active":""}" onclick="filterR('HIGH')">High risk (${allResults.filter(r=>r.risk==="HIGH").length})</button>
-    <button class="fc ${activeFilter==="MEDIUM"?"active":""}" onclick="filterR('MEDIUM')">Medium (${allResults.filter(r=>r.risk==="MEDIUM").length})</button>
-    <button class="fc ${activeFilter==="LOW"?"active":""}" onclick="filterR('LOW')">PEP/Low (${allResults.filter(r=>r.risk==="LOW").length})</button>
+  const H=allResults.filter(r=>r.risk==="HIGH").length;
+  const M=allResults.filter(r=>r.risk==="MEDIUM").length;
+  const L=allResults.filter(r=>r.risk==="LOW").length;
+  let html=`<div class="rp-header"><div class="rp-title"><i class="ti ti-alert-triangle"></i>${results.length} match${results.length>1?"es":""} found</div><div class="rp-actions"><button class="act-btn" onclick="exportCSV()"><i class="ti ti-download"></i>Export CSV</button><button class="act-btn" onclick="exportJSON()"><i class="ti ti-code"></i>JSON</button></div></div>
+  <div class="filter-bar"><span class="fb-label">Filter</span>
+    <button class="fchip ${activeFilter==="all"?"active":""}" onclick="filterR('all')">All (${allResults.length})</button>
+    <button class="fchip ${activeFilter==="HIGH"?"active":""}" onclick="filterR('HIGH')">High risk (${H})</button>
+    <button class="fchip ${activeFilter==="MEDIUM"?"active":""}" onclick="filterR('MEDIUM')">Medium (${M})</button>
+    <button class="fchip ${activeFilter==="LOW"?"active":""}" onclick="filterR('LOW')">PEP / Low (${L})</button>
   </div>`;
 
   results.forEach(r=>{
     const score=Math.min(100,Math.max(0,r.match_score||0));
+    const ri=r.risk.charAt(0);
     const aliases=(r.aliases||[]).filter(Boolean);
-    const sources=(r.sources||[]);
-    const programs=(r.programs||[]);
-    const ri=r.risk;
-    html+=`<div class="mi">
-      <div class="rc">
-        <div class="rb r${ri.charAt(0)}">${ri}</div>
-        <div class="sr2">${score}%</div>
-        <div class="mb2"><div class="mf f${ri.charAt(0)}" style="width:${score}%"></div></div>
+    html+=`<div class="match-item">
+      <div class="risk-col">
+        <div class="risk-badge rb-${ri}">${r.risk}</div>
+        <div class="score-num">${score}%</div>
+        <div class="score-track"><div class="score-fill sf-${ri}" style="width:${score}%"></div></div>
       </div>
-      <div class="mbody">
-        <div class="mn">${esc(r.name)}${r.is_pep?`<span class="pp">PEP</span>`:""}</div>
-        <div class="mm">
+      <div class="match-body">
+        <div class="match-name">${esc(r.name)}${r.is_pep?`<span class="pep-tag">PEP</span>`:""}</div>
+        <div class="match-meta">
           ${r.type?`<span><i class="ti ti-${r.type==="Individual"?"user":"building"}"></i>${esc(r.type)}</span>`:""}
           ${r.nationality?`<span><i class="ti ti-map-pin"></i>${esc(r.nationality)}</span>`:""}
           ${r.dob?`<span><i class="ti ti-calendar"></i>${esc(r.dob)}</span>`:""}
         </div>
-        ${r.pep_role?`<div style="font-size:12px;color:var(--muted);margin-bottom:5px"><i class="ti ti-briefcase" style="vertical-align:-1px;margin-right:4px"></i>${esc(r.pep_role)}</div>`:""}
-        ${r.reason?`<div class="mr2">${esc(r.reason)}</div>`:""}
-        ${aliases.length?`<div class="ma">Also known as: ${aliases.map(esc).join(" · ")}</div>`:""}
-        <div class="tags">
-          ${sources.map(s=>`<span class="tag ${s.includes("PEP")?"ptag":""}">${esc(s)}</span>`).join("")}
-          ${programs.map(p=>`<span class="tag">${esc(p)}</span>`).join("")}
+        ${r.pep_role?`<div class="match-role"><i class="ti ti-briefcase" style="font-size:13px;color:var(--text3)"></i>${esc(r.pep_role)}</div>`:""}
+        ${r.reason?`<div class="match-reason">${esc(r.reason)}</div>`:""}
+        ${aliases.length?`<div class="match-aliases">Also known as: ${aliases.map(esc).join(" · ")}</div>`:""}
+        <div class="tag-row">
+          ${(r.sources||[]).map(s=>`<span class="stag ${s.includes("PEP")?"stag-pep":"stag-src"}">${esc(s)}</span>`).join("")}
+          ${(r.programs||[]).map(p=>`<span class="stag stag-prog">${esc(p)}</span>`).join("")}
         </div>
       </div>
     </div>`;
   });
-
   document.getElementById("rp").innerHTML=html;
 }
 
 function filterR(f){
   activeFilter=f;
   const filtered=f==="all"?allResults:allResults.filter(r=>r.risk===f);
-  document.querySelectorAll(".fc").forEach(b=>b.classList.toggle("active",
-    (f==="all"&&b.textContent.startsWith("All"))||(f!=="all"&&b.textContent.toLowerCase().startsWith(f.toLowerCase()))
-  ));
-  render(filtered,"");
+  document.querySelectorAll(".fchip").forEach(b=>{
+    const t=b.textContent.trim();
+    b.classList.toggle("active",(f==="all"&&t.startsWith("All"))||(f!=="all"&&t.toLowerCase().startsWith(f.toLowerCase())));
+  });
+  render(filtered);
 }
 
-// ═══════════════════════════════════════════
-// EXPORT
-// ═══════════════════════════════════════════
 function exportCSV(){
-  if(!allResults.length) return;
+  if(!allResults.length)return;
   const h=["Name","Type","Risk","Match%","Nationality","DOB","Sources","Programs","Reason","PEP","PEP Role","Aliases"];
-  const rows=allResults.map(r=>[
-    r.name,r.type,r.risk,r.match_score,r.nationality||"",r.dob||"",
-    (r.sources||[]).join("|"),(r.programs||[]).join("|"),
-    (r.reason||"").replace(/,/g,";"),r.is_pep?"Yes":"No",r.pep_role||"",
-    (r.aliases||[]).join("|")
-  ]);
+  const rows=allResults.map(r=>[r.name,r.type,r.risk,r.match_score,r.nationality||"",r.dob||"",(r.sources||[]).join("|"),(r.programs||[]).join("|"),(r.reason||"").replace(/,/g,";"),r.is_pep?"Yes":"No",r.pep_role||"",(r.aliases||[]).join("|")]);
   const csv=[h,...rows].map(row=>row.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
   dl(`screening_${document.getElementById("ni").value.replace(/\s+/g,"_")}_${new Date().toISOString().slice(0,10)}.csv`,csv,"text/csv");
 }
-
 function exportJSON(){
-  const report={tool:"Sanction & PEP Screening Tool (Free Edition)",query:document.getElementById("ni").value,timestamp:new Date().toISOString(),results:allResults};
-  dl(`screening_${document.getElementById("ni").value.replace(/\s+/g,"_")}.json`,JSON.stringify(report,null,2),"application/json");
+  dl(`screening_${document.getElementById("ni").value.replace(/\s+/g,"_")}.json`,JSON.stringify({tool:"ComplianceCheck",query:document.getElementById("ni").value,timestamp:new Date().toISOString(),results:allResults},null,2),"application/json");
 }
-
-function dl(fn,content,type){
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob([content],{type}));
-  a.download=fn; a.click();
-}
-
-function esc(s){
-  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-}
+function dl(fn,content,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=fn;a.click()}
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 
 // ═══════════════════════════════════════════
-// INIT — load data sources
+// INIT
 // ═══════════════════════════════════════════
 (async()=>{
-  document.getElementById("srcNote").textContent="Loading OFAC data…";
-  markLive("pep"); // built-in PEP always available
+  document.getElementById("srcNote").textContent="Initialising…";
+  markLive("pep");
   await fetchOpenSanctions();
   await fetchOFAC();
-  document.getElementById("srcNote").textContent=`Built-in: ${BUILTIN_DATA.length} entries · Live OFAC: ${liveData.length} entries · OpenSanctions: per-query`;
+  document.getElementById("srcNote").textContent=`${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC live · OpenSanctions per-query`;
 })();
 </script>
 </body>
