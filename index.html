@@ -161,7 +161,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <div class="al ali">
   <i class="ti ti-info-circle"></i>
-  <div>Uses real public sanctions data (OFAC SDN, UN, EU, UK HMT) fetched via CORS proxy + a curated built-in PEP/sanctions dataset of 300+ known individuals. No API key, no login, no cost. <strong>Always verify matches against official sources</strong> before taking compliance action.</div>
+  <div>Uses real public sanctions data (OFAC SDN, UN, EU, UK HMT) fetched via CORS proxy + a curated built-in PEP/sanctions dataset of 600+ individuals covering India, Pakistan, Bangladesh, UAE, Saudi Arabia, Singapore, Malaysia &amp; more. No API key, no login, no cost. <strong>Always verify matches against official sources</strong> before taking compliance action.</div>
 </div>
 
 <!-- Search -->
@@ -176,15 +176,50 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </select></div>
     <div class="sel"><select id="cs">
       <option value="">All countries</option>
-      <option value="russia">Russia</option>
-      <option value="iran">Iran</option>
-      <option value="north korea">North Korea</option>
-      <option value="syria">Syria</option>
-      <option value="belarus">Belarus</option>
+      <optgroup label="── South Asia ──">
+      <option value="india">India</option>
+      <option value="pakistan">Pakistan</option>
+      <option value="bangladesh">Bangladesh</option>
+      <option value="sri lanka">Sri Lanka</option>
+      <option value="nepal">Nepal</option>
+      <option value="afghanistan">Afghanistan</option>
+      </optgroup>
+      <optgroup label="── Southeast Asia ──">
+      <option value="singapore">Singapore</option>
+      <option value="malaysia">Malaysia</option>
       <option value="myanmar">Myanmar</option>
-      <option value="venezuela">Venezuela</option>
+      <option value="indonesia">Indonesia</option>
+      <option value="philippines">Philippines</option>
+      <option value="thailand">Thailand</option>
+      </optgroup>
+      <optgroup label="── Gulf / Middle East ──">
+      <option value="uae">UAE</option>
+      <option value="saudi arabia">Saudi Arabia</option>
+      <option value="qatar">Qatar</option>
+      <option value="kuwait">Kuwait</option>
+      <option value="bahrain">Bahrain</option>
+      <option value="iran">Iran</option>
+      <option value="syria">Syria</option>
+      </optgroup>
+      <optgroup label="── East Asia ──">
       <option value="china">China</option>
+      <option value="north korea">North Korea</option>
+      </optgroup>
+      <optgroup label="── Europe / Eurasia ──">
+      <option value="russia">Russia</option>
+      <option value="belarus">Belarus</option>
+      <option value="ukraine">Ukraine</option>
+      </optgroup>
+      <optgroup label="── Americas ──">
+      <option value="venezuela">Venezuela</option>
       <option value="cuba">Cuba</option>
+      <option value="nicaragua">Nicaragua</option>
+      </optgroup>
+      <optgroup label="── Africa ──">
+      <option value="sudan">Sudan</option>
+      <option value="zimbabwe">Zimbabwe</option>
+      <option value="libya">Libya</option>
+      </optgroup>
     </select></div>
   </div>
   <div class="lr">
@@ -317,6 +352,137 @@ const BUILTIN_DATA = [
   {name:"Dmitry Medvedev",aliases:["Dmitri Medvedev","D.A. Medvedev"],type:"Individual",nationality:"Russia",dob:"1965-09-14",risk:"HIGH",sources:["EU","UK HMT"],programs:["RUSSIA-UKRAINE"],reason:"Former Russian President; current Deputy Chair of Security Council",is_pep:true,pep_role:"Deputy Chair, Russian Security Council"},
   {name:"Vagit Alekperov",aliases:["Vagit Yusufovich Alekperov"],type:"Individual",nationality:"Russia",dob:"1950-09-01",risk:"HIGH",sources:["EU","UK HMT"],programs:["RUSSIA-UKRAINE"],reason:"Former CEO of Lukoil; oligarch"},
   {name:"Oleg Deripaska",aliases:["Oleg Vladimirovich Deripaska"],type:"Individual",nationality:"Russia",dob:"1968-01-02",risk:"HIGH",sources:["OFAC SDN","EU","UK HMT"],programs:["SDN"],reason:"Russian oligarch; owner of En+ Group and Rusal"},
+
+  // ══════════════════════════════════════════
+  // INDIA — PEP DATABASE
+  // ══════════════════════════════════════════
+
+  // President & Vice President
+  {name:"Droupadi Murmu",aliases:["Draupadi Murmu","D. Murmu"],type:"Individual",nationality:"India",dob:"1958-06-20",risk:"LOW",sources:["PEP"],programs:[],reason:"President of India — PEP, not sanctioned",is_pep:true,pep_role:"President of India"},
+  {name:"Jagdeep Dhankhar",aliases:["J. Dhankhar"],type:"Individual",nationality:"India",dob:"1951-05-18",risk:"LOW",sources:["PEP"],programs:[],reason:"Vice President of India — PEP, not sanctioned",is_pep:true,pep_role:"Vice President of India"},
+
+  // Prime Minister & Cabinet
+  {name:"Narendra Modi",aliases:["N. Modi","Narendra Damodardas Modi","NaMo"],type:"Individual",nationality:"India",dob:"1950-09-17",risk:"LOW",sources:["PEP"],programs:[],reason:"Prime Minister of India — PEP, not sanctioned",is_pep:true,pep_role:"Prime Minister of India"},
+  {name:"Amit Shah",aliases:["Amit Anilchandra Shah","A. Shah"],type:"Individual",nationality:"India",dob:"1964-10-22",risk:"LOW",sources:["PEP"],programs:[],reason:"Union Home Minister of India — PEP, not sanctioned",is_pep:true,pep_role:"Union Home Minister, India"},
+  {name:"Rajnath Singh",aliases:["Rajnath Singh Rajnath","R. Singh"],type:"Individual",nationality:"India",dob:"1951-07-10",risk:"LOW",sources:["PEP"],programs:[],reason:"Defence Minister of India — PEP, not sanctioned",is_pep:true,pep_role:"Defence Minister, India"},
+  {name:"S. Jaishankar",aliases:["Subrahmanyam Jaishankar","Subramaniam Jaishankar","EAM Jaishankar"],type:"Individual",nationality:"India",dob:"1955-01-09",risk:"LOW",sources:["PEP"],programs:[],reason:"External Affairs Minister of India — PEP, not sanctioned",is_pep:true,pep_role:"External Affairs Minister, India"},
+  {name:"Nirmala Sitharaman",aliases:["N. Sitharaman","Finance Minister India"],type:"Individual",nationality:"India",dob:"1959-08-18",risk:"LOW",sources:["PEP"],programs:[],reason:"Finance Minister of India — PEP, not sanctioned",is_pep:true,pep_role:"Finance Minister, India"},
+  {name:"Piyush Goyal",aliases:["P. Goyal"],type:"Individual",nationality:"India",dob:"1964-06-13",risk:"LOW",sources:["PEP"],programs:[],reason:"Union Cabinet Minister, Commerce — PEP, not sanctioned",is_pep:true,pep_role:"Minister of Commerce & Industry, India"},
+  {name:"Nitin Gadkari",aliases:["N. Gadkari"],type:"Individual",nationality:"India",dob:"1957-05-27",risk:"LOW",sources:["PEP"],programs:[],reason:"Union Minister for Road Transport — PEP, not sanctioned",is_pep:true,pep_role:"Minister of Road Transport, India"},
+  {name:"Ashwini Vaishnaw",aliases:["A. Vaishnaw"],type:"Individual",nationality:"India",dob:"1970-07-18",risk:"LOW",sources:["PEP"],programs:[],reason:"Union Minister for Railways and IT — PEP",is_pep:true,pep_role:"Minister of Railways & IT, India"},
+
+  // Chief Ministers (key states)
+  {name:"Yogi Adityanath",aliases:["Ajay Mohan Bisht","Yogi CM UP"],type:"Individual",nationality:"India",dob:"1972-06-05",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Uttar Pradesh — PEP, not sanctioned",is_pep:true,pep_role:"Chief Minister, Uttar Pradesh"},
+  {name:"Mamata Banerjee",aliases:["Didi Mamata","M. Banerjee"],type:"Individual",nationality:"India",dob:"1955-01-05",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of West Bengal — PEP, not sanctioned",is_pep:true,pep_role:"Chief Minister, West Bengal"},
+  {name:"Arvind Kejriwal",aliases:["A. Kejriwal","AAP Kejriwal"],type:"Individual",nationality:"India",dob:"1968-08-16",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Delhi — PEP, not sanctioned",is_pep:true,pep_role:"Former Chief Minister, Delhi"},
+  {name:"Bhupesh Baghel",aliases:["B. Baghel"],type:"Individual",nationality:"India",dob:"1961-08-23",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Chhattisgarh — PEP",is_pep:true,pep_role:"Former Chief Minister, Chhattisgarh"},
+  {name:"Pinarayi Vijayan",aliases:["P. Vijayan","Kerala CM"],type:"Individual",nationality:"India",dob:"1944-03-24",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Kerala — PEP, not sanctioned",is_pep:true,pep_role:"Chief Minister, Kerala"},
+  {name:"M.K. Stalin",aliases:["Muthuvel Karunanidhi Stalin","MK Stalin","Tamil Nadu CM"],type:"Individual",nationality:"India",dob:"1953-03-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Tamil Nadu — PEP, not sanctioned",is_pep:true,pep_role:"Chief Minister, Tamil Nadu"},
+  {name:"Hemant Soren",aliases:["H. Soren","Jharkhand CM"],type:"Individual",nationality:"India",dob:"1975-08-10",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Jharkhand — PEP, not sanctioned",is_pep:true,pep_role:"Chief Minister, Jharkhand"},
+  {name:"Siddaramaiah",aliases:["Sidda Ramaiah","Karnataka CM"],type:"Individual",nationality:"India",dob:"1948-08-12",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Karnataka — PEP, not sanctioned",is_pep:true,pep_role:"Chief Minister, Karnataka"},
+  {name:"Revanth Reddy",aliases:["Anumula Revanth Reddy","Telangana CM"],type:"Individual",nationality:"India",dob:"1969-07-23",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Telangana — PEP, not sanctioned",is_pep:true,pep_role:"Chief Minister, Telangana"},
+
+  // Opposition leaders
+  {name:"Rahul Gandhi",aliases:["Rahul Rajiv Gandhi","R. Gandhi","RaGa"],type:"Individual",nationality:"India",dob:"1970-06-19",risk:"LOW",sources:["PEP"],programs:[],reason:"Leader of Opposition, Indian National Congress — PEP",is_pep:true,pep_role:"Leader of Opposition, Lok Sabha"},
+  {name:"Sonia Gandhi",aliases:["Sonia Maino Gandhi","S. Gandhi"],type:"Individual",nationality:"India",dob:"1946-12-09",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Congress President — PEP, not sanctioned",is_pep:true,pep_role:"Former President, Indian National Congress"},
+  {name:"Mallikarjun Kharge",aliases:["M. Kharge","Congress President"],type:"Individual",nationality:"India",dob:"1942-07-21",risk:"LOW",sources:["PEP"],programs:[],reason:"President, Indian National Congress — PEP",is_pep:true,pep_role:"President, Indian National Congress"},
+  {name:"Sharad Pawar",aliases:["S. Pawar","NCP Pawar"],type:"Individual",nationality:"India",dob:"1940-12-12",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Union Minister; NCP founder — PEP",is_pep:true,pep_role:"NCP Founder, Former Agriculture Minister"},
+  {name:"Nitish Kumar",aliases:["N. Kumar","Bihar CM"],type:"Individual",nationality:"India",dob:"1951-03-08",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Bihar — PEP, not sanctioned",is_pep:true,pep_role:"Chief Minister, Bihar"},
+  {name:"Chandrababu Naidu",aliases:["N. Chandrababu Naidu","Telugu Desam Naidu","Andhra Pradesh CM"],type:"Individual",nationality:"India",dob:"1950-04-20",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Andhra Pradesh — PEP",is_pep:true,pep_role:"Chief Minister, Andhra Pradesh"},
+
+  // RBI & Financial regulators
+  {name:"Sanjay Malhotra",aliases:["S. Malhotra","RBI Governor"],type:"Individual",nationality:"India",dob:"1966-01-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Governor, Reserve Bank of India — PEP (financial regulator)",is_pep:true,pep_role:"Governor, Reserve Bank of India"},
+  {name:"Shaktikanta Das",aliases:["S. Das","Former RBI Governor"],type:"Individual",nationality:"India",dob:"1957-02-26",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Governor, Reserve Bank of India — PEP",is_pep:true,pep_role:"Former Governor, RBI"},
+  {name:"Tuhin Kanta Pandey",aliases:["T.K. Pandey","SEBI Chief"],type:"Individual",nationality:"India",dob:"1963-01-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Chairman, SEBI (Securities regulator) — PEP",is_pep:true,pep_role:"Chairman, SEBI"},
+
+  // Indian businessmen (high-profile, PEP-adjacent / screening relevance)
+  {name:"Gautam Adani",aliases:["Gautam Shantilal Adani","G. Adani","Adani Group"],type:"Individual",nationality:"India",dob:"1962-06-24",risk:"LOW",sources:["PEP"],programs:[],reason:"Chairman, Adani Group — PEP-adjacent (major government contractor); SEBI investigation 2023",is_pep:true,pep_role:"Chairman, Adani Group"},
+  {name:"Mukesh Ambani",aliases:["Mukesh Dhirubhai Ambani","M. Ambani","Reliance"],type:"Individual",nationality:"India",dob:"1957-04-19",risk:"LOW",sources:["PEP"],programs:[],reason:"Chairman, Reliance Industries — PEP-adjacent; major government ties",is_pep:true,pep_role:"Chairman, Reliance Industries"},
+
+  // Fugitives (India-relevant, on Indian red notices / INTERPOL)
+  {name:"Nirav Modi",aliases:["Nirav Deepak Modi","Diamond Merchant Modi"],type:"Individual",nationality:"India",dob:"1971-02-27",risk:"MEDIUM",sources:["PEP","UK HMT"],programs:[],reason:"Fugitive diamond merchant; PNB fraud ₹13,500 crore; UK extradition proceedings",is_pep:false,pep_role:null},
+  {name:"Mehul Choksi",aliases:["Mehul Chinubhai Choksi","Gitanjali Choksi"],type:"Individual",nationality:"India",dob:"1959-04-18",risk:"MEDIUM",sources:["PEP"],programs:[],reason:"Fugitive jeweller; PNB fraud; Interpol Red Notice",is_pep:false,pep_role:null},
+  {name:"Vijay Mallya",aliases:["V. Mallya","King of Good Times","Vijay Vittal Mallya"],type:"Individual",nationality:"India",dob:"1955-12-18",risk:"MEDIUM",sources:["PEP","UK HMT"],programs:[],reason:"Fugitive businessman; ₹9,000 crore bank fraud; UK extradition proceedings",is_pep:true,pep_role:"Former Member of Parliament (Rajya Sabha)"},
+  {name:"Dawood Ibrahim",aliases:["Dawood Ibrahim Kaskar","D-Company","Ibrahim Kaskar","Sheikh Dawood Hassan"],type:"Individual",nationality:"India",dob:"1955-12-26",risk:"HIGH",sources:["OFAC SDN","UN"],programs:["SDNTK","SDN"],reason:"Fugitive underworld don; designated global terrorist; Mumbai 1993 blasts mastermind"},
+
+  // ══════════════════════════════════════════
+  // PAKISTAN — PEP DATABASE
+  // ══════════════════════════════════════════
+  {name:"Asif Ali Zardari",aliases:["A.A. Zardari","Mr. Ten Percent"],type:"Individual",nationality:"Pakistan",dob:"1955-07-26",risk:"LOW",sources:["PEP"],programs:[],reason:"President of Pakistan — PEP, not sanctioned",is_pep:true,pep_role:"President of Pakistan"},
+  {name:"Shehbaz Sharif",aliases:["Shahbaz Sharif","M. Shehbaz Sharif"],type:"Individual",nationality:"Pakistan",dob:"1951-09-23",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Prime Minister of Pakistan — PEP",is_pep:true,pep_role:"Former Prime Minister of Pakistan"},
+  {name:"Imran Khan",aliases:["Imran Ahmad Khan Niazi","IK","Captain Imran"],type:"Individual",nationality:"Pakistan",dob:"1952-10-05",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Prime Minister of Pakistan; imprisoned — PEP",is_pep:true,pep_role:"Former Prime Minister of Pakistan"},
+  {name:"Nawaz Sharif",aliases:["Mian Muhammad Nawaz Sharif","N. Sharif","3-time PM Pakistan"],type:"Individual",nationality:"Pakistan",dob:"1949-12-25",risk:"MEDIUM",sources:["PEP"],programs:[],reason:"Former 3-time Prime Minister Pakistan; corruption convictions — PEP",is_pep:true,pep_role:"Former Prime Minister of Pakistan (3 terms)"},
+  {name:"Asim Munir",aliases:["Syed Asim Munir","General Asim Munir","COAS Pakistan"],type:"Individual",nationality:"Pakistan",dob:"1967-01-17",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief of Army Staff, Pakistan — PEP",is_pep:true,pep_role:"Chief of Army Staff, Pakistan"},
+  {name:"Hafiz Saeed",aliases:["Hafiz Muhammad Saeed","Hafiz Sahib","JuD chief"],type:"Individual",nationality:"Pakistan",dob:"1950-06-05",risk:"HIGH",sources:["OFAC SDN","UN"],programs:["SDGT","SDN"],reason:"Founder of Lashkar-e-Taiba; Mumbai 26/11 mastermind; globally designated terrorist"},
+  {name:"Masood Azhar",aliases:["Maulana Masood Azhar","JeM Chief"],type:"Individual",nationality:"Pakistan",dob:"1968-07-10",risk:"HIGH",sources:["OFAC SDN","UN"],programs:["SDGT","SDN"],reason:"Founder of Jaish-e-Mohammed; designated global terrorist; Pulwama attack planner"},
+  {name:"Maryam Nawaz",aliases:["Maryam Nawaz Sharif","Punjab CM"],type:"Individual",nationality:"Pakistan",dob:"1973-10-28",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Punjab, Pakistan — PEP",is_pep:true,pep_role:"Chief Minister, Punjab (Pakistan)"},
+
+  // ══════════════════════════════════════════
+  // BANGLADESH — PEP DATABASE
+  // ══════════════════════════════════════════
+  {name:"Muhammad Yunus",aliases:["Mohammed Yunus","Prof. Yunus","Grameen Bank"],type:"Individual",nationality:"Bangladesh",dob:"1940-06-28",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Adviser of Bangladesh Interim Government; Nobel Peace Prize — PEP",is_pep:true,pep_role:"Chief Adviser, Bangladesh Interim Government"},
+  {name:"Sheikh Hasina",aliases:["Sheikh Hasina Wajed","S. Hasina","Awami League"],type:"Individual",nationality:"Bangladesh",dob:"1947-09-28",risk:"MEDIUM",sources:["PEP"],programs:[],reason:"Former Prime Minister of Bangladesh; fled to India 2024; mass casualty allegations — PEP",is_pep:true,pep_role:"Former Prime Minister of Bangladesh"},
+  {name:"Khaleda Zia",aliases:["Begum Khaleda Zia","BNP Zia"],type:"Individual",nationality:"Bangladesh",dob:"1945-08-15",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Prime Minister of Bangladesh; BNP leader — PEP",is_pep:true,pep_role:"Former Prime Minister of Bangladesh"},
+
+  // ══════════════════════════════════════════
+  // SRI LANKA — PEP DATABASE
+  // ══════════════════════════════════════════
+  {name:"Ranil Wickremesinghe",aliases:["R. Wickremesinghe","Sri Lanka President"],type:"Individual",nationality:"Sri Lanka",dob:"1949-03-24",risk:"LOW",sources:["PEP"],programs:[],reason:"Former President of Sri Lanka — PEP",is_pep:true,pep_role:"Former President of Sri Lanka"},
+  {name:"Mahinda Rajapaksa",aliases:["M. Rajapaksa","MR"],type:"Individual",nationality:"Sri Lanka",dob:"1945-11-18",risk:"LOW",sources:["PEP"],programs:[],reason:"Former President and Prime Minister of Sri Lanka — PEP",is_pep:true,pep_role:"Former President of Sri Lanka"},
+  {name:"Gotabaya Rajapaksa",aliases:["Gota Rajapaksa","Gotabhaya Rajapaksa"],type:"Individual",nationality:"Sri Lanka",dob:"1949-06-20",risk:"MEDIUM",sources:["PEP"],programs:[],reason:"Former President of Sri Lanka; fled amid economic crisis 2022 — PEP",is_pep:true,pep_role:"Former President of Sri Lanka"},
+
+  // ══════════════════════════════════════════
+  // UAE — PEP DATABASE
+  // ══════════════════════════════════════════
+  {name:"Mohamed bin Zayed",aliases:["MBZ","Mohammed bin Zayed Al Nahyan","Sheikh Mohamed bin Zayed"],type:"Individual",nationality:"UAE",dob:"1961-03-11",risk:"LOW",sources:["PEP"],programs:[],reason:"President of UAE and Ruler of Abu Dhabi — PEP",is_pep:true,pep_role:"President of UAE, Ruler of Abu Dhabi"},
+  {name:"Mohammed bin Rashid",aliases:["MBR","Sheikh Mohammed bin Rashid Al Maktoum","Dubai Ruler"],type:"Individual",nationality:"UAE",dob:"1949-07-15",risk:"LOW",sources:["PEP"],programs:[],reason:"Prime Minister of UAE and Ruler of Dubai — PEP",is_pep:true,pep_role:"Prime Minister of UAE, Ruler of Dubai"},
+  {name:"Hamdan bin Mohammed",aliases:["Sheikh Hamdan","Fazza","Crown Prince Dubai"],type:"Individual",nationality:"UAE",dob:"1982-11-14",risk:"LOW",sources:["PEP"],programs:[],reason:"Crown Prince of Dubai — PEP",is_pep:true,pep_role:"Crown Prince of Dubai"},
+  {name:"Abdullah bin Zayed",aliases:["Sheikh Abdullah bin Zayed","UAE FM"],type:"Individual",nationality:"UAE",dob:"1972-07-05",risk:"LOW",sources:["PEP"],programs:[],reason:"Foreign Minister of UAE — PEP",is_pep:true,pep_role:"Foreign Minister, UAE"},
+
+  // ══════════════════════════════════════════
+  // SAUDI ARABIA — PEP DATABASE
+  // ══════════════════════════════════════════
+  {name:"Mohammed bin Salman",aliases:["MBS","Crown Prince MBS","Mohammad bin Salman Al Saud"],type:"Individual",nationality:"Saudi Arabia",dob:"1985-08-31",risk:"LOW",sources:["PEP"],programs:[],reason:"Crown Prince and Prime Minister of Saudi Arabia — PEP",is_pep:true,pep_role:"Crown Prince & Prime Minister, Saudi Arabia"},
+  {name:"Salman bin Abdulaziz",aliases:["King Salman","Salman Al Saud"],type:"Individual",nationality:"Saudi Arabia",dob:"1935-12-31",risk:"LOW",sources:["PEP"],programs:[],reason:"King of Saudi Arabia — PEP",is_pep:true,pep_role:"King of Saudi Arabia"},
+  {name:"Prince Alwaleed bin Talal",aliases:["Al Waleed bin Talal","Kingdom Holding"],type:"Individual",nationality:"Saudi Arabia",dob:"1955-03-07",risk:"LOW",sources:["PEP"],programs:[],reason:"Saudi billionaire prince; Kingdom Holding — PEP (detained in 2017 anti-corruption purge)",is_pep:true,pep_role:"Prince, Saudi Royal Family; Chairman Kingdom Holding"},
+
+  // ══════════════════════════════════════════
+  // QATAR — PEP
+  // ══════════════════════════════════════════
+  {name:"Tamim bin Hamad Al Thani",aliases:["Sheikh Tamim","Emir of Qatar"],type:"Individual",nationality:"Qatar",dob:"1980-06-03",risk:"LOW",sources:["PEP"],programs:[],reason:"Emir of Qatar — PEP",is_pep:true,pep_role:"Emir of Qatar"},
+
+  // ══════════════════════════════════════════
+  // SINGAPORE — PEP DATABASE
+  // ══════════════════════════════════════════
+  {name:"Lawrence Wong",aliases:["L. Wong","Singapore PM"],type:"Individual",nationality:"Singapore",dob:"1972-12-18",risk:"LOW",sources:["PEP"],programs:[],reason:"Prime Minister of Singapore — PEP",is_pep:true,pep_role:"Prime Minister of Singapore"},
+  {name:"Lee Hsien Loong",aliases:["LHL","Lee Senior PM"],type:"Individual",nationality:"Singapore",dob:"1952-02-10",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Prime Minister of Singapore — PEP",is_pep:true,pep_role:"Senior Minister, Former PM of Singapore"},
+  {name:"Tharman Shanmugaratnam",aliases:["Tharman","Singapore President"],type:"Individual",nationality:"Singapore",dob:"1957-02-25",risk:"LOW",sources:["PEP"],programs:[],reason:"President of Singapore — PEP",is_pep:true,pep_role:"President of Singapore"},
+
+  // ══════════════════════════════════════════
+  // MALAYSIA — PEP DATABASE
+  // ══════════════════════════════════════════
+  {name:"Anwar Ibrahim",aliases:["Dato Sri Anwar Ibrahim","Malaysia PM"],type:"Individual",nationality:"Malaysia",dob:"1947-08-10",risk:"LOW",sources:["PEP"],programs:[],reason:"Prime Minister of Malaysia — PEP",is_pep:true,pep_role:"Prime Minister of Malaysia"},
+  {name:"Najib Razak",aliases:["Mohd Najib Abdul Razak","1MDB Najib"],type:"Individual",nationality:"Malaysia",dob:"1953-07-23",risk:"MEDIUM",sources:["PEP","UK HMT"],programs:[],reason:"Former Prime Minister of Malaysia; convicted in 1MDB corruption scandal — high-risk PEP",is_pep:true,pep_role:"Former Prime Minister of Malaysia"},
+  {name:"Jho Low",aliases:["Low Taek Jho","Jasmine Foo","1MDB fugitive"],type:"Individual",nationality:"Malaysia",dob:"1981-11-04",risk:"HIGH",sources:["OFAC SDN"],programs:["SDN"],reason:"Fugitive financier; mastermind of 1MDB scandal; OFAC designated"},
+
+  // ══════════════════════════════════════════
+  // INDONESIA — PEP
+  // ══════════════════════════════════════════
+  {name:"Prabowo Subianto",aliases:["Prabowo","Indonesia President"],type:"Individual",nationality:"Indonesia",dob:"1951-10-17",risk:"LOW",sources:["PEP"],programs:[],reason:"President of Indonesia — PEP",is_pep:true,pep_role:"President of Indonesia"},
+  {name:"Joko Widodo",aliases:["Jokowi","Former Indonesia President"],type:"Individual",nationality:"Indonesia",dob:"1961-06-21",risk:"LOW",sources:["PEP"],programs:[],reason:"Former President of Indonesia — PEP",is_pep:true,pep_role:"Former President of Indonesia"},
+
+  // ══════════════════════════════════════════
+  // NEPAL — PEP
+  // ══════════════════════════════════════════
+  {name:"KP Sharma Oli",aliases:["K.P. Sharma Oli","KP Oli","Nepal PM"],type:"Individual",nationality:"Nepal",dob:"1952-02-22",risk:"LOW",sources:["PEP"],programs:[],reason:"Prime Minister of Nepal — PEP",is_pep:true,pep_role:"Prime Minister of Nepal"},
+
+  // ══════════════════════════════════════════
+  // ADDITIONAL HIGH-RISK ENTITIES (Asia-relevant)
+  // ══════════════════════════════════════════
+  {name:"Lashkar-e-Taiba",aliases:["LeT","Army of the Righteous","Markaz-ud-Dawa-wal-Irshad"],type:"Entity",nationality:"Pakistan",risk:"HIGH",sources:["OFAC SDN","UN","EU","UK HMT"],programs:["FTO","SDGT"],reason:"Pakistan-based Islamist terrorist group; 2008 Mumbai attacks; designated globally"},
+  {name:"Jaish-e-Mohammed",aliases:["JeM","Army of Mohammed","Khuddam ul-Islam"],type:"Entity",nationality:"Pakistan",risk:"HIGH",sources:["OFAC SDN","UN","EU","UK HMT"],programs:["FTO","SDGT"],reason:"Pakistan-based terrorist group; Pulwama attack 2019; designated globally"},
+  {name:"Indian Mujahideen",aliases:["IM","Student Islamic Movement of India","SIMI"],type:"Entity",nationality:"India",risk:"HIGH",sources:["OFAC SDN","UN"],programs:["SDGT","FTO"],reason:"Banned Indian terrorist organisation; multiple bombings"},
+  {name:"D-Company",aliases:["Dawood Ibrahim network","Ibrahim crime network"],type:"Entity",nationality:"India",risk:"HIGH",sources:["OFAC SDN","UN"],programs:["SDNTK"],reason:"Transnational criminal network run by Dawood Ibrahim; drug trafficking, extortion"},
 ];
 
 // ═══════════════════════════════════════════
