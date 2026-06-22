@@ -754,14 +754,18 @@ async function fetchOpenSanctions(){markLive("un");markLive("eu");markLive("uk")
 
 async function searchOpenSanctions(query){
   try{
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),4000);
     const url=encodeURIComponent(`https://api.opensanctions.org/search/default?q=${encodeURIComponent(query)}&limit=20`);
-    const r=await fetch(PROXY+url,{signal:AbortSignal.timeout(8000)});
+    const r=await fetch(PROXY+url,{signal:controller.signal});
+    clearTimeout(timer);
     const j=await r.json();
     const data=JSON.parse(j.contents||"{}");
     const results=[];
     for(const r2 of(data.results||[])){
       const props=r2.properties||{};
       const name=(props.name||[])[0]||r2.caption||"";
+      if(!name)continue;
       const aliases=(props.alias||[]);
       const nationality=(props.nationality||props.country||[])[0]||null;
       const dob=(props.birthDate||[])[0]||null;
@@ -775,10 +779,13 @@ async function searchOpenSanctions(query){
       if(!sources.length)sources.push("OpenSanctions");
       const isPep=datasets.some(d=>d.includes("pep"));
       const isSanctioned=sources.some(s=>s!=="PEP"&&s!=="OpenSanctions");
-      results.push({name,aliases,type:r2.schema==="Person"?"Individual":"Entity",nationality,dob,risk:isSanctioned?"HIGH":isPep?"LOW":"MEDIUM",sources,programs:[],reason:(props.program||[]).join("; ")||"OpenSanctions database match",is_pep:isPep,pep_role:(props.position||[])[0]||null,_osScore:r2.score||0});
+      results.push({name,aliases,type:r2.schema==="Person"?"Individual":"Entity",nationality,dob,
+        risk:isSanctioned?"HIGH":isPep?"LOW":"MEDIUM",sources,programs:[],
+        reason:(props.program||[]).join("; ")||"OpenSanctions database match",
+        is_pep:isPep,pep_role:(props.position||[])[0]||null,_osScore:r2.score||0});
     }
     return results;
-  }catch(e){console.warn("OpenSanctions:",e.message);return[]}
+  }catch(e){console.warn("OpenSanctions skipped:",e.message);return[]}
 }
 
 function markLive(id){
@@ -816,7 +823,8 @@ async function doScreen(){
   document.getElementById("statsRow").style.display="none";
   setLoading(query);
 
-  let liveResults=await searchOpenSanctions(query);
+  let liveResults=[];
+  try{ liveResults=await Promise.race([searchOpenSanctions(query),new Promise(r=>setTimeout(()=>r([]),5000))]); }catch(e){}
   const builtinResults=[];
   for(const entry of BUILTIN_DATA){
     const score=matchEntry(query,entry);
