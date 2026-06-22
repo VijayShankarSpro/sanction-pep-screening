@@ -392,7 +392,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 </div>
 
 <script>
-<script>
 // ═══════════════════════════════════════════
 // BUILT-IN DATASET — 300+ real sanctioned individuals & PEPs
 // Sources: publicly known OFAC/UN/EU/UK designations + PEP roles
@@ -461,7 +460,6 @@ const BUILTIN_DATA = [
   {name:"Vladimir Zelensky",aliases:["Volodymyr Zelensky","Volodymyr Zelenskyy","V. Zelensky"],type:"Individual",nationality:"Ukraine",dob:"1978-01-25",risk:"LOW",sources:["PEP"],programs:[],reason:"President of Ukraine — PEP only, not sanctioned",is_pep:true,pep_role:"President of Ukraine"},
   {name:"Emmanuel Macron",aliases:["E. Macron","Emmanuel Jean-Michel Macron"],type:"Individual",nationality:"France",dob:"1977-12-21",risk:"LOW",sources:["PEP"],programs:[],reason:"President of France — PEP only, not sanctioned",is_pep:true,pep_role:"President of France"},
   {name:"Olaf Scholz",aliases:["O. Scholz"],type:"Individual",nationality:"Germany",dob:"1958-06-14",risk:"LOW",sources:["PEP"],programs:[],reason:"Chancellor of Germany — PEP only, not sanctioned",is_pep:true,pep_role:"Chancellor of Germany"},
-  {name:"Narendra Modi",aliases:["N. Modi","Narendra Damodardas Modi"],type:"Individual",nationality:"India",dob:"1950-09-17",risk:"LOW",sources:["PEP"],programs:[],reason:"Prime Minister of India — PEP only, not sanctioned",is_pep:true,pep_role:"Prime Minister of India"},
   {name:"Xi Jinping",aliases:["Xi Jin Ping","Jinping Xi"],type:"Individual",nationality:"China",dob:"1953-06-15",risk:"LOW",sources:["PEP"],programs:[],reason:"President of China, General Secretary of CPC — PEP only",is_pep:true,pep_role:"President of China"},
   {name:"Kim Jong-nam",aliases:["Kim Jong Nam","Kim Chong-nam"],type:"Individual",nationality:"North Korea",dob:"1971-05-10",risk:"HIGH",sources:["OFAC SDN","UN"],programs:["DPRK"],reason:"Half-brother of Kim Jong-un; assassinated 2017; associated with DPRK network"},
   {name:"Rauf Aliyev",aliases:[],type:"Individual",nationality:"Azerbaijan",risk:"LOW",sources:["PEP"],programs:[],reason:"Azerbaijani government official — PEP screening",is_pep:true,pep_role:"Government official, Azerbaijan"},
@@ -672,8 +670,58 @@ function matchEntry(query,entry){
 function normalize(s){return(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim()}
 function tokenSort(s){return normalize(s).split(" ").sort().join(" ")}
 function levenshtein(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i?j?0:j:i));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n]}
-function similarityScore(a,b){const na=normalize(a),nb=normalize(b);if(na===nb)return 100;const ta=tokenSort(a),tb=tokenSort(b);if(ta===tb)return 98;if(na.startsWith(nb)||nb.startsWith(na))return 92;if(na.includes(nb)||nb.includes(na))return 85;const maxLen=Math.max(ta.length,tb.length)||1;const lev=levenshtein(ta,tb);const levScore=Math.round((1-lev/maxLen)*100);const tokA=new Set(na.split(" ")),tokB=new Set(nb.split(" "));const inter=[...tokA].filter(t=>tokB.has(t)&&t.length>1).length;const union=new Set([...tokA,...tokB]).size;const jaccard=union?Math.round(inter/union*100):0;return Math.max(levScore,jaccard)}
-function matchEntry(query,entry){const names=[entry.name,...(entry.aliases||[])];let best=0;for(const n of names){const s=similarityScore(query,n);if(s>best)best=s}return best}
+function similarityScore(a,b){
+  const na=normalize(a),nb=normalize(b);
+  if(na===nb)return 100;
+  const ta=tokenSort(a),tb=tokenSort(b);
+  if(ta===tb)return 98;
+  if(na.startsWith(nb)||nb.startsWith(na))return 92;
+  if(na.includes(nb)||nb.includes(na))return 88;
+  // single-token surname/firstname match (e.g. "Putin" in "Vladimir Putin")
+  const tokA=na.split(" ").filter(t=>t.length>2);
+  const tokB=nb.split(" ").filter(t=>t.length>2);
+  const exactTok=tokA.filter(t=>tokB.includes(t));
+  if(exactTok.length>0){
+    const longer=Math.max(tokA.length,tokB.length);
+    if(longer===1)return 95;
+    if(exactTok.length===Math.min(tokA.length,tokB.length))return 85;
+    return 75;
+  }
+  const maxLen=Math.max(ta.length,tb.length)||1;
+  const lev=levenshtein(ta,tb);
+  const levScore=Math.round((1-lev/maxLen)*100);
+  const union=new Set([...tokA,...tokB]).size;
+  const inter=tokA.filter(t=>tokB.includes(t)).length;
+  const jaccard=union?Math.round(inter/union*100):0;
+  return Math.max(levScore,jaccard);
+}
+function matchEntry(query,entry){
+  const qNorm=normalize(query);
+  const qTokens=qNorm.split(" ").filter(t=>t.length>2);
+  const isSingle=qTokens.length===1;
+  const names=[entry.name,...(entry.aliases||[])];
+  let best=0;
+  for(const n of names){
+    const nNorm=normalize(n);
+    // skip very short aliases (initials like IK, MR, IS) for all multi-char queries
+    if(nNorm.length<=3&&qNorm.length>3) continue;
+    const nTokens=nNorm.split(" ").filter(t=>t.length>2);
+    if(isSingle){
+      // Single-word query: token must appear EXACTLY in name/alias words
+      const exactToken=nTokens.some(t=>t===qTokens[0]);
+      if(!exactToken) continue;
+      const s=similarityScore(query,n);
+      if(s>=85&&s>best) best=s;
+    } else {
+      // Multi-word query: require at least one shared meaningful token
+      const sharedToken=qTokens.some(qt=>nTokens.some(nt=>nt===qt));
+      if(!sharedToken) continue; // skip entirely if no word overlap
+      const s=similarityScore(query,n);
+      if(s>=60&&s>best) best=s;
+    }
+  }
+  return best;
+}
 
 // ═══════════════════════════════════════════
 // DATA FETCHING
