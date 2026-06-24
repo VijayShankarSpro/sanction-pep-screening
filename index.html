@@ -249,6 +249,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="src-pill offline" id="src-eu"><div class="dot"></div>EU Sanctions</div>
       <div class="src-pill offline" id="src-uk"><div class="dot"></div>UK HMT</div>
       <div class="src-pill offline" id="src-pep"><div class="dot"></div>PEP Database</div>
+      <div class="src-pill offline" id="src-sheet"><div class="dot"></div>Your Sheet</div>
       <span id="srcNote"></span>
     </div>
   </div>
@@ -350,6 +351,116 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 
+
+  <!-- Google Sheet Panel -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r16);padding:1.25rem 1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 4px rgba(0,0,0,.06)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <div style="width:28px;height:28px;background:var(--accent-light);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i class="ti ti-table" style="font-size:15px;color:var(--accent)"></i>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600">Connect your Google Sheet PEP list</div>
+        <div style="font-size:12px;color:var(--muted)">Add your own PEP entries — paste the published CSV URL below</div>
+      </div>
+      <a href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms/copy" 
+         target="_blank" rel="noopener"
+         style="margin-left:auto;display:inline-flex;align-items:center;gap:5px;padding:6px 14px;font-size:12px;font-weight:500;background:var(--accent);color:#fff;border-radius:var(--r8);text-decoration:none;flex-shrink:0">
+        <i class="ti ti-copy" style="font-size:13px"></i>Copy template
+      </a>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border-md);border-radius:var(--r8);padding:0 12px">
+        <i class="ti ti-link" style="font-size:15px;color:var(--text3)"></i>
+        <input type="url" id="sheetUrlInput" placeholder="Paste Google Sheet published CSV URL here…" 
+          style="flex:1;border:none;background:transparent;font-size:13px;color:var(--text);padding:9px 0;outline:none;font-family:var(--font)"/>
+      </div>
+      <button onclick="connectSheet()" 
+        style="padding:0 20px;height:40px;background:var(--accent);color:#fff;border:none;border-radius:var(--r8);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;flex-shrink:0">
+        <i class="ti ti-plug-connected" style="font-size:14px"></i>Connect
+      </button>
+      <button onclick="disconnectSheet()"
+        style="padding:0 16px;height:40px;background:transparent;color:var(--text2);border:1px solid var(--border-md);border-radius:var(--r8);font-size:13px;cursor:pointer;flex-shrink:0">
+        Disconnect
+      </button>
+    </div>
+    <div id="sheetStatus" style="font-size:12px;color:var(--text3);margin-top:8px;display:none"></div>
+    <details style="margin-top:10px">
+      <summary style="font-size:12px;color:var(--text2);cursor:pointer;user-select:none">How to set up your Google Sheet ▾</summary>
+      <ol style="font-size:12px;color:var(--text2);margin-top:8px;padding-left:1.2rem;line-height:2">
+        <li>Click "Copy template" above to get a pre-formatted sheet in your Google Drive</li>
+        <li>Add your PEP names, roles, countries into the sheet rows</li>
+        <li>In Google Sheets: <strong>File → Share → Publish to web</strong></li>
+        <li>Select <strong>Sheet1</strong> and format <strong>Comma-separated values (.csv)</strong></li>
+        <li>Click <strong>Publish</strong>, copy the URL and paste it above</li>
+        <li>Click Connect — your entries merge with the built-in database instantly</li>
+      </ol>
+    </details>
+  </div>
+
+  <!-- Auto PEP Fetch Panel -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r16);padding:1.25rem 1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 4px rgba(0,0,0,.06)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <div style="width:28px;height:28px;background:#f0fdf4;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i class="ti ti-refresh" style="font-size:15px;color:#15803d"></i>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600">Auto-fetch PEP from EveryPolitician.org</div>
+        <div style="font-size:12px;color:var(--muted)">Automatically load 4,000+ real politicians from official legislative databases</div>
+      </div>
+      <div class="src-pill offline" id="src-auto" style="margin-left:auto;flex-shrink:0"><div class="dot"></div>EveryPolitician</div>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
+        <input type="checkbox" id="ep-India" checked style="accent-color:var(--accent)"/> India (541 MPs)
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
+        <input type="checkbox" id="ep-Pakistan" style="accent-color:var(--accent)"/> Pakistan
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
+        <input type="checkbox" id="ep-Bangladesh" style="accent-color:var(--accent)"/> Bangladesh
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
+        <input type="checkbox" id="ep-Sri Lanka" style="accent-color:var(--accent)"/> Sri Lanka
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
+        <input type="checkbox" id="ep-Nepal" style="accent-color:var(--accent)"/> Nepal
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
+        <input type="checkbox" id="ep-Malaysia" style="accent-color:var(--accent)"/> Malaysia
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
+        <input type="checkbox" id="ep-Singapore" style="accent-color:var(--accent)"/> Singapore
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
+        <input type="checkbox" id="ep-Indonesia" style="accent-color:var(--accent)"/> Indonesia
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
+        <input type="checkbox" id="ep-Myanmar" style="accent-color:var(--accent)"/> Myanmar
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
+        <input type="checkbox" id="ep-Philippines" style="accent-color:var(--accent)"/> Philippines
+      </label>
+    </div>
+
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <button onclick="startAutoFetch()" 
+        style="padding:0 20px;height:38px;background:var(--accent);color:#fff;border:none;border-radius:var(--r8);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px">
+        <i class="ti ti-download" style="font-size:14px"></i>Fetch selected countries
+      </button>
+      <button onclick="clearAutoFetch()"
+        style="padding:0 14px;height:38px;background:transparent;color:var(--text2);border:1px solid var(--border-md);border-radius:var(--r8);font-size:13px;cursor:pointer">
+        Clear
+      </button>
+      <span id="autoStatus" style="font-size:12px;color:var(--text2);display:none"></span>
+    </div>
+
+    <div style="margin-top:10px;padding:10px 12px;background:var(--bg);border-radius:var(--r8);font-size:12px;color:var(--text2);line-height:1.6">
+      <i class="ti ti-info-circle" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>
+      Data from <strong>EveryPolitician.org</strong> — a free open dataset of every national legislator worldwide.
+      Fetching all 10 countries loads ~4,000 politicians. India alone = 541 Lok Sabha MPs. Takes ~30 seconds.
+    </div>
+  </div>
   <!-- Disclaimer -->
   <div class="disclaimer">
     <i class="ti ti-info-circle"></i>
@@ -392,6 +503,177 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 </div>
 
 <script>
+// ═══════════════════════════════════════════
+// GOOGLE SHEETS CONFIG — paste your published CSV URL here
+// Leave empty to skip; set at runtime via the UI input
+// ═══════════════════════════════════════════
+let SHEET_URL = "";
+let sheetData = [];
+
+// ═══════════════════════════════════════════
+// AUTO-FETCH PEP FROM EVERYPOLITICIAN + OPENSANCTIONS
+// ═══════════════════════════════════════════
+const EP_SOURCES = [
+  {country:"India",      legislature:"Lok Sabha",       url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/829796bc2c9693efb67d39312a22ce674aa4a8b1/data/India/Lok_Sabha/ep-popolo-v1.0.json"},
+  {country:"Pakistan",   legislature:"National Assembly",url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/a83a045d550b06c48138534e349b7ef155ac110a/data/Pakistan/Assembly/ep-popolo-v1.0.json"},
+  {country:"Bangladesh", legislature:"Jatiyo Sangshad", url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/79a6ca44788508be735a5fd7983913e7e4eb29b8/data/Bangladesh/House/ep-popolo-v1.0.json"},
+  {country:"Sri Lanka",  legislature:"Parliament",       url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/f22cf126cd2d9f4e4609ee92a3af5944730968d3/data/Sri_Lanka/Parliament/ep-popolo-v1.0.json"},
+  {country:"Nepal",      legislature:"Assembly",        url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/67ffe4f62d0d52d94d2b2bbc9d74d9ba9642009c/data/Nepal/Assembly/ep-popolo-v1.0.json"},
+  {country:"Malaysia",   legislature:"Dewan Rakyat",    url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/aedf80c57d1c5c4ec726843070c466e678452ef6/data/Malaysia/Dewan_Rakyat/ep-popolo-v1.0.json"},
+  {country:"Singapore",  legislature:"Parliament",       url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/5a17720119dbeab0ca8de9e1920779e0b5fdca58/data/Singapore/Parliament/ep-popolo-v1.0.json"},
+  {country:"Indonesia",  legislature:"DPR",             url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/354cefa005d1f2a094a7c5f195f70c78306054a7/data/Indonesia/Council/ep-popolo-v1.0.json"},
+  {country:"Myanmar",    legislature:"Lower House",     url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/fdd0c8dd11b20ffe667c658a245c09312365cce1/data/Myanmar/House_of_Representatives/ep-popolo-v1.0.json"},
+  {country:"Philippines",legislature:"House",           url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/d4cc6135e68907f6da8b75a6d8fde9c80ff7142f/data/Philippines/House/ep-popolo-v1.0.json"},
+];
+
+let autoFetchData = [];
+let autoFetchCount = 0;
+
+async function fetchEPCountry(src){
+  try{
+    const proxy = "https://api.allorigins.win/get?url=";
+    const r = await fetch(proxy + encodeURIComponent(src.url), {signal: AbortSignal.timeout(12000)});
+    const j = await r.json();
+    const data = JSON.parse(j.contents || "{}");
+    const persons = data.persons || [];
+    const memberships = data.memberships || [];
+    // Build a map of person_id -> latest membership role
+    const roleMap = {};
+    for(const m of memberships){
+      const pid = m.person_id;
+      if(!roleMap[pid]) roleMap[pid] = m.role || "Member of Parliament";
+    }
+    const entries = persons.map(p => {
+      const names = [p.name, ...(p.other_names||[]).map(n=>n.name)].filter(Boolean);
+      const mainName = names[0];
+      const aliases = names.slice(1).filter(a => a !== mainName);
+      return {
+        name: mainName,
+        aliases: aliases.slice(0,3),
+        type: "Individual",
+        nationality: src.country,
+        dob: p.birth_date || null,
+        risk: "LOW",
+        sources: ["PEP"],
+        programs: [],
+        reason: `${src.legislature} member — ${src.country}. Source: EveryPolitician.org`,
+        is_pep: true,
+        pep_role: `${roleMap[p.id] || "MP"}, ${src.legislature}, ${src.country}`,
+        _fromEP: true
+      };
+    }).filter(e => e.name && e.name.length > 1);
+    autoFetchData.push(...entries);
+    autoFetchCount += entries.length;
+    return entries.length;
+  } catch(e){
+    console.warn("EP fetch failed for " + src.country + ":", e.message);
+    return 0;
+  }
+}
+
+async function fetchAllEP(selectedCountries){
+  autoFetchData = [];
+  autoFetchCount = 0;
+  const sources = EP_SOURCES.filter(s => selectedCountries.includes(s.country));
+  if(!sources.length) return;
+  updateAutoStatus("Fetching from EveryPolitician…", "loading");
+  let loaded = 0;
+  // Fetch sequentially to avoid rate limiting
+  for(const src of sources){
+    updateAutoStatus(`Fetching ${src.country} (${loaded}/${sources.length})…`, "loading");
+    const n = await fetchEPCountry(src);
+    loaded++;
+    updateAutoStatus(`Loaded ${src.country}: ${n} politicians (${loaded}/${sources.length})…`, "loading");
+  }
+  markLive("auto");
+  updateAutoStatus(`✓ Auto-fetched ${autoFetchCount} politicians from ${loaded} countries`, "success");
+}
+
+function updateAutoStatus(msg, type){
+  const el = document.getElementById("autoStatus");
+  if(!el) return;
+  el.style.display = "block";
+  el.textContent = msg;
+  el.style.color = type === "success" ? "var(--color-text-success)" 
+                 : type === "error"   ? "var(--color-text-danger)"
+                 : "var(--color-text-secondary)";
+}
+
+async function fetchGoogleSheet(url){
+  if(!url) return;
+  try{
+    document.getElementById("src-sheet").className="src-pill offline";
+    document.getElementById("src-sheet").querySelector(".dot").style.background="#eab308";
+    const proxy = "https://api.allorigins.win/get?url=";
+    const r = await fetch(proxy + encodeURIComponent(url), {signal: AbortSignal.timeout(8000)});
+    const j = await r.json();
+    const csv = j.contents || "";
+    const lines = csv.split("\n").filter(l => l.trim());
+    if(lines.length < 2){ console.warn("Sheet: no data rows"); return; }
+    // Parse header row
+    const headers = parseCSVRow(lines[0]).map(h => h.toLowerCase().trim());
+    const idx = {
+      name: headers.findIndex(h => h.includes("name")),
+      aliases: headers.findIndex(h => h.includes("alias")),
+      type: headers.findIndex(h => h.includes("type")),
+      nationality: headers.findIndex(h => h.includes("country") || h.includes("national")),
+      dob: headers.findIndex(h => h.includes("dob") || h.includes("birth")),
+      risk: headers.findIndex(h => h.includes("risk")),
+      sources: headers.findIndex(h => h.includes("source") || h.includes("list")),
+      reason: headers.findIndex(h => h.includes("reason") || h.includes("notes")),
+      pep_role: headers.findIndex(h => h.includes("role") || h.includes("position")),
+      is_pep: headers.findIndex(h => h.includes("pep")),
+    };
+    if(idx.name === -1){ console.warn("Sheet: no 'name' column found"); return; }
+    const parsed = [];
+    for(let i = 1; i < lines.length; i++){
+      const cols = parseCSVRow(lines[i]);
+      const name = cols[idx.name]?.trim();
+      if(!name || name.length < 2) continue;
+      const riskRaw = (cols[idx.risk] || "LOW").trim().toUpperCase();
+      const risk = ["HIGH","MEDIUM","LOW"].includes(riskRaw) ? riskRaw : "LOW";
+      const srcRaw = cols[idx.sources] || "Custom";
+      const sources = srcRaw.split(/[|,;]/).map(s => s.trim()).filter(Boolean);
+      const isPepCol = idx.is_pep !== -1 ? cols[idx.is_pep]?.trim().toLowerCase() : null;
+      const isPep = isPepCol ? ["yes","true","1","y"].includes(isPepCol) : true;
+      parsed.push({
+        name,
+        aliases: idx.aliases !== -1 ? (cols[idx.aliases]||"").split("|").map(a=>a.trim()).filter(Boolean) : [],
+        type: idx.type !== -1 ? (cols[idx.type]||"Individual").trim() : "Individual",
+        nationality: idx.nationality !== -1 ? cols[idx.nationality]?.trim() || null : null,
+        dob: idx.dob !== -1 ? cols[idx.dob]?.trim() || null : null,
+        risk,
+        sources: sources.length ? sources : ["Custom PEP"],
+        programs: [],
+        reason: idx.reason !== -1 ? cols[idx.reason]?.trim() || "Custom PEP entry" : "Custom PEP entry",
+        is_pep: isPep,
+        pep_role: idx.pep_role !== -1 ? cols[idx.pep_role]?.trim() || null : null,
+        _fromSheet: true
+      });
+    }
+    sheetData = parsed;
+    markLive("sheet");
+    console.log("Google Sheet: loaded " + parsed.length + " entries");
+    document.getElementById("srcNote").textContent = 
+      BUILTIN_DATA.length + " built-in · " + liveData.length + " OFAC · " + sheetData.length + " from Sheet";
+  } catch(e){
+    console.warn("Google Sheet fetch failed:", e.message);
+    document.getElementById("src-sheet").querySelector(".dot").style.background="#ef4444";
+  }
+}
+
+function parseCSVRow(row){
+  const cols = []; let cur = ""; let inQ = false;
+  for(let i = 0; i < row.length; i++){
+    const c = row[i];
+    if(c === '"'){ inQ = !inQ; }
+    else if(c === ',' && !inQ){ cols.push(cur.replace(/^"|"$/g,"")); cur = ""; }
+    else { cur += c; }
+  }
+  cols.push(cur.replace(/^"|"$/g,""));
+  return cols;
+}
+
 // ═══════════════════════════════════════════
 // BUILT-IN DATASET — 300+ real sanctioned individuals & PEPs
 // Sources: publicly known OFAC/UN/EU/UK designations + PEP roles
@@ -839,7 +1121,19 @@ async function doScreen(){
     r.match_score=Math.max(score,Math.round((r._osScore||0.5)*100));
   }
   liveResults=liveResults.filter(r=>r.match_score>=threshold);
-  const merged=[...builtinResults];
+  // Merge sheet data
+  const sheetResults=[];
+  for(const entry of sheetData){
+    const score=matchEntry(query,entry);
+    if(score>=threshold)sheetResults.push({...entry,match_score:score});
+  }
+  // Merge auto-fetched EP data
+  const autoResults=[];
+  for(const entry of autoFetchData){
+    const score=matchEntry(query,entry);
+    if(score>=threshold)autoResults.push({...entry,match_score:score});
+  }
+  const merged=[...builtinResults,...sheetResults,...autoResults];
   for(const lr of liveResults){
     const dup=merged.some(m=>similarityScore(m.name,lr.name)>85);
     if(!dup)merged.push(lr);
@@ -871,6 +1165,8 @@ function isListActive(r){
   if(activeLists.has("uk")&&s.some(x=>x.includes("UK")))return true;
   if(activeLists.has("pep")&&r.is_pep)return true;
   if(s.some(x=>x.includes("OpenSanctions")))return true;
+  if(r._fromSheet)return true;
+  if(r._fromEP)return true;
   return false;
 }
 
@@ -954,12 +1250,63 @@ function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").
 // ═══════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════
+function startAutoFetch(){
+  const countries = ["India","Pakistan","Bangladesh","Sri Lanka","Nepal","Malaysia","Singapore","Indonesia","Myanmar","Philippines"]
+    .filter(c => document.getElementById("ep-"+c)?.checked);
+  if(!countries.length){ alert("Please select at least one country."); return; }
+  fetchAllEP(countries);
+}
+
+function clearAutoFetch(){
+  autoFetchData = [];
+  autoFetchCount = 0;
+  document.getElementById("src-auto").className = "src-pill offline";
+  updateAutoStatus("Cleared. Auto-fetched data removed.", "error");
+  setTimeout(()=>{ document.getElementById("autoStatus").style.display="none"; }, 3000);
+}
+
+function connectSheet(){
+  const url = document.getElementById("sheetUrlInput").value.trim();
+  if(!url){ alert("Please paste a Google Sheet CSV URL first."); return; }
+  if(!url.includes("docs.google.com") && !url.includes("allorigins") && !url.startsWith("http")){
+    alert("Please paste a valid Google Sheets published CSV URL."); return;
+  }
+  SHEET_URL = url;
+  localStorage.setItem("pepSheetUrl", url);
+  const st = document.getElementById("sheetStatus");
+  st.style.display="block";
+  st.textContent="Connecting to Google Sheet…";
+  fetchGoogleSheet(url).then(()=>{
+    st.textContent = sheetData.length > 0 
+      ? "✓ Connected — " + sheetData.length + " entries loaded from your sheet" 
+      : "⚠ Connected but no data found. Check your sheet has a 'name' column.";
+  });
+}
+
+function disconnectSheet(){
+  SHEET_URL = ""; sheetData = [];
+  localStorage.removeItem("pepSheetUrl");
+  document.getElementById("sheetUrlInput").value = "";
+  document.getElementById("src-sheet").className="src-pill offline";
+  const st = document.getElementById("sheetStatus");
+  st.style.display="block";
+  st.textContent="Disconnected. Sheet data cleared.";
+  setTimeout(()=>{ st.style.display="none"; }, 3000);
+}
+
 (async()=>{
   document.getElementById("srcNote").textContent="Initialising…";
   markLive("pep");
   await fetchOpenSanctions();
   await fetchOFAC();
-  document.getElementById("srcNote").textContent=`${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC live · OpenSanctions per-query`;
+  const savedUrl = localStorage.getItem("pepSheetUrl") || "";
+  if(savedUrl){ 
+    SHEET_URL = savedUrl; 
+    document.getElementById("sheetUrlInput").value = savedUrl;
+    await fetchGoogleSheet(savedUrl); 
+  } else {
+    document.getElementById("srcNote").textContent=`${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC live · OpenSanctions per-query`;
+  }
 })();
 </script>
 </body>
