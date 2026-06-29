@@ -249,7 +249,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="src-pill offline" id="src-eu"><div class="dot"></div>EU Sanctions</div>
       <div class="src-pill offline" id="src-uk"><div class="dot"></div>UK HMT</div>
       <div class="src-pill offline" id="src-pep"><div class="dot"></div>PEP Database</div>
-      <div class="src-pill offline" id="src-sheet"><div class="dot"></div>Your Sheet</div>
       <span id="srcNote"></span>
     </div>
   </div>
@@ -352,115 +351,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 
 
-  <!-- Google Sheet Panel -->
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r16);padding:1.25rem 1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-      <div style="width:28px;height:28px;background:var(--accent-light);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <i class="ti ti-table" style="font-size:15px;color:var(--accent)"></i>
-      </div>
-      <div>
-        <div style="font-size:13px;font-weight:600">Connect your Google Sheet PEP list</div>
-        <div style="font-size:12px;color:var(--muted)">Add your own PEP entries — paste the published CSV URL below</div>
-      </div>
-      <a href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms/copy" 
-         target="_blank" rel="noopener"
-         style="margin-left:auto;display:inline-flex;align-items:center;gap:5px;padding:6px 14px;font-size:12px;font-weight:500;background:var(--accent);color:#fff;border-radius:var(--r8);text-decoration:none;flex-shrink:0">
-        <i class="ti ti-copy" style="font-size:13px"></i>Copy template
-      </a>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <div style="flex:1;min-width:200px;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border-md);border-radius:var(--r8);padding:0 12px">
-        <i class="ti ti-link" style="font-size:15px;color:var(--text3)"></i>
-        <input type="url" id="sheetUrlInput" placeholder="Paste Google Sheet published CSV URL here…" 
-          style="flex:1;border:none;background:transparent;font-size:13px;color:var(--text);padding:9px 0;outline:none;font-family:var(--font)"/>
-      </div>
-      <button onclick="connectSheet()" 
-        style="padding:0 20px;height:40px;background:var(--accent);color:#fff;border:none;border-radius:var(--r8);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;flex-shrink:0">
-        <i class="ti ti-plug-connected" style="font-size:14px"></i>Connect
-      </button>
-      <button onclick="disconnectSheet()"
-        style="padding:0 16px;height:40px;background:transparent;color:var(--text2);border:1px solid var(--border-md);border-radius:var(--r8);font-size:13px;cursor:pointer;flex-shrink:0">
-        Disconnect
-      </button>
-    </div>
-    <div id="sheetStatus" style="font-size:12px;color:var(--text3);margin-top:8px;display:none"></div>
-    <details style="margin-top:10px">
-      <summary style="font-size:12px;color:var(--text2);cursor:pointer;user-select:none">How to set up your Google Sheet ▾</summary>
-      <ol style="font-size:12px;color:var(--text2);margin-top:8px;padding-left:1.2rem;line-height:2">
-        <li>Click "Copy template" above to get a pre-formatted sheet in your Google Drive</li>
-        <li>Add your PEP names, roles, countries into the sheet rows</li>
-        <li>In Google Sheets: <strong>File → Share → Publish to web</strong></li>
-        <li>Select <strong>Sheet1</strong> and format <strong>Comma-separated values (.csv)</strong></li>
-        <li>Click <strong>Publish</strong>, copy the URL and paste it above</li>
-        <li>Click Connect — your entries merge with the built-in database instantly</li>
-      </ol>
-    </details>
-  </div>
-
-  <!-- Auto PEP Fetch Panel -->
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r16);padding:1.25rem 1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <div style="width:28px;height:28px;background:#f0fdf4;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <i class="ti ti-refresh" style="font-size:15px;color:#15803d"></i>
-      </div>
-      <div>
-        <div style="font-size:13px;font-weight:600">Auto-fetch PEP from EveryPolitician.org</div>
-        <div style="font-size:12px;color:var(--muted)">Automatically load 4,000+ real politicians from official legislative databases</div>
-      </div>
-      <div class="src-pill offline" id="src-auto" style="margin-left:auto;flex-shrink:0"><div class="dot"></div>EveryPolitician</div>
-    </div>
-
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
-        <input type="checkbox" id="ep-India" checked style="accent-color:var(--accent)"/> India (541 MPs)
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
-        <input type="checkbox" id="ep-Pakistan" style="accent-color:var(--accent)"/> Pakistan
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
-        <input type="checkbox" id="ep-Bangladesh" style="accent-color:var(--accent)"/> Bangladesh
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
-        <input type="checkbox" id="ep-Sri Lanka" style="accent-color:var(--accent)"/> Sri Lanka
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
-        <input type="checkbox" id="ep-Nepal" style="accent-color:var(--accent)"/> Nepal
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
-        <input type="checkbox" id="ep-Malaysia" style="accent-color:var(--accent)"/> Malaysia
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
-        <input type="checkbox" id="ep-Singapore" style="accent-color:var(--accent)"/> Singapore
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
-        <input type="checkbox" id="ep-Indonesia" style="accent-color:var(--accent)"/> Indonesia
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
-        <input type="checkbox" id="ep-Myanmar" style="accent-color:var(--accent)"/> Myanmar
-      </label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:5px 10px;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--bg)">
-        <input type="checkbox" id="ep-Philippines" style="accent-color:var(--accent)"/> Philippines
-      </label>
-    </div>
-
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <button onclick="startAutoFetch()" 
-        style="padding:0 20px;height:38px;background:var(--accent);color:#fff;border:none;border-radius:var(--r8);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px">
-        <i class="ti ti-download" style="font-size:14px"></i>Fetch selected countries
-      </button>
-      <button onclick="clearAutoFetch()"
-        style="padding:0 14px;height:38px;background:transparent;color:var(--text2);border:1px solid var(--border-md);border-radius:var(--r8);font-size:13px;cursor:pointer">
-        Clear
-      </button>
-      <span id="autoStatus" style="font-size:12px;color:var(--text2);display:none"></span>
-    </div>
-
-    <div style="margin-top:10px;padding:10px 12px;background:var(--bg);border-radius:var(--r8);font-size:12px;color:var(--text2);line-height:1.6">
-      <i class="ti ti-info-circle" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>
-      Data from <strong>EveryPolitician.org</strong> — a free open dataset of every national legislator worldwide.
-      Fetching all 10 countries loads ~4,000 politicians. India alone = 541 Lok Sabha MPs. Takes ~30 seconds.
-    </div>
-  </div>
   <!-- Disclaimer -->
   <div class="disclaimer">
     <i class="ti ti-info-circle"></i>
@@ -508,7 +398,74 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 // Leave empty to skip; set at runtime via the UI input
 // ═══════════════════════════════════════════
 let SHEET_URL = "";
-let sheetData = [];
+let sheetData = [
+  // ══════════════════════════════════════════
+  // INDIA — STATE LEVEL PEPs
+  // Chief Ministers, Deputy CMs, Governors (all 28 states + UTs)
+  // ══════════════════════════════════════════
+
+  // Chief Ministers — current & recent
+  {name:"Yogi Adityanath",aliases:["Ajay Mohan Bisht","Yogi CM","UP CM"],type:"Individual",nationality:"India",dob:"1972-06-05",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Uttar Pradesh — PEP",is_pep:true,pep_role:"Chief Minister, Uttar Pradesh"},
+  {name:"Rekha Gupta",aliases:["R. Gupta","Delhi CM"],type:"Individual",nationality:"India",dob:"1974-01-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Delhi — PEP",is_pep:true,pep_role:"Chief Minister, Delhi"},
+  {name:"Himanta Biswa Sarma",aliases:["H.B. Sarma","Assam CM","Himanta Sarma"],type:"Individual",nationality:"India",dob:"1969-02-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Assam — PEP",is_pep:true,pep_role:"Chief Minister, Assam"},
+  {name:"Bhupendra Patel",aliases:["B. Patel","Gujarat CM"],type:"Individual",nationality:"India",dob:"1962-07-15",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Gujarat — PEP",is_pep:true,pep_role:"Chief Minister, Gujarat"},
+  {name:"Devendra Fadnavis",aliases:["D. Fadnavis","Maharashtra CM"],type:"Individual",nationality:"India",dob:"1970-07-22",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Maharashtra — PEP",is_pep:true,pep_role:"Chief Minister, Maharashtra"},
+  {name:"Eknath Shinde",aliases:["E. Shinde","Former Maharashtra CM"],type:"Individual",nationality:"India",dob:"1964-02-09",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Maharashtra — PEP",is_pep:true,pep_role:"Former Chief Minister, Maharashtra"},
+  {name:"Dr. Mohan Yadav",aliases:["Mohan Yadav","MP CM"],type:"Individual",nationality:"India",dob:"1965-07-25",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Madhya Pradesh — PEP",is_pep:true,pep_role:"Chief Minister, Madhya Pradesh"},
+  {name:"Bhajan Lal Sharma",aliases:["B.L. Sharma","Rajasthan CM"],type:"Individual",nationality:"India",dob:"1967-10-05",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Rajasthan — PEP",is_pep:true,pep_role:"Chief Minister, Rajasthan"},
+  {name:"Vishnu Deo Sai",aliases:["V.D. Sai","Chhattisgarh CM"],type:"Individual",nationality:"India",dob:"1964-02-21",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Chhattisgarh — PEP",is_pep:true,pep_role:"Chief Minister, Chhattisgarh"},
+  {name:"Sukhvinder Singh Sukhu",aliases:["Sukhu","HP CM","Himachal CM"],type:"Individual",nationality:"India",dob:"1964-03-27",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Himachal Pradesh — PEP",is_pep:true,pep_role:"Chief Minister, Himachal Pradesh"},
+  {name:"Pushkar Singh Dhami",aliases:["P.S. Dhami","Uttarakhand CM"],type:"Individual",nationality:"India",dob:"1975-09-16",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Uttarakhand — PEP",is_pep:true,pep_role:"Chief Minister, Uttarakhand"},
+  {name:"Bhagwant Mann",aliases:["B. Mann","Punjab CM","AAP Punjab"],type:"Individual",nationality:"India",dob:"1973-10-18",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Punjab — PEP",is_pep:true,pep_role:"Chief Minister, Punjab"},
+  {name:"Nayab Singh Saini",aliases:["N.S. Saini","Haryana CM"],type:"Individual",nationality:"India",dob:"1969-01-25",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Haryana — PEP",is_pep:true,pep_role:"Chief Minister, Haryana"},
+  {name:"Omar Abdullah",aliases:["O. Abdullah","J&K CM"],type:"Individual",nationality:"India",dob:"1970-03-10",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Jammu & Kashmir — PEP",is_pep:true,pep_role:"Chief Minister, Jammu & Kashmir"},
+  {name:"Conrad Sangma",aliases:["Conrad K. Sangma","Meghalaya CM"],type:"Individual",nationality:"India",dob:"1978-01-27",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Meghalaya — PEP",is_pep:true,pep_role:"Chief Minister, Meghalaya"},
+  {name:"Pema Khandu",aliases:["P. Khandu","Arunachal CM"],type:"Individual",nationality:"India",dob:"1979-08-21",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Arunachal Pradesh — PEP",is_pep:true,pep_role:"Chief Minister, Arunachal Pradesh"},
+  {name:"Lalduhoma",aliases:["Mizoram CM","ZPM Chief"],type:"Individual",nationality:"India",dob:"1952-07-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Mizoram — PEP",is_pep:true,pep_role:"Chief Minister, Mizoram"},
+  {name:"Neiphiu Rio",aliases:["N. Rio","Nagaland CM"],type:"Individual",nationality:"India",dob:"1950-11-11",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Nagaland — PEP",is_pep:true,pep_role:"Chief Minister, Nagaland"},
+  {name:"Prem Singh Tamang",aliases:["P.S. Tamang","Golay","Sikkim CM"],type:"Individual",nationality:"India",dob:"1968-02-05",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Sikkim — PEP",is_pep:true,pep_role:"Chief Minister, Sikkim"},
+  {name:"Mohan Majhi",aliases:["M. Majhi","Odisha CM"],type:"Individual",nationality:"India",dob:"1965-01-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Chief Minister of Odisha — PEP",is_pep:true,pep_role:"Chief Minister, Odisha"},
+
+  // Former CMs — high-profile
+  {name:"K. Chandrashekar Rao",aliases:["KCR","Telangana Founder CM","BRS Chief"],type:"Individual",nationality:"India",dob:"1954-02-17",risk:"LOW",sources:["PEP"],programs:[],reason:"Founder & Former Chief Minister of Telangana — PEP",is_pep:true,pep_role:"Former Chief Minister, Telangana"},
+  {name:"Y.S. Jagan Mohan Reddy",aliases:["Jagan","YSRCP Chief","YS Jagan"],type:"Individual",nationality:"India",dob:"1972-12-21",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Andhra Pradesh — PEP",is_pep:true,pep_role:"Former Chief Minister, Andhra Pradesh"},
+  {name:"Shivraj Singh Chouhan",aliases:["S.S. Chouhan","Mama","Former MP CM"],type:"Individual",nationality:"India",dob:"1959-03-05",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister Madhya Pradesh; current Union Minister — PEP",is_pep:true,pep_role:"Former Chief Minister, Madhya Pradesh"},
+  {name:"Vasundhara Raje",aliases:["V. Raje","Former Rajasthan CM"],type:"Individual",nationality:"India",dob:"1953-03-08",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Rajasthan — PEP",is_pep:true,pep_role:"Former Chief Minister, Rajasthan"},
+  {name:"Basavaraj Bommai",aliases:["B. Bommai","Former Karnataka CM"],type:"Individual",nationality:"India",dob:"1960-01-28",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Karnataka — PEP",is_pep:true,pep_role:"Former Chief Minister, Karnataka"},
+  {name:"Sarbananda Sonowal",aliases:["S. Sonowal","Former Assam CM"],type:"Individual",nationality:"India",dob:"1962-10-31",risk:"LOW",sources:["PEP"],programs:[],reason:"Former CM Assam; current Union Minister — PEP",is_pep:true,pep_role:"Former Chief Minister, Assam"},
+  {name:"Bhupesh Baghel",aliases:["B. Baghel","Former Chhattisgarh CM"],type:"Individual",nationality:"India",dob:"1961-08-23",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Chhattisgarh — PEP",is_pep:true,pep_role:"Former Chief Minister, Chhattisgarh"},
+  {name:"Ashok Gehlot",aliases:["A. Gehlot","Former Rajasthan CM"],type:"Individual",nationality:"India",dob:"1951-05-03",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Rajasthan — PEP",is_pep:true,pep_role:"Former Chief Minister, Rajasthan"},
+  {name:"Kamal Nath",aliases:["K. Nath","Former MP CM"],type:"Individual",nationality:"India",dob:"1946-11-18",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Madhya Pradesh — PEP",is_pep:true,pep_role:"Former Chief Minister, Madhya Pradesh"},
+  {name:"Captain Amarinder Singh",aliases:["Amarinder Singh","Former Punjab CM"],type:"Individual",nationality:"India",dob:"1942-03-11",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Punjab — PEP",is_pep:true,pep_role:"Former Chief Minister, Punjab"},
+  {name:"Charanjit Singh Channi",aliases:["C.S. Channi","Former Punjab CM"],type:"Individual",nationality:"India",dob:"1963-04-10",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Punjab — PEP",is_pep:true,pep_role:"Former Chief Minister, Punjab"},
+  {name:"Vijay Rupani",aliases:["V. Rupani","Former Gujarat CM"],type:"Individual",nationality:"India",dob:"1956-08-02",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Gujarat — PEP",is_pep:true,pep_role:"Former Chief Minister, Gujarat"},
+  {name:"Manohar Lal Khattar",aliases:["M.L. Khattar","Former Haryana CM"],type:"Individual",nationality:"India",dob:"1954-05-05",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister Haryana; current Union Minister — PEP",is_pep:true,pep_role:"Former Chief Minister, Haryana"},
+  {name:"Trivendra Singh Rawat",aliases:["T.S. Rawat","Former Uttarakhand CM"],type:"Individual",nationality:"India",dob:"1960-06-13",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister of Uttarakhand — PEP",is_pep:true,pep_role:"Former Chief Minister, Uttarakhand"},
+
+  // Deputy Chief Ministers
+  {name:"Ajit Pawar",aliases:["A. Pawar","Maharashtra DCM","NCP Ajit"],type:"Individual",nationality:"India",dob:"1959-07-22",risk:"LOW",sources:["PEP"],programs:[],reason:"Deputy Chief Minister of Maharashtra — PEP",is_pep:true,pep_role:"Deputy Chief Minister, Maharashtra"},
+  {name:"Tejaswi Yadav",aliases:["T. Yadav","Bihar DCM","RJD Leader"],type:"Individual",nationality:"India",dob:"1989-11-09",risk:"LOW",sources:["PEP"],programs:[],reason:"Deputy Chief Minister of Bihar — PEP",is_pep:true,pep_role:"Deputy Chief Minister, Bihar"},
+  {name:"Manish Sisodia",aliases:["M. Sisodia","Former Delhi DCM"],type:"Individual",nationality:"India",dob:"1972-01-05",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Deputy CM Delhi; arrested CBI case — PEP",is_pep:true,pep_role:"Former Deputy Chief Minister, Delhi"},
+  {name:"Sukhbir Singh Badal",aliases:["S.S. Badal","SAD Chief"],type:"Individual",nationality:"India",dob:"1962-07-09",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Deputy CM Punjab; SAD President — PEP",is_pep:true,pep_role:"Former Deputy Chief Minister, Punjab"},
+  {name:"Sachin Pilot",aliases:["S. Pilot","Former Rajasthan DCM"],type:"Individual",nationality:"India",dob:"1977-09-07",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Deputy CM of Rajasthan — PEP",is_pep:true,pep_role:"Former Deputy Chief Minister, Rajasthan"},
+  {name:"Dushyant Chautala",aliases:["D. Chautala","JJP Leader","Former Haryana DCM"],type:"Individual",nationality:"India",dob:"1988-04-03",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Deputy CM of Haryana — PEP",is_pep:true,pep_role:"Former Deputy Chief Minister, Haryana"},
+
+  // Key state party leaders / high-profile MLAs
+  {name:"Uddhav Thackeray",aliases:["U. Thackeray","Shiv Sena UBT","Former Maharashtra CM"],type:"Individual",nationality:"India",dob:"1960-07-27",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister Maharashtra; Shiv Sena (UBT) chief — PEP",is_pep:true,pep_role:"Former Chief Minister, Maharashtra"},
+  {name:"Akhilesh Yadav",aliases:["A. Yadav","SP Chief","Former UP CM"],type:"Individual",nationality:"India",dob:"1973-07-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister UP; SP President — PEP",is_pep:true,pep_role:"Former Chief Minister, Uttar Pradesh"},
+  {name:"Mayawati",aliases:["Kumari Mayawati","Behenji","BSP Chief"],type:"Individual",nationality:"India",dob:"1956-01-15",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Chief Minister UP (4 terms); BSP President — PEP",is_pep:true,pep_role:"Former Chief Minister, Uttar Pradesh"},
+  {name:"Lalu Prasad Yadav",aliases:["Lalu","RJD Chief","Former Bihar CM"],type:"Individual",nationality:"India",dob:"1948-06-11",risk:"MEDIUM",sources:["PEP"],programs:[],reason:"Former CM Bihar; convicted fodder scam — high-risk PEP",is_pep:true,pep_role:"Former Chief Minister, Bihar"},
+  {name:"Mulayam Singh Yadav",aliases:["Netaji","SP Founder","Former UP CM"],type:"Individual",nationality:"India",dob:"1939-11-22",risk:"LOW",sources:["PEP"],programs:[],reason:"Former CM UP; SP founder — PEP (deceased 2022)",is_pep:true,pep_role:"Former Chief Minister, Uttar Pradesh"},
+  {name:"Farooq Abdullah",aliases:["F. Abdullah","NC President","Former J&K CM"],type:"Individual",nationality:"India",dob:"1937-10-21",risk:"LOW",sources:["PEP"],programs:[],reason:"Former CM J&K; NC President — PEP",is_pep:true,pep_role:"Former Chief Minister, Jammu & Kashmir"},
+  {name:"Mehbooba Mufti",aliases:["M. Mufti","PDP Chief","Former J&K CM"],type:"Individual",nationality:"India",dob:"1959-05-22",risk:"LOW",sources:["PEP"],programs:[],reason:"Former CM J&K; PDP President — PEP",is_pep:true,pep_role:"Former Chief Minister, Jammu & Kashmir"},
+  {name:"Parkash Singh Badal",aliases:["P.S. Badal","SAD Patriarch","Former Punjab CM"],type:"Individual",nationality:"India",dob:"1927-12-08",risk:"LOW",sources:["PEP"],programs:[],reason:"Former CM Punjab (5 terms); SAD patriarch — PEP (deceased 2023)",is_pep:true,pep_role:"Former Chief Minister, Punjab"},
+  {name:"Digvijaya Singh",aliases:["D. Singh","Former MP CM"],type:"Individual",nationality:"India",dob:"1947-02-28",risk:"LOW",sources:["PEP"],programs:[],reason:"Former CM Madhya Pradesh — PEP",is_pep:true,pep_role:"Former Chief Minister, Madhya Pradesh"},
+
+  // Governors (key states)
+  {name:"Arif Mohammed Khan",aliases:["A.M. Khan","Kerala Governor"],type:"Individual",nationality:"India",dob:"1951-01-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Governor of Kerala — PEP",is_pep:true,pep_role:"Governor, Kerala"},
+  {name:"C.V. Ananda Bose",aliases:["C.V. Bose","WB Governor"],type:"Individual",nationality:"India",dob:"1951-01-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Governor of West Bengal — PEP",is_pep:true,pep_role:"Governor, West Bengal"},
+  {name:"Rajendra Arlekar",aliases:["R.V. Arlekar","Bihar Governor"],type:"Individual",nationality:"India",dob:"1952-01-01",risk:"LOW",sources:["PEP"],programs:[],reason:"Governor of Bihar — PEP",is_pep:true,pep_role:"Governor, Bihar"},
+];
 
 // ═══════════════════════════════════════════
 // AUTO-FETCH PEP FROM EVERYPOLITICIAN + OPENSANCTIONS
@@ -585,18 +542,16 @@ async function fetchAllEP(selectedCountries){
     loaded++;
     updateAutoStatus(`Loaded ${src.country}: ${n} politicians (${loaded}/${sources.length})…`, "loading");
   }
-  markLive("auto");
-  updateAutoStatus(`✓ Auto-fetched ${autoFetchCount} politicians from ${loaded} countries`, "success");
+  markLive("pep");
+  document.getElementById("srcNote").textContent = 
+    `${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC · ${autoFetchCount} politicians from ${loaded} countries · OpenSanctions per-query`;
 }
 
 function updateAutoStatus(msg, type){
-  const el = document.getElementById("autoStatus");
+  // Write silently to srcNote in hero bar
+  const el = document.getElementById("srcNote");
   if(!el) return;
-  el.style.display = "block";
   el.textContent = msg;
-  el.style.color = type === "success" ? "var(--color-text-success)" 
-                 : type === "error"   ? "var(--color-text-danger)"
-                 : "var(--color-text-secondary)";
 }
 
 async function fetchGoogleSheet(url){
@@ -1297,16 +1252,15 @@ function disconnectSheet(){
 (async()=>{
   document.getElementById("srcNote").textContent="Initialising…";
   markLive("pep");
-  await fetchOpenSanctions();
-  await fetchOFAC();
-  const savedUrl = localStorage.getItem("pepSheetUrl") || "";
-  if(savedUrl){ 
-    SHEET_URL = savedUrl; 
-    document.getElementById("sheetUrlInput").value = savedUrl;
-    await fetchGoogleSheet(savedUrl); 
-  } else {
-    document.getElementById("srcNote").textContent=`${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC live · OpenSanctions per-query`;
-  }
+  // Fetch live data in parallel for speed
+  const [,] = await Promise.allSettled([
+    fetchOpenSanctions(),
+    fetchOFAC()
+  ]);
+  document.getElementById("srcNote").textContent=`${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC · loading politicians…`;
+  // Auto-fetch politicians from EveryPolitician in background
+  // Default: India. User can trigger more via the hidden EP engine.
+  fetchAllEP(["India","Pakistan","Bangladesh","Sri Lanka","Nepal","Malaysia","Singapore","Indonesia","Myanmar","Philippines"]);
 })();
 </script>
 </body>
