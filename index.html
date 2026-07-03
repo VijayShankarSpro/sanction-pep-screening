@@ -274,7 +274,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="search-filters">
         <div class="filter-group">
           <span class="filter-label">Type</span>
-          <div class="sel-wrap"><select id="ts">
+          <div class="sel-wrap"><select id="ts" onchange="liveFilter()">
             <option value="all">All types</option>
             <option value="individual">Individual</option>
             <option value="entity">Entity / Org</option>
@@ -284,7 +284,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="sep"></div>
         <div class="filter-group">
           <span class="filter-label">Country</span>
-          <div class="sel-wrap"><select id="cs">
+          <div class="sel-wrap"><select id="cs" onchange="liveFilter()">
             <option value="">All countries</option>
             <optgroup label="South Asia">
               <option value="india">India</option>
@@ -1285,6 +1285,7 @@ function markLive(id){
 // ═══════════════════════════════════════════
 let activeLists=new Set(["ofac","un","eu","uk","pep"]);
 let allResults=[];
+let rawResults=[]; // all matched results before list/type/country filter
 let activeFilter="all";
 
 document.querySelectorAll(".ltog").forEach(el=>{
@@ -1292,6 +1293,8 @@ document.querySelectorAll(".ltog").forEach(el=>{
     const l=el.dataset.list;
     if(activeLists.has(l)){activeLists.delete(l);el.classList.remove("on")}
     else{activeLists.add(l);el.classList.add("on")}
+    // Re-filter results immediately when toggle changes
+    if(rawResults.length>0) liveFilter();
   });
 });
 document.getElementById("ni").addEventListener("keydown",e=>{if(e.key==="Enter")doScreen()});
@@ -1299,6 +1302,27 @@ document.getElementById("ni").addEventListener("keydown",e=>{if(e.key==="Enter")
 // ═══════════════════════════════════════════
 // SCREENING
 // ═══════════════════════════════════════════
+function liveFilter(){
+  if(!rawResults.length) return;
+  const typeFilter=document.getElementById("ts").value;
+  const countryFilter=document.getElementById("cs").value.toLowerCase();
+  // Always filter from rawResults so toggling lists on/off works correctly
+  let filtered=rawResults.filter(r=>isListActive(r));
+  if(typeFilter!=="all") filtered=filtered.filter(r=>(r.type||"").toLowerCase().includes(typeFilter));
+  if(countryFilter) filtered=filtered.filter(r=>(r.nationality||"").toLowerCase().includes(countryFilter));
+  allResults=filtered; // update allResults for filterR chips to work
+  const high=filtered.filter(r=>r.risk==="HIGH").length;
+  const med=filtered.filter(r=>r.risk==="MEDIUM").length;
+  const low=filtered.filter(r=>r.risk==="LOW").length;
+  document.getElementById("st").textContent=filtered.length;
+  document.getElementById("sh").textContent=high;
+  document.getElementById("sm2").textContent=med;
+  document.getElementById("sl").textContent=low;
+  document.getElementById("statsRow").style.display=filtered.length>0?"grid":"none";
+  activeFilter="all";
+  render(filtered);
+}
+
 async function doScreen(){
   const query=document.getElementById("ni").value.trim();
   if(!query)return document.getElementById("ni").focus();
@@ -1343,11 +1367,13 @@ async function doScreen(){
     const dup=merged.some(m=>similarityScore(m.name,lr.name)>85);
     if(!dup)merged.push(lr);
   }
-  let filtered=merged;
+  // Sort and cap BEFORE filtering so we keep top 30 overall
+  merged.sort((a,b)=>b.match_score-a.match_score);
+  merged.splice(50); // keep top 50 before filter
+  rawResults=[...merged]; // store all for live re-filtering by toggles
+  let filtered=merged.filter(r=>isListActive(r));
   if(typeFilter!=="all")filtered=filtered.filter(r=>(r.type||"").toLowerCase().includes(typeFilter));
   if(countryFilter)filtered=filtered.filter(r=>(r.nationality||"").toLowerCase().includes(countryFilter));
-  filtered=filtered.filter(r=>isListActive(r));
-  filtered.sort((a,b)=>b.match_score-a.match_score).splice(30);
 
   allResults=filtered;activeFilter="all";
   const high=filtered.filter(r=>r.risk==="HIGH").length;
