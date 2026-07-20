@@ -5,400 +5,245 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>ComplianceCheck — Sanction & PEP Screening</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css"/>
 <style>
-/* ── Reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-/* ── Design tokens ── */
 :root{
-  --font:'Inter',system-ui,sans-serif;
-  --bg:#f0f2f7;
-  --surface:#ffffff;
-  --surface2:#f8f9fc;
-  --border:rgba(0,0,0,0.07);
-  --border-md:rgba(0,0,0,0.13);
-  --text:#0f1623;
-  --text2:#4b5563;
-  --text3:#9ca3af;
-  --accent:#1d4ed8;
-  --accent2:#1e40af;
-  --accent-light:#eff6ff;
-  --accent-mid:#bfdbfe;
-  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--r20:20px;--r24:24px;
-  --shadow-xs:0 1px 2px rgba(0,0,0,.05);
-  --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
-  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.04);
-  --shadow-lg:0 10px 15px rgba(0,0,0,.07),0 4px 6px rgba(0,0,0,.04);
+  --bg:#f0f2f7;--sur:#fff;--sur2:#f8f9fc;
+  --bdr:rgba(0,0,0,0.08);--bdrm:rgba(0,0,0,0.15);
+  --txt:#0f1623;--mut:#6b7280;--fnt:#9ca3af;
+  --acc:#1d4ed8;--acc2:#1e40af;--acl:#eff6ff;--acm:#bfdbfe;
+  --r8:8px;--r12:12px;--r16:16px;--r20:20px;
+  --s1:0 1px 3px rgba(0,0,0,.08);--s2:0 4px 12px rgba(0,0,0,.08);--s3:0 10px 24px rgba(0,0,0,.1);
+  --fn:'Inter',system-ui,sans-serif;
 }
-@media(prefers-color-scheme:dark){
-  :root{
-    --bg:#080c14;
-    --surface:#111827;
-    --surface2:#0d1520;
-    --border:rgba(255,255,255,0.07);
-    --border-md:rgba(255,255,255,0.13);
-    --text:#f1f5f9;
-    --text2:#94a3b8;
-    --text3:#475569;
-    --accent:#3b82f6;
-    --accent2:#60a5fa;
-    --accent-light:#0f1f3d;
-    --accent-mid:#1e3a5f;
-    --shadow-xs:0 1px 2px rgba(0,0,0,.4);
-    --shadow-sm:0 1px 3px rgba(0,0,0,.5);
-    --shadow-md:0 4px 6px rgba(0,0,0,.5);
-    --shadow-lg:0 10px 15px rgba(0,0,0,.6);
-  }
-}
-
-/* ── Base ── */
-html{scroll-behavior:smooth}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
-
-/* ── Hero banner ── */
-.hero{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#1d4ed8 100%);padding:2.5rem 1.5rem 3.5rem;position:relative;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
-.hero-inner{max-width:900px;margin:0 auto;position:relative}
-.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:12px}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0f1117;--sur:#1a1d27;--sur2:#0d1520;
+  --bdr:rgba(255,255,255,0.07);--bdrm:rgba(255,255,255,0.14);
+  --txt:#e8eaf0;--mut:#8b95a8;--fnt:#555e6e;
+  --acc:#60a5fa;--acc2:#93c5fd;--acl:#1e2d4a;--acm:#1e3a5f;
+}}
+body{font-family:var(--fn);background:var(--bg);color:var(--txt);min-height:100vh;font-size:15px;-webkit-font-smoothing:antialiased}
+.hero{background:linear-gradient(135deg,#0f172a,#1e3a8a 60%,#1d4ed8);padding:2.5rem 1.5rem 3.5rem;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")}
+.hi{max-width:900px;margin:0 auto;position:relative}
+.htop{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:12px}
 .brand{display:flex;align-items:center;gap:12px}
-.brand-icon{width:40px;height:40px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;backdrop-filter:blur(8px)}
-.brand-name{font-size:17px;font-weight:700;color:#fff;letter-spacing:-0.3px}
-.brand-sub{font-size:12px;color:rgba(255,255,255,0.55);margin-top:1px}
-.hero-badges{display:flex;gap:8px;flex-wrap:wrap}
-.hbadge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.3px;text-transform:uppercase;backdrop-filter:blur(8px)}
-.hbadge-green{background:rgba(34,197,94,0.2);color:#86efac;border:1px solid rgba(34,197,94,0.3)}
-.hbadge-blue{background:rgba(96,165,250,0.15);color:#93c5fd;border:1px solid rgba(96,165,250,0.25)}
-.hero-h{font-size:28px;font-weight:700;color:#fff;letter-spacing:-0.5px;margin-bottom:8px;line-height:1.25}
-.hero-p{font-size:14px;color:rgba(255,255,255,0.65);max-width:520px;line-height:1.65}
-.hero-sources{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:1.5rem}
-.hero-src-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:rgba(255,255,255,0.4);margin-right:4px}
-.src-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);transition:all .2s}
-.src-pill.live{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.3);color:#86efac}
-.src-pill .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);flex-shrink:0}
-.src-pill.live .dot{background:#22c55e;animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
-#srcNote{font-size:11px;color:rgba(255,255,255,0.35);margin-left:8px}
-
-/* ── Page layout ── */
-.page{max-width:900px;margin:0 auto;padding:0 1.25rem 4rem}
-
-/* ── Search section ── */
-.search-section{margin-top:-1.5rem;margin-bottom:1.5rem;position:relative;z-index:10}
-.search-card{background:var(--surface);border-radius:var(--r20);box-shadow:var(--shadow-lg);border:1px solid var(--border);overflow:hidden}
-.search-top{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
-.search-input-row{display:flex;gap:0;margin-bottom:0}
-.input-wrap{flex:1;display:flex;align-items:center;gap:10px;background:var(--surface2);border:1.5px solid var(--border-md);border-radius:var(--r12);padding:0 14px;transition:border-color .15s,box-shadow .15s}
-.input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(29,78,216,.12)}
-.input-wrap i{font-size:18px;color:var(--text3);flex-shrink:0}
-.input-wrap input{flex:1;border:none;background:transparent;font-size:15px;color:var(--text);padding:12px 0;outline:none;font-family:var(--font)}
-.input-wrap input::placeholder{color:var(--text3)}
-.btn-screen{margin-left:10px;padding:0 28px;height:52px;background:var(--accent);color:#fff;border:none;border-radius:var(--r12);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:all .15s;flex-shrink:0}
-.btn-screen:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(29,78,216,.35)}
-.btn-screen:active{transform:translateY(0)}
-.btn-screen:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
-
-.search-filters{padding:1rem 1.5rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface2)}
-.filter-group{display:flex;align-items:center;gap:8px}
-.filter-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);white-space:nowrap}
-.sel-wrap select{padding:7px 12px;font-size:13px;background:var(--surface);border:1px solid var(--border-md);border-radius:var(--r8);color:var(--text);cursor:pointer;font-family:var(--font);outline:none;transition:border-color .15s}
-.sel-wrap select:focus{border-color:var(--accent)}
-.sep{width:1px;height:20px;background:var(--border-md);flex-shrink:0}
-
-.lists-wrap{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.ltog{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;font-size:12px;font-weight:500;border:1px solid var(--border-md);border-radius:var(--r8);cursor:pointer;user-select:none;transition:all .15s;color:var(--text2);background:var(--surface)}
-.ltog:hover{border-color:var(--accent);color:var(--accent)}
-.ltog.on{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 6px rgba(29,78,216,.25)}
-.ltog i{font-size:13px}
-
-.thresh-wrap{display:flex;align-items:center;gap:8px;margin-left:auto}
-.thresh-wrap label{font-size:12px;color:var(--text2);white-space:nowrap}
-.thresh-wrap input[type=range]{width:90px;accent-color:var(--accent)}
-.thresh-val{font-size:13px;font-weight:600;color:var(--text);min-width:36px;text-align:right}
-
-/* ── Stats grid ── */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r16);padding:1.1rem 1.25rem;box-shadow:var(--shadow-xs);display:flex;flex-direction:column;gap:6px}
-.stat-top{display:flex;align-items:center;justify-content:space-between}
-.stat-icon{width:32px;height:32px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:16px}
-.si-blue{background:#eff6ff;color:#1d4ed8}
-.si-red{background:#fff1f2;color:#be123c}
-.si-amber{background:#fffbeb;color:#b45309}
-.si-green{background:#f0fdf4;color:#15803d}
-@media(prefers-color-scheme:dark){
-  .si-blue{background:#0f1f3d;color:#60a5fa}
-  .si-red{background:#2d0a14;color:#fb7185}
-  .si-amber{background:#2d1a00;color:#fbbf24}
-  .si-green{background:#052e16;color:#4ade80}
-}
-.stat-val{font-size:30px;font-weight:700;letter-spacing:-1px;line-height:1}
-.sv-blue{color:#1d4ed8}.sv-red{color:#be123c}.sv-amber{color:#b45309}.sv-green{color:#15803d}
-@media(prefers-color-scheme:dark){.sv-blue{color:#60a5fa}.sv-red{color:#fb7185}.sv-amber{color:#fbbf24}.sv-green{color:#4ade80}}
-.stat-label{font-size:12px;color:var(--text3);font-weight:500}
-@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
-
-/* ── Results panel ── */
-.results-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r20);box-shadow:var(--shadow-sm);overflow:hidden}
-.rp-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--surface2)}
-.rp-title{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
-.rp-title i{font-size:16px;color:#b45309}
-.rp-actions{display:flex;gap:8px}
-.act-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;font-size:12px;font-weight:500;border:1px solid var(--border-md);border-radius:var(--r8);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .12s;font-family:var(--font)}
-.act-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
-
-.filter-bar{padding:10px 20px;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.fb-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-right:4px}
-.fchip{padding:5px 14px;font-size:12px;font-weight:500;border-radius:20px;border:1px solid var(--border-md);background:transparent;color:var(--text2);cursor:pointer;transition:all .12s;font-family:var(--font)}
-.fchip:hover{background:var(--surface2)}
-.fchip.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 6px rgba(29,78,216,.2)}
-
-/* ── Match item ── */
-.match-item{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:flex-start;transition:background .12s}
-.match-item:last-child{border-bottom:none}
-.match-item:hover{background:var(--surface2)}
-
-.risk-col{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px;width:68px}
-.risk-badge{width:100%;text-align:center;padding:5px 0;border-radius:var(--r8);font-size:10px;font-weight:700;letter-spacing:.8px}
-.rb-H{background:#fff1f2;color:#be123c;border:1px solid #fecdd3}
-.rb-M{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
-.rb-L{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
-@media(prefers-color-scheme:dark){
-  .rb-H{background:#2d0a14;color:#fb7185;border-color:rgba(251,113,133,.2)}
-  .rb-M{background:#2d1a00;color:#fbbf24;border-color:rgba(251,191,36,.2)}
-  .rb-L{background:#052e16;color:#4ade80;border-color:rgba(74,222,128,.2)}
-}
-.score-num{font-size:13px;font-weight:700;color:var(--text2)}
-.score-track{width:100%;height:3px;border-radius:2px;background:var(--border-md);overflow:hidden}
-.score-fill{height:100%;border-radius:2px}
-.sf-H{background:#be123c}.sf-M{background:#b45309}.sf-L{background:#15803d}
-
-.match-body{flex:1;min-width:0}
-.match-name{font-size:15px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;line-height:1.3}
-.pep-tag{font-size:10px;font-weight:700;padding:2px 8px;background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;border-radius:20px;letter-spacing:.3px}
-@media(prefers-color-scheme:dark){.pep-tag{background:#1e1040;color:#a78bfa;border-color:rgba(167,139,250,.2)}}
-
-.match-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--text2);margin-bottom:6px}
-.match-meta span{display:flex;align-items:center;gap:4px}
-.match-meta i{font-size:13px;color:var(--text3)}
-.match-role{font-size:12px;color:var(--text2);margin-bottom:5px;display:flex;align-items:center;gap:5px}
-.match-reason{font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.5}
-.match-aliases{font-size:11px;color:var(--text3);margin-bottom:7px;font-style:italic}
-
-.tag-row{display:flex;gap:5px;flex-wrap:wrap}
-.stag{padding:3px 9px;border-radius:var(--r4);font-size:11px;font-weight:500}
-.stag-src{background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-mid)}
-.stag-pep{background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe}
-.stag-prog{background:var(--surface2);color:var(--text2);border:1px solid var(--border-md)}
-@media(prefers-color-scheme:dark){
-  .stag-src{background:#0f1f3d;border-color:rgba(96,165,250,.2)}
-  .stag-pep{background:#1e1040;border-color:rgba(167,139,250,.2)}
-}
-
-/* ── States ── */
-.state-box{padding:4rem 2rem;text-align:center;color:var(--text2)}
-.state-icon{font-size:48px;display:block;margin-bottom:16px;opacity:.25}
-.state-title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:8px}
-.state-sub{font-size:13px;max-width:360px;margin:0 auto;line-height:1.65}
-.spinner{width:28px;height:28px;margin:0 auto 16px;border:2.5px solid var(--border-md);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.prog-bar{width:100%;max-width:220px;height:3px;background:var(--border-md);border-radius:2px;overflow:hidden;margin:14px auto 0}
-.prog-inner{height:100%;border-radius:2px;background:var(--accent);transition:width .4s}
-
-/* ── Footer ── */
-.footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--text3)}
-.footer a{color:var(--text3);text-decoration:underline;text-underline-offset:2px}
-
-/* ── Disclaimer banner ── */
-.disclaimer{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--r8);padding:10px 14px;margin:1.5rem 0;font-size:12px;color:var(--text2);display:flex;gap:10px;align-items:flex-start;line-height:1.6}
-.disclaimer i{font-size:15px;color:var(--accent);flex-shrink:0;margin-top:1px}
-
-@media(max-width:640px){
-  .hero-h{font-size:22px}
-  .search-filters{flex-direction:column;align-items:flex-start}
-  .thresh-wrap{margin-left:0}
-  .btn-screen{padding:0 20px}
-}
+.bico{width:40px;height:40px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff}
+.bnm{font-size:17px;font-weight:700;color:#fff}
+.bsb{font-size:12px;color:rgba(255,255,255,.5);margin-top:1px}
+.hbdg{display:flex;gap:8px;flex-wrap:wrap}
+.bdg{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.bg{background:rgba(34,197,94,.2);color:#86efac;border:1px solid rgba(34,197,94,.3)}
+.bb{background:rgba(96,165,250,.15);color:#93c5fd;border:1px solid rgba(96,165,250,.25)}
+.hh{font-size:28px;font-weight:700;color:#fff;letter-spacing:-.5px;margin-bottom:8px}
+.hp{font-size:14px;color:rgba(255,255,255,.65);max-width:520px;line-height:1.65}
+.hsrc{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:1.5rem}
+.hsl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.4);margin-right:4px}
+.sp{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);transition:all .3s}
+.sp.live{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3);color:#86efac}
+.sp .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);flex-shrink:0}
+.sp.live .dot{background:#22c55e;animation:bl 2s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+#srcNote{font-size:11px;color:rgba(255,255,255,.35);margin-left:8px}
+.pg{max-width:900px;margin:0 auto;padding:0 1.25rem 4rem}
+.ss{margin-top:-1.5rem;margin-bottom:1.5rem;position:relative;z-index:10}
+.sc{background:var(--sur);border-radius:var(--r20);box-shadow:var(--s3);border:1px solid var(--bdr);overflow:hidden}
+.st{padding:1.25rem 1.5rem;border-bottom:1px solid var(--bdr)}
+.ir{display:flex;gap:10px}
+.iw{flex:1;display:flex;align-items:center;gap:10px;background:var(--sur2);border:1.5px solid var(--bdrm);border-radius:var(--r12);padding:0 14px;transition:border-color .15s,box-shadow .15s}
+.iw:focus-within{border-color:var(--acc);box-shadow:0 0 0 3px rgba(29,78,216,.1)}
+.iw i{font-size:18px;color:var(--fnt);flex-shrink:0}
+.iw input{flex:1;border:none;background:transparent;font-size:15px;color:var(--txt);padding:12px 0;outline:none;font-family:var(--fn)}
+.iw input::placeholder{color:var(--fnt)}
+.btn{padding:0 24px;height:50px;background:var(--acc);color:#fff;border:none;border-radius:var(--r12);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.btn:hover{background:var(--acc2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(29,78,216,.35)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.sf{padding:1rem 1.5rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--sur2)}
+.fl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--fnt);white-space:nowrap}
+.sw select{padding:7px 12px;font-size:13px;background:var(--sur);border:1px solid var(--bdrm);border-radius:var(--r8);color:var(--txt);cursor:pointer;font-family:var(--fn);outline:none}
+.sw select:focus{border-color:var(--acc)}
+.dv{width:1px;height:20px;background:var(--bdrm);flex-shrink:0}
+.lw{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.lt{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;font-size:12px;font-weight:500;border:1px solid var(--bdrm);border-radius:var(--r8);cursor:pointer;user-select:none;transition:all .15s;color:var(--mut);background:var(--sur)}
+.lt:hover{border-color:var(--acc);color:var(--acc)}
+.lt.on{background:var(--acc);color:#fff;border-color:var(--acc);box-shadow:0 2px 6px rgba(29,78,216,.25)}
+.tw{display:flex;align-items:center;gap:8px;margin-left:auto}
+.tw label{font-size:12px;color:var(--mut);white-space:nowrap}
+.tw input[type=range]{width:90px;accent-color:var(--acc)}
+.tv{font-size:13px;font-weight:600;color:var(--txt);min-width:36px;text-align:right}
+.dis{background:var(--sur);border:1px solid var(--bdr);border-left:3px solid var(--acc);border-radius:var(--r8);padding:10px 14px;margin:1.5rem 0;font-size:12px;color:var(--mut);display:flex;gap:10px;align-items:flex-start;line-height:1.6}
+.dis i{font-size:15px;color:var(--acc);flex-shrink:0;margin-top:1px}
+.dis a{color:var(--acc)}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
+.sk{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r16);padding:1.1rem 1.25rem;box-shadow:var(--s1)}
+.sk .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sic{width:32px;height:32px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:16px}
+.ib{background:#eff6ff;color:#1d4ed8}.ir2{background:#fff1f2;color:#be123c}
+.ia{background:#fffbeb;color:#b45309}.ig{background:#f0fdf4;color:#15803d}
+@media(prefers-color-scheme:dark){.ib{background:#0f1f3d;color:#60a5fa}.ir2{background:#2d0a14;color:#fb7185}.ia{background:#2d1a00;color:#fbbf24}.ig{background:#052e16;color:#4ade80}}
+.sv{font-size:28px;font-weight:700;letter-spacing:-.5px}
+.cb{color:#1d4ed8}.cr{color:#be123c}.ca{color:#b45309}.cg{color:#15803d}
+@media(prefers-color-scheme:dark){.cb{color:#60a5fa}.cr{color:#fb7185}.ca{color:#fbbf24}.cg{color:#4ade80}}
+.sl{font-size:12px;color:var(--fnt);font-weight:500}
+@media(max-width:600px){.sg{grid-template-columns:repeat(2,1fr)}}
+.rp{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r20);box-shadow:var(--s1);overflow:hidden}
+.rh{padding:14px 20px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--sur2)}
+.rt{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.ra{display:flex;gap:8px}
+.ab{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;font-size:12px;font-weight:500;border:1px solid var(--bdrm);border-radius:var(--r8);background:var(--sur);color:var(--mut);cursor:pointer;transition:all .12s;font-family:var(--fn)}
+.ab:hover{background:var(--acl);border-color:var(--acc);color:var(--acc)}
+.fb{padding:10px 20px;border-bottom:1px solid var(--bdr);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.fl2{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--fnt);margin-right:4px}
+.fc{padding:5px 14px;font-size:12px;font-weight:500;border-radius:20px;border:1px solid var(--bdrm);background:transparent;color:var(--mut);cursor:pointer;transition:all .12s;font-family:var(--fn)}
+.fc:hover{background:var(--sur2)}
+.fc.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.mi{padding:18px 20px;border-bottom:1px solid var(--bdr);display:flex;gap:16px;align-items:flex-start;transition:background .12s}
+.mi:last-child{border-bottom:none}
+.mi:hover{background:var(--sur2)}
+.rc{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px;width:68px}
+.rb{width:100%;text-align:center;padding:5px 0;border-radius:var(--r8);font-size:10px;font-weight:700;letter-spacing:.8px}
+.rH{background:#fff1f2;color:#be123c;border:1px solid #fecdd3}
+.rM{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+.rL{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+@media(prefers-color-scheme:dark){.rH{background:#2d0a14;color:#fb7185;border-color:rgba(251,113,133,.2)}.rM{background:#2d1a00;color:#fbbf24;border-color:rgba(251,191,36,.2)}.rL{background:#052e16;color:#4ade80;border-color:rgba(74,222,128,.2)}}
+.sn{font-size:13px;font-weight:700;color:var(--mut)}
+.str{width:100%;height:3px;border-radius:2px;background:var(--bdrm);overflow:hidden}
+.sfl{height:100%;border-radius:2px}
+.fH{background:#be123c}.fM{background:#b45309}.fL{background:#15803d}
+.mb{flex:1;min-width:0}
+.mn{font-size:15px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pt{font-size:10px;font-weight:700;padding:2px 8px;background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;border-radius:20px}
+@media(prefers-color-scheme:dark){.pt{background:#1e1040;color:#a78bfa;border-color:rgba(167,139,250,.2)}}
+.mm2{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-bottom:5px}
+.mm2 span{display:flex;align-items:center;gap:4px}
+.mro{font-size:12px;color:var(--mut);margin-bottom:5px}
+.mrn{font-size:13px;color:var(--mut);margin-bottom:7px;line-height:1.5}
+.mal{font-size:11px;color:var(--fnt);margin-bottom:7px;font-style:italic}
+.tr{display:flex;gap:5px;flex-wrap:wrap}
+.tg{padding:3px 9px;border-radius:4px;font-size:11px;font-weight:500}
+.ts{background:var(--acl);color:var(--acc);border:1px solid var(--acm)}
+.tp{background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe}
+.tx{background:var(--sur2);color:var(--mut);border:1px solid var(--bdrm)}
+@media(prefers-color-scheme:dark){.ts{background:#0f1f3d;border-color:rgba(96,165,250,.2)}.tp{background:#1e1040;border-color:rgba(167,139,250,.2)}}
+.eb{padding:4rem 2rem;text-align:center;color:var(--mut)}
+.ei{font-size:48px;display:block;margin-bottom:16px;opacity:.25}
+.et{font-size:17px;font-weight:600;color:var(--txt);margin-bottom:8px}
+.es{font-size:13px;max-width:360px;margin:0 auto;line-height:1.65}
+.sp2{width:28px;height:28px;margin:0 auto 16px;border:2.5px solid var(--bdrm);border-top-color:var(--acc);border-radius:50%;animation:spi .7s linear infinite}
+@keyframes spi{to{transform:rotate(360deg)}}
+.pg-b{width:100%;max-width:220px;height:3px;background:var(--bdrm);border-radius:2px;overflow:hidden;margin:14px auto 0}
+.pg-i{height:100%;border-radius:2px;background:var(--acc);transition:width .4s}
+.ft{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--fnt)}
 </style>
 </head>
 <body>
-
-<!-- ── Hero ── -->
 <div class="hero">
-  <div class="hero-inner">
-    <div class="hero-top">
+  <div class="hi">
+    <div class="htop">
       <div class="brand">
-        <div class="brand-icon"><i class="ti ti-shield-check"></i></div>
-        <div>
-          <div class="brand-name">ComplianceCheck</div>
-          <div class="brand-sub">Sanction &amp; PEP Screening Platform</div>
-        </div>
+        <div class="bico"><i class="ti ti-shield-check"></i></div>
+        <div><div class="bnm">ComplianceCheck</div><div class="bsb">Sanction &amp; PEP Screening Platform</div></div>
       </div>
-      <div class="hero-badges">
-        <span class="hbadge hbadge-green"><i class="ti ti-lock-open" style="font-size:12px"></i>Free &amp; Open</span>
-        <span class="hbadge hbadge-blue"><i class="ti ti-database" style="font-size:12px"></i>600+ Records</span>
+      <div class="hbdg">
+        <span class="bdg bg"><i class="ti ti-lock-open" style="font-size:12px"></i>Free &amp; Open</span>
+        <span class="bdg bb"><i class="ti ti-database" style="font-size:12px"></i>600+ Records</span>
       </div>
     </div>
-    <div class="hero-h">Global Sanctions &amp; PEP Screening</div>
-    <p class="hero-p">Screen individuals and entities against OFAC SDN, UN Consolidated, EU Sanctions, UK HMT and Politically Exposed Persons databases — free, real-time, no API key required.</p>
-    <div class="hero-sources">
-      <span class="hero-src-label">Data sources</span>
-      <div class="src-pill offline" id="src-ofac"><div class="dot"></div>OFAC SDN</div>
-      <div class="src-pill offline" id="src-un"><div class="dot"></div>UN List</div>
-      <div class="src-pill offline" id="src-eu"><div class="dot"></div>EU Sanctions</div>
-      <div class="src-pill offline" id="src-uk"><div class="dot"></div>UK HMT</div>
-      <div class="src-pill offline" id="src-pep"><div class="dot"></div>PEP Database</div>
-      <span id="srcNote"></span>
+    <div class="hh">Global Sanctions &amp; PEP Screening</div>
+    <p class="hp">Screen individuals and entities against OFAC SDN, UN Consolidated, EU Sanctions, UK HMT and Politically Exposed Persons databases — free, real-time, no API key required.</p>
+    <div class="hsrc">
+      <span class="hsl">Data sources</span>
+      <div class="sp" id="src-ofac"><div class="dot"></div>OFAC SDN</div>
+      <div class="sp" id="src-un"><div class="dot"></div>UN List</div>
+      <div class="sp" id="src-eu"><div class="dot"></div>EU Sanctions</div>
+      <div class="sp" id="src-uk"><div class="dot"></div>UK HMT</div>
+      <div class="sp" id="src-pep"><div class="dot"></div>PEP Database</div>
+      <span id="srcNote">Initialising...</span>
     </div>
   </div>
 </div>
-
-<!-- ── Page ── -->
-<div class="page">
-
-  <!-- Search card -->
-  <div class="search-section">
-    <div class="search-card">
-      <div class="search-top">
-        <div class="search-input-row">
-          <div class="input-wrap">
+<div class="pg">
+  <div class="ss">
+    <div class="sc">
+      <div class="st">
+        <div class="ir">
+          <div class="iw">
             <i class="ti ti-search"></i>
             <input type="text" id="ni" placeholder="Enter full name, entity, alias or vessel to screen…"/>
           </div>
-          <button class="btn-screen" id="sb2" onclick="doScreen()">
+          <button class="btn" id="sb" onclick="doScreen()">
             <i class="ti ti-shield-search"></i>Screen now
           </button>
         </div>
       </div>
-      <div class="search-filters">
-        <div class="filter-group">
-          <span class="filter-label">Type</span>
-          <div class="sel-wrap"><select id="ts" onchange="liveFilter()">
+      <div class="sf">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="fl">Type</span>
+          <div class="sw"><select id="ts" onchange="liveFilter()">
             <option value="all">All types</option>
             <option value="individual">Individual</option>
             <option value="entity">Entity / Org</option>
             <option value="vessel">Vessel</option>
           </select></div>
         </div>
-        <div class="sep"></div>
-        <div class="filter-group">
-          <span class="filter-label">Country</span>
-          <div class="sel-wrap"><select id="cs" onchange="liveFilter()">
+        <div class="dv"></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="fl">Country</span>
+          <div class="sw"><select id="cs" onchange="liveFilter()">
             <option value="">All countries</option>
-            <optgroup label="South Asia">
-              <option value="india">India</option>
-              <option value="pakistan">Pakistan</option>
-              <option value="bangladesh">Bangladesh</option>
-              <option value="sri lanka">Sri Lanka</option>
-              <option value="nepal">Nepal</option>
-              <option value="afghanistan">Afghanistan</option>
-            </optgroup>
-            <optgroup label="Southeast Asia">
-              <option value="singapore">Singapore</option>
-              <option value="malaysia">Malaysia</option>
-              <option value="myanmar">Myanmar</option>
-              <option value="indonesia">Indonesia</option>
-              <option value="philippines">Philippines</option>
-              <option value="thailand">Thailand</option>
-            </optgroup>
-            <optgroup label="Gulf / Middle East">
-              <option value="uae">UAE</option>
-              <option value="saudi arabia">Saudi Arabia</option>
-              <option value="qatar">Qatar</option>
-              <option value="iran">Iran</option>
-              <option value="syria">Syria</option>
-            </optgroup>
-            <optgroup label="East Asia">
-              <option value="china">China</option>
-              <option value="north korea">North Korea</option>
-            </optgroup>
-            <optgroup label="Europe / Eurasia">
-              <option value="russia">Russia</option>
-              <option value="belarus">Belarus</option>
-              <option value="ukraine">Ukraine</option>
-            </optgroup>
-            <optgroup label="Americas">
-              <option value="venezuela">Venezuela</option>
-              <option value="cuba">Cuba</option>
-              <option value="nicaragua">Nicaragua</option>
-            </optgroup>
-            <optgroup label="Africa">
-              <option value="sudan">Sudan</option>
-              <option value="zimbabwe">Zimbabwe</option>
-              <option value="libya">Libya</option>
-            </optgroup>
+            <optgroup label="South Asia"><option value="india">India</option><option value="pakistan">Pakistan</option><option value="bangladesh">Bangladesh</option><option value="sri lanka">Sri Lanka</option><option value="nepal">Nepal</option><option value="afghanistan">Afghanistan</option></optgroup>
+            <optgroup label="Southeast Asia"><option value="singapore">Singapore</option><option value="malaysia">Malaysia</option><option value="myanmar">Myanmar</option><option value="indonesia">Indonesia</option><option value="philippines">Philippines</option></optgroup>
+            <optgroup label="Gulf / Middle East"><option value="uae">UAE</option><option value="saudi arabia">Saudi Arabia</option><option value="qatar">Qatar</option><option value="iran">Iran</option><option value="syria">Syria</option></optgroup>
+            <optgroup label="East Asia"><option value="china">China</option><option value="north korea">North Korea</option></optgroup>
+            <optgroup label="Europe"><option value="russia">Russia</option><option value="belarus">Belarus</option><option value="ukraine">Ukraine</option></optgroup>
+            <optgroup label="Americas"><option value="venezuela">Venezuela</option><option value="cuba">Cuba</option><option value="usa">USA</option></optgroup>
+            <optgroup label="Africa"><option value="sudan">Sudan</option><option value="zimbabwe">Zimbabwe</option><option value="libya">Libya</option></optgroup>
           </select></div>
         </div>
-        <div class="sep"></div>
-        <div class="filter-group">
-          <span class="filter-label">Lists</span>
-          <div class="lists-wrap">
-            <div class="ltog on" data-list="ofac"><i class="ti ti-flag"></i>OFAC</div>
-            <div class="ltog on" data-list="un"><i class="ti ti-globe"></i>UN</div>
-            <div class="ltog on" data-list="eu"><i class="ti ti-building"></i>EU</div>
-            <div class="ltog on" data-list="uk"><i class="ti ti-crown"></i>UK HMT</div>
-            <div class="ltog on" data-list="pep"><i class="ti ti-user-shield"></i>PEP</div>
+        <div class="dv"></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="fl">Lists</span>
+          <div class="lw">
+            <div class="lt on" data-list="ofac"><i class="ti ti-flag"></i>OFAC</div>
+            <div class="lt on" data-list="un"><i class="ti ti-globe"></i>UN</div>
+            <div class="lt on" data-list="eu"><i class="ti ti-building"></i>EU</div>
+            <div class="lt on" data-list="uk"><i class="ti ti-crown"></i>UK HMT</div>
+            <div class="lt on" data-list="pep"><i class="ti ti-user-shield"></i>PEP</div>
           </div>
         </div>
-        <div class="thresh-wrap">
+        <div class="tw">
           <label for="tsl">Min match</label>
           <input type="range" id="tsl" min="30" max="95" value="50" step="5" oninput="document.getElementById('tv').textContent=this.value+'%'"/>
-          <span class="thresh-val" id="tv">50%</span>
+          <span class="tv" id="tv">50%</span>
         </div>
       </div>
     </div>
   </div>
-
-
-  <!-- Disclaimer -->
-  <div class="disclaimer">
+  <div class="dis">
     <i class="ti ti-info-circle"></i>
-    <span>For research &amp; portfolio demonstration only. Not certified for regulatory compliance. Always verify results against official <a href="https://sanctionssearch.ofac.treas.gov/" target="_blank">OFAC</a>, <a href="https://www.un.org/securitycouncil/content/un-sc-consolidated-list" target="_blank">UN</a>, <a href="https://www.eeas.europa.eu/eeas/european-union-sanctions_en" target="_blank">EU</a> and <a href="https://www.gov.uk/government/publications/financial-sanctions-consolidated-list-of-targets" target="_blank">UK HMT</a> lists before taking compliance action.</span>
+    <span>For research &amp; portfolio demonstration only. Not certified for regulatory compliance. Always verify results against official <a href="https://sanctionssearch.ofac.treas.gov/" target="_blank">OFAC</a>, <a href="https://www.un.org/securitycouncil/content/un-sc-consolidated-list" target="_blank">UN</a>, <a href="https://www.eeas.europa.eu/eeas/european-union-sanctions_en" target="_blank">EU</a> and <a href="https://www.gov.uk/government/publications/financial-sanctions-consolidated-list-of-targets" target="_blank">UK HMT</a> lists.</span>
   </div>
-
-  <!-- Stats -->
-  <div class="stats-grid" id="statsRow" style="display:none">
-    <div class="stat-card">
-      <div class="stat-top"><span class="stat-label">Total matches</span><div class="stat-icon si-blue"><i class="ti ti-list-search"></i></div></div>
-      <div class="stat-val sv-blue" id="st">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-top"><span class="stat-label">High risk</span><div class="stat-icon si-red"><i class="ti ti-alert-octagon"></i></div></div>
-      <div class="stat-val sv-red" id="sh">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-top"><span class="stat-label">Medium risk</span><div class="stat-icon si-amber"><i class="ti ti-alert-triangle"></i></div></div>
-      <div class="stat-val sv-amber" id="sm2">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-top"><span class="stat-label">PEP / Low risk</span><div class="stat-icon si-green"><i class="ti ti-user-check"></i></div></div>
-      <div class="stat-val sv-green" id="sl">0</div>
+  <div class="sg" id="statsRow" style="display:none">
+    <div class="sk"><div class="top"><span class="sl">Total matches</span><div class="sic ib"><i class="ti ti-list-search"></i></div></div><div class="sv cb" id="st">0</div></div>
+    <div class="sk"><div class="top"><span class="sl">High risk</span><div class="sic ir2"><i class="ti ti-alert-octagon"></i></div></div><div class="sv cr" id="sh">0</div></div>
+    <div class="sk"><div class="top"><span class="sl">Medium risk</span><div class="sic ia"><i class="ti ti-alert-triangle"></i></div></div><div class="sv ca" id="sm">0</div></div>
+    <div class="sk"><div class="top"><span class="sl">PEP / Low risk</span><div class="sic ig"><i class="ti ti-user-check"></i></div></div><div class="sv cg" id="sl">0</div></div>
+  </div>
+  <div class="rp" id="rp">
+    <div class="eb">
+      <i class="ti ti-shield-search ei"></i>
+      <div class="et">Ready to screen</div>
+      <p class="es">Enter any name above and click "Screen now". Checks 600+ built-in records plus live OFAC &amp; OpenSanctions data.</p>
     </div>
   </div>
-
-  <!-- Results -->
-  <div class="results-panel" id="rp">
-    <div class="state-box">
-      <i class="ti ti-shield-search state-icon"></i>
-      <div class="state-title">Ready to screen</div>
-      <p class="state-sub">Enter any name above and click "Screen now". Checks 600+ built-in records plus live OFAC &amp; OpenSanctions data — no API key needed.</p>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <span>Disclaimer: For portfolio &amp; research use only. Not a substitute for certified AML compliance screening.</span>
-    <span>Free &amp; Open Source · Built with public data · <strong>ComplianceCheck v2.0</strong></span>
+  <footer class="ft">
+    <span>For portfolio &amp; research use only. Not a substitute for certified AML compliance screening.</span>
+    <span>ComplianceCheck v3.0 · Free &amp; Open Source</span>
   </footer>
 </div>
-
 <script>
-// ═══════════════════════════════════════════
-// GOOGLE SHEETS CONFIG — paste your published CSV URL here
-// Leave empty to skip; set at runtime via the UI input
-// ═══════════════════════════════════════════
-let SHEET_URL = "";
-let sheetData = [
 const BUILTIN_DATA = [
   // ── RUSSIA / UKRAINE ──
   {name:"Vladimir Putin",aliases:["Vladimir Vladimirovich Putin","V. Putin"],type:"Individual",nationality:"Russia",dob:"1952-10-07",risk:"HIGH",sources:["OFAC SDN","EU","UK HMT","UN"],programs:["UKRAINE-EO13685","SDN"],reason:"President of Russian Federation, responsible for invasion of Ukraine",is_pep:true,pep_role:"President of Russia"},
@@ -788,755 +633,385 @@ const BUILTIN_DATA = [
   {name:"Ahmed Patel",aliases:["A. Patel","Congress Treasurer","Sonia's aide"],type:"Individual",nationality:"India",dob:"1949-08-21",risk:"LOW",sources:["PEP"],programs:[],reason:"Former INC Political Secretary to Sonia Gandhi; Rajya Sabha MP — PEP (deceased 2020)",is_pep:true,pep_role:"Former Rajya Sabha MP; INC Political Secretary"},
   {name:"Vayalar Ravi",aliases:["V. Ravi","Former Overseas Indians Minister"],type:"Individual",nationality:"India",dob:"1937-03-08",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Union Minister Overseas Indian Affairs; Former Kerala Governor — PEP",is_pep:true,pep_role:"Former Union Minister; Former Governor"},
   {name:"Murli Deora",aliases:["M. Deora","Former Petroleum Minister"],type:"Individual",nationality:"India",dob:"1936-07-14",risk:"LOW",sources:["PEP"],programs:[],reason:"Former Union Petroleum Minister; Rajya Sabha MP — PEP (deceased 2014)",is_pep:true,pep_role:"Former Union Petroleum Minister"},
-];
-
-// ═══════════════════════════════════════════
-// AUTO-FETCH PEP FROM EVERYPOLITICIAN + OPENSANCTIONS
-// ═══════════════════════════════════════════
-const EP_SOURCES = [
-  {country:"India",      legislature:"Lok Sabha",       url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/829796bc2c9693efb67d39312a22ce674aa4a8b1/data/India/Lok_Sabha/ep-popolo-v1.0.json"},
-  {country:"Pakistan",   legislature:"National Assembly",url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/a83a045d550b06c48138534e349b7ef155ac110a/data/Pakistan/Assembly/ep-popolo-v1.0.json"},
-  {country:"Bangladesh", legislature:"Jatiyo Sangshad", url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/79a6ca44788508be735a5fd7983913e7e4eb29b8/data/Bangladesh/House/ep-popolo-v1.0.json"},
-  {country:"Sri Lanka",  legislature:"Parliament",       url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/f22cf126cd2d9f4e4609ee92a3af5944730968d3/data/Sri_Lanka/Parliament/ep-popolo-v1.0.json"},
-  {country:"Nepal",      legislature:"Assembly",        url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/67ffe4f62d0d52d94d2b2bbc9d74d9ba9642009c/data/Nepal/Assembly/ep-popolo-v1.0.json"},
-  {country:"Malaysia",   legislature:"Dewan Rakyat",    url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/aedf80c57d1c5c4ec726843070c466e678452ef6/data/Malaysia/Dewan_Rakyat/ep-popolo-v1.0.json"},
-  {country:"Singapore",  legislature:"Parliament",       url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/5a17720119dbeab0ca8de9e1920779e0b5fdca58/data/Singapore/Parliament/ep-popolo-v1.0.json"},
-  {country:"Indonesia",  legislature:"DPR",             url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/354cefa005d1f2a094a7c5f195f70c78306054a7/data/Indonesia/Council/ep-popolo-v1.0.json"},
-  {country:"Myanmar",    legislature:"Lower House",     url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/fdd0c8dd11b20ffe667c658a245c09312365cce1/data/Myanmar/House_of_Representatives/ep-popolo-v1.0.json"},
-  {country:"Philippines",legislature:"House",           url:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/d4cc6135e68907f6da8b75a6d8fde9c80ff7142f/data/Philippines/House/ep-popolo-v1.0.json"},
-];
-
-let autoFetchData = [];
-let autoFetchCount = 0;
-
-async function fetchEPCountry(src){
-  try{
-    const proxy = "https://api.allorigins.win/get?url=";
-    const r = await fetch(proxy + encodeURIComponent(src.url), {signal: AbortSignal.timeout(12000)});
-    const j = await r.json();
-    const data = JSON.parse(j.contents || "{}");
-    const persons = data.persons || [];
-    const memberships = data.memberships || [];
-    // Build a map of person_id -> latest membership role
-    const roleMap = {};
-    for(const m of memberships){
-      const pid = m.person_id;
-      if(!roleMap[pid]) roleMap[pid] = m.role || "Member of Parliament";
-    }
-    const entries = persons.map(p => {
-      const names = [p.name, ...(p.other_names||[]).map(n=>n.name)].filter(Boolean);
-      const mainName = names[0];
-      const aliases = names.slice(1).filter(a => a !== mainName);
-      return {
-        name: mainName,
-        aliases: aliases.slice(0,3),
-        type: "Individual",
-        nationality: src.country,
-        dob: p.birth_date || null,
-        risk: "LOW",
-        sources: ["PEP"],
-        programs: [],
-        reason: `${src.legislature} member — ${src.country}. Source: EveryPolitician.org`,
-        is_pep: true,
-        pep_role: `${roleMap[p.id] || "MP"}, ${src.legislature}, ${src.country}`,
-        _fromEP: true
-      };
-    }).filter(e => e.name && e.name.length > 1);
-    autoFetchData.push(...entries);
-    autoFetchCount += entries.length;
-    return entries.length;
-  } catch(e){
-    console.warn("EP fetch failed for " + src.country + ":", e.message);
-    return 0;
-  }
-}
-
-async function wikidataQuery(sparql, role, reason){
-  // Generic Wikidata SPARQL fetcher — browser CORS is allowed by Wikidata
-  try{
-    const url = "https://query.wikidata.org/sparql?query=" + encodeURIComponent(sparql) + "&format=json";
-    const r = await fetch(url, {
-      headers:{"Accept":"application/json","User-Agent":"ComplianceCheck/1.0"},
-      signal: AbortSignal.timeout(18000)
-    });
-    const data = await r.json();
-    const bindings = data?.results?.bindings || [];
-    const entries = [];
-    const seen = new Set();
-    for(const b of bindings){
-      const name = b.personLabel?.value || b.nameLabel?.value || "";
-      if(!name || name.startsWith("Q") || seen.has(name)) continue;
-      seen.add(name);
-      const dob = (b.dob?.value || b.dobLabel?.value || "").slice(0,10) || null;
-      const position = b.positionLabel?.value || b.assemblyLabel?.value || "";
-      const constituency = b.constituencyLabel?.value || b.stateLabel?.value || "";
-      const detail = [position, constituency].filter(Boolean).join(", ");
-      entries.push({
-        name,
-        aliases: constituency ? [constituency] : [],
-        type:"Individual",
-        nationality:"India",
-        dob,
-        risk:"LOW",
-        sources:["PEP"],
-        programs:[],
-        reason: reason + (detail ? " — " + detail : "") + ". Source: Wikidata/EveryPolitician",
-        is_pep:true,
-        pep_role: role + (detail ? ", " + detail : ""),
-        _fromEP:true
-      });
-    }
-    return entries;
-  } catch(e){
-    console.warn("Wikidata query failed:", e.message);
-    return [];
-  }
-}
-
-async function fetchWikidataLokSabha(){
-  // 18th Lok Sabha (2024 election) — Q116967001 is the 18th Lok Sabha term
-  const query = `SELECT DISTINCT ?person ?personLabel ?dob ?constituencyLabel WHERE {
-    ?person wdt:P39 wd:Q29552 .
-    ?person p:P39 ?stmt .
-    ?stmt ps:P39 wd:Q29552 .
-    ?stmt pq:P2937 wd:Q116967001 .
-    OPTIONAL { ?person wdt:P569 ?dob }
-    OPTIONAL { ?person wdt:P1768 ?constituency }
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-  } LIMIT 600`;
-  const entries = await wikidataQuery(query, "MP, Lok Sabha 18th", "18th Lok Sabha MP (2024 election)");
-  autoFetchData.push(...entries);
-  autoFetchCount += entries.length;
-  console.log("Wikidata 18th Lok Sabha:", entries.length, "MPs");
-  return entries.length;
-}
-
-async function fetchWikidataRajyaSabha(){
-  // Rajya Sabha members (Q29527 = member of Rajya Sabha)
-  const query = `SELECT DISTINCT ?person ?personLabel ?dob WHERE {
-    ?person wdt:P39 wd:Q29527 .
-    OPTIONAL { ?person wdt:P569 ?dob }
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-  } LIMIT 300`;
-  const entries = await wikidataQuery(query, "Rajya Sabha MP", "Rajya Sabha MP, India");
-  autoFetchData.push(...entries);
-  autoFetchCount += entries.length;
-  console.log("Wikidata Rajya Sabha:", entries.length, "MPs");
-  return entries.length;
-}
-
-async function fetchWikidataIndianCMs(){
-  // All Indian Chief Ministers — current and past (subnational)
-  // Q1372646 = chief minister (generic); filter by India (Q668)
-  const query = `SELECT DISTINCT ?person ?personLabel ?dob ?positionLabel WHERE {
-    ?position wdt:P31/wdt:P279* wd:Q1372646 .
-    ?position wdt:P17 wd:Q668 .
-    ?person wdt:P39 ?position .
-    OPTIONAL { ?person wdt:P569 ?dob }
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-  } LIMIT 400`;
-  const entries = await wikidataQuery(query, "Chief Minister / State Leader", "Indian state Chief Minister (current or former)");
-  autoFetchData.push(...entries);
-  autoFetchCount += entries.length;
-  console.log("Wikidata Indian CMs:", entries.length);
-  return entries.length;
-}
-
-async function fetchWikidataIndianMLAs(){
-  // State MLAs — members of Indian state legislative assemblies
-  // Q15911040 = member of a state legislative assembly (India)
-  const query = `SELECT DISTINCT ?person ?personLabel ?dob ?stateLabel WHERE {
-    ?position wdt:P279 wd:Q15911040 .
-    ?position wdt:P17 wd:Q668 .
-    ?person wdt:P39 ?position .
-    OPTIONAL { ?person wdt:P569 ?dob }
-    OPTIONAL { ?person wdt:P131 ?state }
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-  } LIMIT 1000`;
-  const entries = await wikidataQuery(query, "MLA, State Legislative Assembly", "Member of Indian State Legislative Assembly");
-  autoFetchData.push(...entries);
-  autoFetchCount += entries.length;
-  console.log("Wikidata Indian MLAs:", entries.length);
-  return entries.length;
-}
-
-async function fetchWikidataIndianGovernors(){
-  // Governors of Indian states (Q1656801 = governor of an Indian state)
-  const query = `SELECT DISTINCT ?person ?personLabel ?dob ?positionLabel WHERE {
-    ?position wdt:P31/wdt:P279* wd:Q1656801 .
-    ?position wdt:P17 wd:Q668 .
-    ?person wdt:P39 ?position .
-    OPTIONAL { ?person wdt:P569 ?dob }
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
-  } LIMIT 200`;
-  const entries = await wikidataQuery(query, "Governor", "Governor of an Indian state");
-  autoFetchData.push(...entries);
-  autoFetchCount += entries.length;
-  console.log("Wikidata Indian Governors:", entries.length);
-  return entries.length;
-}
-
-async function fetchAllEP(selectedCountries){
-  autoFetchData = [];
-  autoFetchCount = 0;
-  const sources = EP_SOURCES.filter(s => selectedCountries.includes(s.country));
-  if(!sources.length) return;
-  updateAutoStatus("Fetching from EveryPolitician…", "loading");
-  let loaded = 0;
-  // Fetch ALL Indian politicians from Wikidata (subnational + national)
-  if(selectedCountries.includes("India")){
-    updateAutoStatus("Fetching India: 18th Lok Sabha (2024)…", "loading");
-    const ls = await fetchWikidataLokSabha();
-    updateAutoStatus(`Lok Sabha: ${ls} MPs. Fetching Rajya Sabha…`, "loading");
-    const rs = await fetchWikidataRajyaSabha();
-    updateAutoStatus(`Rajya Sabha: ${rs} MPs. Fetching Chief Ministers…`, "loading");
-    const cms = await fetchWikidataIndianCMs();
-    updateAutoStatus(`CMs: ${cms}. Fetching Governors…`, "loading");
-    const gov = await fetchWikidataIndianGovernors();
-    updateAutoStatus(`Governors: ${gov}. Fetching State MLAs…`, "loading");
-    const mlas = await fetchWikidataIndianMLAs();
-    updateAutoStatus(`India complete: ${ls} MPs + ${rs} RS + ${cms} CMs + ${gov} Governors + ${mlas} MLAs`, "loading");
-  }
-  // Fetch sequentially to avoid rate limiting
-  for(const src of sources){
-    updateAutoStatus(`Fetching ${src.country} (${loaded}/${sources.length})…`, "loading");
-    const n = await fetchEPCountry(src);
-    loaded++;
-    updateAutoStatus(`Loaded ${src.country}: ${n} politicians (${loaded}/${sources.length})…`, "loading");
-  }
-  markLive("pep");
-  document.getElementById("srcNote").textContent = 
-    `${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC · ${autoFetchCount} politicians from ${loaded} countries · OpenSanctions per-query`;
-}
-
-function updateAutoStatus(msg, type){
-  // Write silently to srcNote in hero bar
-  const el = document.getElementById("srcNote");
-  if(!el) return;
-  el.textContent = msg;
-}
-
-async function fetchGoogleSheet(url){
-  if(!url) return;
-  try{
-    document.getElementById("src-sheet").className="src-pill offline";
-    document.getElementById("src-sheet").querySelector(".dot").style.background="#eab308";
-    const proxy = "https://api.allorigins.win/get?url=";
-    const r = await fetch(proxy + encodeURIComponent(url), {signal: AbortSignal.timeout(8000)});
-    const j = await r.json();
-    const csv = j.contents || "";
-    const lines = csv.split("\n").filter(l => l.trim());
-    if(lines.length < 2){ console.warn("Sheet: no data rows"); return; }
-    // Parse header row
-    const headers = parseCSVRow(lines[0]).map(h => h.toLowerCase().trim());
-    const idx = {
-      name: headers.findIndex(h => h.includes("name")),
-      aliases: headers.findIndex(h => h.includes("alias")),
-      type: headers.findIndex(h => h.includes("type")),
-      nationality: headers.findIndex(h => h.includes("country") || h.includes("national")),
-      dob: headers.findIndex(h => h.includes("dob") || h.includes("birth")),
-      risk: headers.findIndex(h => h.includes("risk")),
-      sources: headers.findIndex(h => h.includes("source") || h.includes("list")),
-      reason: headers.findIndex(h => h.includes("reason") || h.includes("notes")),
-      pep_role: headers.findIndex(h => h.includes("role") || h.includes("position")),
-      is_pep: headers.findIndex(h => h.includes("pep")),
-    };
-    if(idx.name === -1){ console.warn("Sheet: no 'name' column found"); return; }
-    const parsed = [];
-    for(let i = 1; i < lines.length; i++){
-      const cols = parseCSVRow(lines[i]);
-      const name = cols[idx.name]?.trim();
-      if(!name || name.length < 2) continue;
-      const riskRaw = (cols[idx.risk] || "LOW").trim().toUpperCase();
-      const risk = ["HIGH","MEDIUM","LOW"].includes(riskRaw) ? riskRaw : "LOW";
-      const srcRaw = cols[idx.sources] || "Custom";
-      const sources = srcRaw.split(/[|,;]/).map(s => s.trim()).filter(Boolean);
-      const isPepCol = idx.is_pep !== -1 ? cols[idx.is_pep]?.trim().toLowerCase() : null;
-      const isPep = isPepCol ? ["yes","true","1","y"].includes(isPepCol) : true;
-      parsed.push({
-        name,
-        aliases: idx.aliases !== -1 ? (cols[idx.aliases]||"").split("|").map(a=>a.trim()).filter(Boolean) : [],
-        type: idx.type !== -1 ? (cols[idx.type]||"Individual").trim() : "Individual",
-        nationality: idx.nationality !== -1 ? cols[idx.nationality]?.trim() || null : null,
-        dob: idx.dob !== -1 ? cols[idx.dob]?.trim() || null : null,
-        risk,
-        sources: sources.length ? sources : ["Custom PEP"],
-        programs: [],
-        reason: idx.reason !== -1 ? cols[idx.reason]?.trim() || "Custom PEP entry" : "Custom PEP entry",
-        is_pep: isPep,
-        pep_role: idx.pep_role !== -1 ? cols[idx.pep_role]?.trim() || null : null,
-        _fromSheet: true
-      });
-    }
-    sheetData = parsed;
-    markLive("sheet");
-    console.log("Google Sheet: loaded " + parsed.length + " entries");
-    document.getElementById("srcNote").textContent = 
-      BUILTIN_DATA.length + " built-in · " + liveData.length + " OFAC · " + sheetData.length + " from Sheet";
-  } catch(e){
-    console.warn("Google Sheet fetch failed:", e.message);
-    document.getElementById("src-sheet").querySelector(".dot").style.background="#ef4444";
-  }
-}
-
-function parseCSVRow(row){
-  const cols = []; let cur = ""; let inQ = false;
-  for(let i = 0; i < row.length; i++){
-    const c = row[i];
-    if(c === '"'){ inQ = !inQ; }
-    else if(c === ',' && !inQ){ cols.push(cur.replace(/^"|"$/g,"")); cur = ""; }
-    else { cur += c; }
-  }
-  cols.push(cur.replace(/^"|"$/g,""));
-  return cols;
-}
-
-// ═══════════════════════════════════════════
-// BUILT-IN DATASET — 300+ real sanctioned individuals & PEPs
-// Sources: publicly known OFAC/UN/EU/UK designations + PEP roles
-// ═══════════════════════════════════════════
-];
-
-// ═══════════════════════════════════════════
+];// ═══════════════════════════════════════════
 // FUZZY MATCHING ENGINE
 // ═══════════════════════════════════════════
-function normalize(s){
-  return (s||"").toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-    .replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
-}
-
-function tokenSort(s){ return normalize(s).split(" ").sort().join(" "); }
-
-function levenshtein(a,b){
-  const m=a.length,n=b.length;
-  if(!m)return n; if(!n)return m;
-  const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i?j?0:j:i));
-  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++)
-    dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
-  return dp[m][n];
-}
-
-function similarityScore(a,b){
-  const na=normalize(a), nb=normalize(b);
-  if(na===nb) return 100;
-  // token sort match
-  const ta=tokenSort(a), tb=tokenSort(b);
-  if(ta===tb) return 98;
-  // prefix match
-  if(na.startsWith(nb)||nb.startsWith(na)) return 92;
-  // contains
-  if(na.includes(nb)||nb.includes(na)) return 85;
-  // levenshtein on token-sorted
-  const maxLen=Math.max(ta.length,tb.length)||1;
-  const lev=levenshtein(ta,tb);
-  const levScore=Math.round((1-lev/maxLen)*100);
-  // token overlap
-  const tokA=new Set(na.split(" ")), tokB=new Set(nb.split(" "));
-  const inter=[...tokA].filter(t=>tokB.has(t)&&t.length>1).length;
-  const union=new Set([...tokA,...tokB]).size;
-  const jaccard=union?Math.round(inter/union*100):0;
-  return Math.max(levScore,jaccard);
-}
-
-function matchEntry(query,entry){
-  const names=[entry.name,...(entry.aliases||[])];
-  let best=0;
-  for(const n of names){
-    const s=similarityScore(query,n);
-    if(s>best) best=s;
-  }
-  return best;
-}
-
-// ═══════════════════════════════════════════
-
-// ═══════════════════════════════════════════
-// FUZZY MATCHING ENGINE
-// ═══════════════════════════════════════════
-function normalize(s){return(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim()}
-function tokenSort(s){return normalize(s).split(" ").sort().join(" ")}
-function levenshtein(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i?j?0:j:i));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n]}
-function similarityScore(a,b){
-  const na=normalize(a),nb=normalize(b);
+function norm(s){return(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim()}
+function tsort(s){return norm(s).split(" ").sort().join(" ")}
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;const d=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i?j?0:j:i));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=a[i-1]===b[j-1]?d[i-1][j-1]:1+Math.min(d[i-1][j],d[i][j-1],d[i-1][j-1]);return d[m][n]}
+function sim(a,b){
+  const na=norm(a),nb=norm(b);
   if(na===nb)return 100;
-  const ta=tokenSort(a),tb=tokenSort(b);
-  if(ta===tb)return 98;
+  if(tsort(a)===tsort(b))return 98;
   if(na.startsWith(nb)||nb.startsWith(na))return 92;
   if(na.includes(nb)||nb.includes(na))return 88;
-  // single-token surname/firstname match (e.g. "Putin" in "Vladimir Putin")
-  const tokA=na.split(" ").filter(t=>t.length>2);
-  const tokB=nb.split(" ").filter(t=>t.length>2);
-  const exactTok=tokA.filter(t=>tokB.includes(t));
-  if(exactTok.length>0){
-    const longer=Math.max(tokA.length,tokB.length);
-    if(longer===1)return 95;
-    if(exactTok.length===Math.min(tokA.length,tokB.length))return 85;
-    return 75;
-  }
-  const maxLen=Math.max(ta.length,tb.length)||1;
-  const lev=levenshtein(ta,tb);
-  const levScore=Math.round((1-lev/maxLen)*100);
-  const union=new Set([...tokA,...tokB]).size;
-  const inter=tokA.filter(t=>tokB.includes(t)).length;
-  const jaccard=union?Math.round(inter/union*100):0;
-  return Math.max(levScore,jaccard);
+  const ta=na.split(" ").filter(t=>t.length>2),tb=nb.split(" ").filter(t=>t.length>2);
+  const exact=ta.filter(t=>tb.includes(t));
+  if(exact.length>0){const longer=Math.max(ta.length,tb.length);return longer===1?95:exact.length===Math.min(ta.length,tb.length)?85:75}
+  const ml=Math.max(tsort(a).length,tsort(b).length)||1;
+  const ls=Math.round((1-lev(tsort(a),tsort(b))/ml)*100);
+  const u=new Set([...ta,...tb]).size;
+  const jac=u?Math.round(ta.filter(t=>tb.includes(t)).length/u*100):0;
+  return Math.max(ls,jac);
 }
-function matchEntry(query,entry){
-  const qNorm=normalize(query);
-  const qTokens=qNorm.split(" ").filter(t=>t.length>2);
-  const isSingle=qTokens.length===1;
+function match(query,entry){
+  const qn=norm(query),qt=qn.split(" ").filter(t=>t.length>2),isSingle=qt.length===1;
   const names=[entry.name,...(entry.aliases||[])];
   let best=0;
   for(const n of names){
-    const nNorm=normalize(n);
-    // skip very short aliases (initials like IK, MR, IS) for all multi-char queries
-    if(nNorm.length<=3&&qNorm.length>3) continue;
-    const nTokens=nNorm.split(" ").filter(t=>t.length>2);
+    const nn=norm(n);
+    if(nn.length<=3&&qn.length>3)continue;
+    const nt=nn.split(" ").filter(t=>t.length>2);
     if(isSingle){
-      // Single-word query: token must appear EXACTLY in name/alias words
-      const exactToken=nTokens.some(t=>t===qTokens[0]);
-      if(!exactToken) continue;
-      const s=similarityScore(query,n);
-      if(s>=85&&s>best) best=s;
+      if(!nt.some(t=>t===qt[0]))continue;
+      const s=sim(query,n);
+      if(s>=85&&s>best)best=s;
     } else {
-      // Multi-word query: require at least one shared meaningful token
-      const sharedToken=qTokens.some(qt=>nTokens.some(nt=>nt===qt));
-      if(!sharedToken) continue; // skip entirely if no word overlap
-      const s=similarityScore(query,n);
-      if(s>=60&&s>best) best=s;
+      if(!qt.some(q=>nt.some(t=>t===q)))continue;
+      const s=sim(query,n);
+      if(s>=60&&s>best)best=s;
     }
   }
   return best;
-}
-
-// ═══════════════════════════════════════════
-// DATA FETCHING
-// ═══════════════════════════════════════════
-let liveData=[];
-const PROXY="https://api.allorigins.win/get?url=";
-
-async function fetchOFAC(){
-  try{
-    const url=encodeURIComponent("https://www.treasury.gov/ofac/downloads/sdn.csv");
-    const r=await fetch(PROXY+url,{signal:AbortSignal.timeout(8000)});
-    const j=await r.json();
-    const lines=(j.contents||"").split("\n").slice(0,2000);
-    const parsed=[];
-    for(const line of lines){
-      if(!line.trim())continue;
-      const cols=line.split(",");
-      if(cols.length<3)continue;
-      const name=cols[1]?.replace(/"/g,"").trim();
-      const type=cols[2]?.replace(/"/g,"").trim();
-      if(!name||name.length<3)continue;
-      parsed.push({name,type:type==="individual"?"Individual":type==="entity"?"Entity":"Individual",risk:"HIGH",sources:["OFAC SDN"],programs:["SDN"],nationality:cols[3]?.replace(/"/g,"").trim()||null,reason:"Listed on OFAC Specially Designated Nationals list",aliases:[],is_pep:false});
-    }
-    liveData.push(...parsed);
-    markLive("ofac");
-  }catch(e){console.warn("OFAC:",e.message)}
-}
-
-async function fetchOpenSanctions(){markLive("un");markLive("eu");markLive("uk");markLive("pep")}
-
-async function searchOpenSanctions(query){
-  try{
-    const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),4000);
-    const url=encodeURIComponent(`https://api.opensanctions.org/search/default?q=${encodeURIComponent(query)}&limit=20`);
-    const r=await fetch(PROXY+url,{signal:controller.signal});
-    clearTimeout(timer);
-    const j=await r.json();
-    const data=JSON.parse(j.contents||"{}");
-    const results=[];
-    for(const r2 of(data.results||[])){
-      const props=r2.properties||{};
-      const name=(props.name||[])[0]||r2.caption||"";
-      if(!name)continue;
-      const aliases=(props.alias||[]);
-      const nationality=(props.nationality||props.country||[])[0]||null;
-      const dob=(props.birthDate||[])[0]||null;
-      const datasets=r2.datasets||[];
-      const sources=[];
-      if(datasets.some(d=>d.includes("ofac")))sources.push("OFAC SDN");
-      if(datasets.some(d=>d.includes("un_")||d==="un_sc_sanctions"))sources.push("UN");
-      if(datasets.some(d=>d.includes("eu_")))sources.push("EU");
-      if(datasets.some(d=>d.includes("gb_")||d.includes("uk_")))sources.push("UK HMT");
-      if(datasets.some(d=>d.includes("pep")))sources.push("PEP");
-      if(!sources.length)sources.push("OpenSanctions");
-      const isPep=datasets.some(d=>d.includes("pep"));
-      const isSanctioned=sources.some(s=>s!=="PEP"&&s!=="OpenSanctions");
-      results.push({name,aliases,type:r2.schema==="Person"?"Individual":"Entity",nationality,dob,
-        risk:isSanctioned?"HIGH":isPep?"LOW":"MEDIUM",sources,programs:[],
-        reason:(props.program||[]).join("; ")||"OpenSanctions database match",
-        is_pep:isPep,pep_role:(props.position||[])[0]||null,_osScore:r2.score||0});
-    }
-    return results;
-  }catch(e){console.warn("OpenSanctions skipped:",e.message);return[]}
-}
-
-function markLive(id){
-  const el=document.getElementById("src-"+id);
-  if(el){el.className="src-pill live";const d=el.querySelector(".dot");if(d)d.style.background="#22c55e"}
 }
 
 // ═══════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════
 let activeLists=new Set(["ofac","un","eu","uk","pep"]);
+let rawResults=[];
 let allResults=[];
-let rawResults=[]; // all matched results before list/type/country filter
 let activeFilter="all";
+const PROXY="https://api.allorigins.win/get?url=";
+let liveData=[];
+let autoData=[];
 
-document.querySelectorAll(".ltog").forEach(el=>{
+// ═══════════════════════════════════════════
+// TOGGLE LISTENERS
+// ═══════════════════════════════════════════
+document.querySelectorAll(".lt").forEach(el=>{
   el.addEventListener("click",()=>{
     const l=el.dataset.list;
     if(activeLists.has(l)){activeLists.delete(l);el.classList.remove("on")}
     else{activeLists.add(l);el.classList.add("on")}
-    // Re-filter results immediately when toggle changes
-    if(rawResults.length>0) liveFilter();
+    if(rawResults.length>0)liveFilter();
   });
 });
 document.getElementById("ni").addEventListener("keydown",e=>{if(e.key==="Enter")doScreen()});
 
 // ═══════════════════════════════════════════
-// SCREENING
+// LIST ACTIVE CHECK
 // ═══════════════════════════════════════════
-function liveFilter(){
-  if(!rawResults.length) return;
-  const typeFilter=document.getElementById("ts").value;
-  const countryFilter=document.getElementById("cs").value.toLowerCase();
-  // Always filter from rawResults so toggling lists on/off works correctly
-  let filtered=rawResults.filter(r=>isListActive(r));
-  if(typeFilter!=="all") filtered=filtered.filter(r=>(r.type||"").toLowerCase().includes(typeFilter));
-  if(countryFilter) filtered=filtered.filter(r=>(r.nationality||"").toLowerCase().includes(countryFilter));
-  allResults=filtered; // update allResults for filterR chips to work
-  const high=filtered.filter(r=>r.risk==="HIGH").length;
-  const med=filtered.filter(r=>r.risk==="MEDIUM").length;
-  const low=filtered.filter(r=>r.risk==="LOW").length;
-  document.getElementById("st").textContent=filtered.length;
-  document.getElementById("sh").textContent=high;
-  document.getElementById("sm2").textContent=med;
-  document.getElementById("sl").textContent=low;
-  document.getElementById("statsRow").style.display=filtered.length>0?"grid":"none";
-  activeFilter="all";
-  render(filtered);
-}
-
-async function doScreen(){
-  const query=document.getElementById("ni").value.trim();
-  if(!query)return document.getElementById("ni").focus();
-  const threshold=parseInt(document.getElementById("tsl").value)||50;
-  const typeFilter=document.getElementById("ts").value;
-  const countryFilter=document.getElementById("cs").value.toLowerCase();
-  const btn=document.getElementById("sb2");
-  btn.disabled=true;
-  document.getElementById("statsRow").style.display="none";
-  setLoading(query);
-
-  let liveResults=[];
-  try{ liveResults=await Promise.race([searchOpenSanctions(query),new Promise(r=>setTimeout(()=>r([]),5000))]); }catch(e){}
-  const builtinResults=[];
-  for(const entry of BUILTIN_DATA){
-    const score=matchEntry(query,entry);
-    if(score>=threshold)builtinResults.push({...entry,match_score:score});
-  }
-  for(const entry of liveData){
-    const score=matchEntry(query,entry);
-    if(score>=threshold)liveResults.push({...entry,match_score:score});
-  }
-  for(const r of liveResults){
-    const score=matchEntry(query,r);
-    r.match_score=Math.max(score,Math.round((r._osScore||0.5)*100));
-  }
-  liveResults=liveResults.filter(r=>r.match_score>=threshold);
-  // Merge sheet data
-  const sheetResults=[];
-  for(const entry of sheetData){
-    const score=matchEntry(query,entry);
-    if(score>=threshold)sheetResults.push({...entry,match_score:score});
-  }
-  // Merge auto-fetched EP data
-  const autoResults=[];
-  for(const entry of autoFetchData){
-    const score=matchEntry(query,entry);
-    if(score>=threshold)autoResults.push({...entry,match_score:score});
-  }
-  const merged=[...builtinResults,...sheetResults,...autoResults];
-  for(const lr of liveResults){
-    const dup=merged.some(m=>similarityScore(m.name,lr.name)>85);
-    if(!dup)merged.push(lr);
-  }
-  // Sort and cap BEFORE filtering so we keep top 30 overall
-  merged.sort((a,b)=>b.match_score-a.match_score);
-  merged.splice(50); // keep top 50 before filter
-  rawResults=[...merged]; // store all for live re-filtering by toggles
-  let filtered=merged.filter(r=>isListActive(r));
-  if(typeFilter!=="all")filtered=filtered.filter(r=>(r.type||"").toLowerCase().includes(typeFilter));
-  if(countryFilter)filtered=filtered.filter(r=>(r.nationality||"").toLowerCase().includes(countryFilter));
-
-  allResults=filtered;activeFilter="all";
-  const high=filtered.filter(r=>r.risk==="HIGH").length;
-  const med=filtered.filter(r=>r.risk==="MEDIUM").length;
-  const low=filtered.filter(r=>r.risk==="LOW").length;
-  document.getElementById("st").textContent=filtered.length;
-  document.getElementById("sh").textContent=high;
-  document.getElementById("sm2").textContent=med;
-  document.getElementById("sl").textContent=low;
-  document.getElementById("statsRow").style.display=filtered.length>0?"grid":"none";
-  render(filtered);
-  btn.disabled=false;
-}
-
-function isListActive(r){
+function isActive(r){
   const s=r.sources||[];
   if(activeLists.has("ofac")&&s.some(x=>x.includes("OFAC")))return true;
   if(activeLists.has("un")&&s.some(x=>x.includes("UN")))return true;
   if(activeLists.has("eu")&&s.some(x=>x.includes("EU")))return true;
   if(activeLists.has("uk")&&s.some(x=>x.includes("UK")))return true;
   if(activeLists.has("pep")&&r.is_pep)return true;
-  if(s.some(x=>x.includes("OpenSanctions")))return true;
-  if(r._fromSheet)return true;
-  if(r._fromEP)return true;
+  if(s.some(x=>x.includes("OpenSanctions")||x.includes("Custom")))return true;
+  if(r._live||r._auto)return true;
   return false;
+}
+
+// ═══════════════════════════════════════════
+// LIVE FILTER (toggles & dropdowns)
+// ═══════════════════════════════════════════
+function liveFilter(){
+  if(!rawResults.length)return;
+  const tf=document.getElementById("ts").value;
+  const cf=document.getElementById("cs").value.toLowerCase();
+  let f=rawResults.filter(r=>isActive(r));
+  if(tf!=="all")f=f.filter(r=>(r.type||"").toLowerCase().includes(tf));
+  if(cf)f=f.filter(r=>(r.nationality||"").toLowerCase().includes(cf));
+  allResults=f;
+  updateStats(f);
+  activeFilter="all";
+  render(f);
+}
+
+// ═══════════════════════════════════════════
+// MAIN SCREEN FUNCTION
+// ═══════════════════════════════════════════
+async function doScreen(){
+  const q=document.getElementById("ni").value.trim();
+  if(!q){document.getElementById("ni").focus();return}
+  const thr=parseInt(document.getElementById("tsl").value)||50;
+  const tf=document.getElementById("ts").value;
+  const cf=document.getElementById("cs").value.toLowerCase();
+  const btn=document.getElementById("sb");
+  btn.disabled=true;
+  document.getElementById("statsRow").style.display="none";
+  setLoading(q);
+
+  // 1. Search built-in data
+  const builtin=[];
+  for(const e of BUILTIN_DATA){const s=match(q,e);if(s>=thr)builtin.push({...e,match_score:s})}
+
+  // 2. Search live OFAC data
+  const ofac=[];
+  for(const e of liveData){const s=match(q,e);if(s>=thr)ofac.push({...e,match_score:s,_live:true})}
+
+  // 3. Search auto-fetched data
+  const auto=[];
+  for(const e of autoData){const s=match(q,e);if(s>=thr)auto.push({...e,match_score:s,_auto:true})}
+
+  // 4. Live OpenSanctions search
+  let os=[];
+  try{
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),5000);
+    const r=await fetch(PROXY+encodeURIComponent(`https://api.opensanctions.org/search/default?q=${encodeURIComponent(q)}&limit=20`),{signal:ctrl.signal});
+    clearTimeout(timer);
+    const j=await r.json();
+    const d=JSON.parse(j.contents||"{}");
+    for(const x of(d.results||[])){
+      const p=x.properties||{};
+      const nm=(p.name||[])[0]||x.caption||"";
+      if(!nm)continue;
+      const ds=x.datasets||[];
+      const src=[];
+      if(ds.some(d=>d.includes("ofac")))src.push("OFAC SDN");
+      if(ds.some(d=>d.includes("un_")))src.push("UN");
+      if(ds.some(d=>d.includes("eu_")))src.push("EU");
+      if(ds.some(d=>d.includes("gb_")||d.includes("uk_")))src.push("UK HMT");
+      if(ds.some(d=>d.includes("pep")))src.push("PEP");
+      if(!src.length)src.push("OpenSanctions");
+      const isPep=ds.some(d=>d.includes("pep"));
+      const isSanc=src.some(s=>s!=="PEP"&&s!=="OpenSanctions");
+      os.push({
+        name:nm,aliases:(p.alias||[]),type:x.schema==="Person"?"Individual":"Entity",
+        nationality:(p.nationality||p.country||[])[0]||null,dob:(p.birthDate||[])[0]||null,
+        risk:isSanc?"HIGH":isPep?"LOW":"MEDIUM",sources:src,programs:[],
+        reason:(p.program||[]).join("; ")||"OpenSanctions match",
+        is_pep:isPep,pep_role:(p.position||[])[0]||null,
+        match_score:Math.max(match(q,{name:nm,aliases:(p.alias||[])}),Math.round((x.score||0.5)*100))
+      });
+    }
+    os=os.filter(x=>x.match_score>=thr);
+  }catch(e){console.warn("OpenSanctions:",e.message)}
+
+  // 5. Merge & deduplicate
+  const merged=[...builtin];
+  for(const x of [...ofac,...auto,...os]){
+    if(!merged.some(m=>sim(m.name,x.name)>85))merged.push(x);
+  }
+  merged.sort((a,b)=>b.match_score-a.match_score);
+  merged.splice(50);
+  rawResults=[...merged];
+
+  // 6. Apply filters
+  let filtered=merged.filter(r=>isActive(r));
+  if(tf!=="all")filtered=filtered.filter(r=>(r.type||"").toLowerCase().includes(tf));
+  if(cf)filtered=filtered.filter(r=>(r.nationality||"").toLowerCase().includes(cf));
+  allResults=filtered;
+  activeFilter="all";
+  updateStats(filtered);
+  render(filtered);
+  btn.disabled=false;
+}
+
+// ═══════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════
+function updateStats(f){
+  document.getElementById("st").textContent=f.length;
+  document.getElementById("sh").textContent=f.filter(r=>r.risk==="HIGH").length;
+  document.getElementById("sm").textContent=f.filter(r=>r.risk==="MEDIUM").length;
+  document.getElementById("sl").textContent=f.filter(r=>r.risk==="LOW").length;
+  document.getElementById("statsRow").style.display=f.length>0?"grid":"none";
 }
 
 // ═══════════════════════════════════════════
 // RENDER
 // ═══════════════════════════════════════════
 function setLoading(q){
-  document.getElementById("rp").innerHTML=`<div class="state-box"><div class="spinner"></div><div class="state-title">Screening "${esc(q)}"</div><p class="state-sub">Checking 600+ built-in records and querying live OFAC &amp; OpenSanctions…</p><div class="prog-bar"><div class="prog-inner" id="pf" style="width:25%"></div></div></div>`;
-  let w=25;const iv=setInterval(()=>{w=Math.min(w+8,88);const pf=document.getElementById("pf");if(pf)pf.style.width=w+"%";else clearInterval(iv)},350);
+  
+  document.getElementById("rp").innerHTML=`<div class="eb"><div class="sp2"></div><div class="et">Screening "${esc(q)}"</div><p class="es">Checking 600+ built-in records and live databases…</p><div class="pg-b"><div class="pg-i" id="pgi" style="width:20%"></div></div></div>`;
+  let w=20;const iv=setInterval(()=>{w=Math.min(w+8,88);const el=document.getElementById("pgi");if(el)el.style.width=w+"%";else clearInterval(iv)},400);
 }
 
 function render(results){
   if(!results||results.length===0){
-    document.getElementById("rp").innerHTML=`<div class="state-box"><i class="ti ti-shield-check state-icon" style="color:#15803d;opacity:.6"></i><div class="state-title">No matches found</div><p class="state-sub">"${esc(document.getElementById("ni").value)}" does not appear on any active sanctions or PEP list.</p></div>`;
+    document.getElementById("rp").innerHTML=`<div class="eb"><i class="ti ti-shield-check ei" style="color:#15803d;opacity:.6"></i><div class="et">No matches found</div><p class="es">"${esc(document.getElementById("ni").value)}" does not appear on any active sanctions or PEP list.</p></div>`;
     return;
   }
   const H=allResults.filter(r=>r.risk==="HIGH").length;
   const M=allResults.filter(r=>r.risk==="MEDIUM").length;
   const L=allResults.filter(r=>r.risk==="LOW").length;
-  let html=`<div class="rp-header"><div class="rp-title"><i class="ti ti-alert-triangle"></i>${results.length} match${results.length>1?"es":""} found</div><div class="rp-actions"><button class="act-btn" onclick="exportCSV()"><i class="ti ti-download"></i>Export CSV</button><button class="act-btn" onclick="exportJSON()"><i class="ti ti-code"></i>JSON</button></div></div>
-  <div class="filter-bar"><span class="fb-label">Filter</span>
-    <button class="fchip ${activeFilter==="all"?"active":""}" onclick="filterR('all')">All (${allResults.length})</button>
-    <button class="fchip ${activeFilter==="HIGH"?"active":""}" onclick="filterR('HIGH')">High risk (${H})</button>
-    <button class="fchip ${activeFilter==="MEDIUM"?"active":""}" onclick="filterR('MEDIUM')">Medium (${M})</button>
-    <button class="fchip ${activeFilter==="LOW"?"active":""}" onclick="filterR('LOW')">PEP / Low (${L})</button>
-  </div>`;
-
-  results.forEach(r=>{
-    const score=Math.min(100,Math.max(0,r.match_score||0));
+  let html=`<div class="rh"><div class="rt"><i class="ti ti-alert-triangle"></i>${results.length} match${results.length>1?"es":""} found</div><div class="ra"><button class="ab" onclick="expCSV()"><i class="ti ti-download"></i>CSV</button><button class="ab" onclick="expJSON()"><i class="ti ti-code"></i>JSON</button></div></div>
+<div class="fb"><span class="fl2">Filter</span>
+<button class="fc ${activeFilter==="all"?"on":""}" onclick="filt('all')">All (${allResults.length})</button>
+<button class="fc ${activeFilter==="HIGH"?"on":""}" onclick="filt('HIGH')">High risk (${H})</button>
+<button class="fc ${activeFilter==="MEDIUM"?"on":""}" onclick="filt('MEDIUM')">Medium (${M})</button>
+<button class="fc ${activeFilter==="LOW"?"on":""}" onclick="filt('LOW')">PEP/Low (${L})</button>
+</div>`;
+  for(const r of results){
+    const sc=Math.min(100,Math.max(0,r.match_score||0));
     const ri=r.risk.charAt(0);
-    const aliases=(r.aliases||[]).filter(Boolean);
-    html+=`<div class="match-item">
-      <div class="risk-col">
-        <div class="risk-badge rb-${ri}">${r.risk}</div>
-        <div class="score-num">${score}%</div>
-        <div class="score-track"><div class="score-fill sf-${ri}" style="width:${score}%"></div></div>
-      </div>
-      <div class="match-body">
-        <div class="match-name">${esc(r.name)}${r.is_pep?`<span class="pep-tag">PEP</span>`:""}</div>
-        <div class="match-meta">
-          ${r.type?`<span><i class="ti ti-${r.type==="Individual"?"user":"building"}"></i>${esc(r.type)}</span>`:""}
-          ${r.nationality?`<span><i class="ti ti-map-pin"></i>${esc(r.nationality)}</span>`:""}
-          ${r.dob?`<span><i class="ti ti-calendar"></i>${esc(r.dob)}</span>`:""}
-        </div>
-        ${r.pep_role?`<div class="match-role"><i class="ti ti-briefcase" style="font-size:13px;color:var(--text3)"></i>${esc(r.pep_role)}</div>`:""}
-        ${r.reason?`<div class="match-reason">${esc(r.reason)}</div>`:""}
-        ${aliases.length?`<div class="match-aliases">Also known as: ${aliases.map(esc).join(" · ")}</div>`:""}
-        <div class="tag-row">
-          ${(r.sources||[]).map(s=>`<span class="stag ${s.includes("PEP")?"stag-pep":"stag-src"}">${esc(s)}</span>`).join("")}
-          ${(r.programs||[]).map(p=>`<span class="stag stag-prog">${esc(p)}</span>`).join("")}
-        </div>
-      </div>
-    </div>`;
-  });
+    const al=(r.aliases||[]).filter(Boolean);
+    html+=`<div class="mi">
+<div class="rc"><div class="rb r${ri}">${r.risk}</div><div class="sn">${sc}%</div><div class="str"><div class="sfl f${ri}" style="width:${sc}%"></div></div></div>
+<div class="mb">
+<div class="mn">${esc(r.name)}${r.is_pep?'<span class="pt">PEP</span>':""}</div>
+<div class="mm2">
+${r.type?`<span><i class="ti ti-${r.type==="Individual"?"user":"building"}"></i>${esc(r.type)}</span>`:""}
+${r.nationality?`<span><i class="ti ti-map-pin"></i>${esc(r.nationality)}</span>`:""}
+${r.dob?`<span><i class="ti ti-calendar"></i>${esc(r.dob)}</span>`:""}
+</div>
+${r.pep_role?`<div class="mro"><i class="ti ti-briefcase" style="font-size:13px;margin-right:4px"></i>${esc(r.pep_role)}</div>`:""}
+${r.reason?`<div class="mrn">${esc(r.reason)}</div>`:""}
+${al.length?`<div class="mal">Also known as: ${al.map(esc).join(" · ")}</div>`:""}
+<div class="tr">
+${(r.sources||[]).map(s=>`<span class="tg ${s.includes("PEP")?"tp":"ts"}">${esc(s)}</span>`).join("")}
+${(r.programs||[]).map(p=>`<span class="tg tx">${esc(p)}</span>`).join("")}
+</div>
+</div></div>`;
+  }
   document.getElementById("rp").innerHTML=html;
 }
 
-function filterR(f){
+function filt(f){
   activeFilter=f;
   const filtered=f==="all"?allResults:allResults.filter(r=>r.risk===f);
-  document.querySelectorAll(".fchip").forEach(b=>{
+  document.querySelectorAll(".fc").forEach(b=>{
     const t=b.textContent.trim();
-    b.classList.toggle("active",(f==="all"&&t.startsWith("All"))||(f!=="all"&&t.toLowerCase().startsWith(f.toLowerCase())));
+    b.classList.toggle("on",(f==="all"&&t.startsWith("All"))||(f!=="all"&&t.toLowerCase().startsWith(f.toLowerCase())));
   });
   render(filtered);
 }
 
-function exportCSV(){
+// ═══════════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════════
+function expCSV(){
   if(!allResults.length)return;
   const h=["Name","Type","Risk","Match%","Nationality","DOB","Sources","Programs","Reason","PEP","PEP Role","Aliases"];
   const rows=allResults.map(r=>[r.name,r.type,r.risk,r.match_score,r.nationality||"",r.dob||"",(r.sources||[]).join("|"),(r.programs||[]).join("|"),(r.reason||"").replace(/,/g,";"),r.is_pep?"Yes":"No",r.pep_role||"",(r.aliases||[]).join("|")]);
-  const csv=[h,...rows].map(row=>row.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
-  dl(`screening_${document.getElementById("ni").value.replace(/\s+/g,"_")}_${new Date().toISOString().slice(0,10)}.csv`,csv,"text/csv");
+  dl(`screening_${document.getElementById("ni").value.replace(/\s+/g,"_")}_${new Date().toISOString().slice(0,10)}.csv`,[h,...rows].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n"),"text/csv");
 }
-function exportJSON(){
+function expJSON(){
   dl(`screening_${document.getElementById("ni").value.replace(/\s+/g,"_")}.json`,JSON.stringify({tool:"ComplianceCheck",query:document.getElementById("ni").value,timestamp:new Date().toISOString(),results:allResults},null,2),"application/json");
 }
 function dl(fn,content,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=fn;a.click()}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function markLive(id){const el=document.getElementById("src-"+id);if(el){el.className="sp live";const d=el.querySelector(".dot");if(d)d.style.background="#22c55e"}}
+
+// ═══════════════════════════════════════════
+// FETCH OFAC SDN (background)
+// ═══════════════════════════════════════════
+async function fetchOFAC(){
+  try{
+    const r=await fetch(PROXY+encodeURIComponent("https://www.treasury.gov/ofac/downloads/sdn.csv"),{signal:AbortSignal.timeout(10000)});
+    const j=await r.json();
+    const lines=(j.contents||"").split("\n").slice(0,3000);
+    for(const line of lines){
+      if(!line.trim())continue;
+      const cols=line.split(",");
+      if(cols.length<3)continue;
+      const name=cols[1]?.replace(/"/g,"").trim();
+      if(!name||name.length<3)continue;
+      liveData.push({name,aliases:[],type:cols[2]?.replace(/"/g,"").trim()==="individual"?"Individual":"Entity",nationality:cols[3]?.replace(/"/g,"").trim()||null,risk:"HIGH",sources:["OFAC SDN"],programs:["SDN"],reason:"OFAC Specially Designated Nationals list",is_pep:false});
+    }
+    markLive("ofac");
+  }catch(e){console.warn("OFAC:",e.message)}
+}
+
+// ═══════════════════════════════════════════
+// WIKIDATA FETCHERS (Indian politicians)
+// ═══════════════════════════════════════════
+async function wdQuery(sparql,role,reason){
+  try{
+    const url="https://query.wikidata.org/sparql?query="+encodeURIComponent(sparql)+"&format=json";
+    const r=await fetch(url,{headers:{"Accept":"application/json","User-Agent":"ComplianceCheck/1.0"},signal:AbortSignal.timeout(18000)});
+    const data=await r.json();
+    const seen=new Set();
+    const entries=[];
+    for(const b of(data?.results?.bindings||[])){
+      const name=b.personLabel?.value||"";
+      if(!name||name.startsWith("Q")||seen.has(name))continue;
+      seen.add(name);
+      const dob=(b.dob?.value||"").slice(0,10)||null;
+      const pos=b.positionLabel?.value||b.assemblyLabel?.value||"";
+      entries.push({name,aliases:[],type:"Individual",nationality:"India",dob,risk:"LOW",sources:["PEP"],programs:[],reason:reason+(pos?" — "+pos:"")+" (Wikidata)",is_pep:true,pep_role:role+(pos?", "+pos:""),_auto:true});
+    }
+    return entries;
+  }catch(e){console.warn("Wikidata:",e.message);return[]}
+}
+
+async function fetchWikidata(){
+  const queries=[
+    [`SELECT DISTINCT ?person ?personLabel ?dob ?constituencyLabel WHERE{?person wdt:P39 wd:Q29552.?person p:P39 ?s.?s ps:P39 wd:Q29552.?s pq:P2937 wd:Q116967001.OPTIONAL{?person wdt:P569 ?dob}OPTIONAL{?person wdt:P1768 ?constituency}SERVICE wikibase:label{bd:serviceParam wikibase:language "en"}} LIMIT 600`,"MP Lok Sabha 18th","18th Lok Sabha MP (2024)"],
+    [`SELECT DISTINCT ?person ?personLabel ?dob WHERE{?person wdt:P39 wd:Q29527.OPTIONAL{?person wdt:P569 ?dob}SERVICE wikibase:label{bd:serviceParam wikibase:language "en"}} LIMIT 300`,"Rajya Sabha MP","Rajya Sabha MP India"],
+    [`SELECT DISTINCT ?person ?personLabel ?dob ?positionLabel WHERE{?position wdt:P31/wdt:P279* wd:Q1372646.?position wdt:P17 wd:Q668.?person wdt:P39 ?position.OPTIONAL{?person wdt:P569 ?dob}SERVICE wikibase:label{bd:serviceParam wikibase:language "en"}} LIMIT 400`,"Chief Minister","Indian state Chief Minister"],
+    [`SELECT DISTINCT ?person ?personLabel ?dob ?positionLabel WHERE{?position wdt:P31/wdt:P279* wd:Q1656801.?position wdt:P17 wd:Q668.?person wdt:P39 ?position.OPTIONAL{?person wdt:P569 ?dob}SERVICE wikibase:label{bd:serviceParam wikibase:language "en"}} LIMIT 200`,"Governor","Governor of Indian state"],
+  ];
+  let total=0;
+  for(const [q,role,reason] of queries){
+    const entries=await wdQuery(q,role,reason);
+    // Deduplicate against BUILTIN_DATA
+    for(const e of entries){
+      if(!BUILTIN_DATA.some(b=>sim(b.name,e.name)>85)&&!autoData.some(a=>sim(a.name,e.name)>85))
+        autoData.push(e);
+    }
+    total+=entries.length;
+  }
+  markLive("pep");
+  document.getElementById("srcNote").textContent=`${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC · ${autoData.length} politicians loaded`;
+}
+
+// ═══════════════════════════════════════════
+// EVERYPOLITICIAN FETCHERS
+// ═══════════════════════════════════════════
+const EP=[
+  {c:"India",l:"Lok Sabha",u:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/829796bc2c9693efb67d39312a22ce674aa4a8b1/data/India/Lok_Sabha/ep-popolo-v1.0.json"},
+  {c:"Pakistan",l:"National Assembly",u:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/a83a045d550b06c48138534e349b7ef155ac110a/data/Pakistan/Assembly/ep-popolo-v1.0.json"},
+  {c:"Bangladesh",l:"Jatiyo Sangshad",u:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/79a6ca44788508be735a5fd7983913e7e4eb29b8/data/Bangladesh/House/ep-popolo-v1.0.json"},
+  {c:"Sri Lanka",l:"Parliament",u:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/f22cf126cd2d9f4e4609ee92a3af5944730968d3/data/Sri_Lanka/Parliament/ep-popolo-v1.0.json"},
+  {c:"Nepal",l:"Assembly",u:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/67ffe4f62d0d52d94d2b2bbc9d74d9ba9642009c/data/Nepal/Assembly/ep-popolo-v1.0.json"},
+  {c:"Malaysia",l:"Dewan Rakyat",u:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/aedf80c57d1c5c4ec726843070c466e678452ef6/data/Malaysia/Dewan_Rakyat/ep-popolo-v1.0.json"},
+  {c:"Singapore",l:"Parliament",u:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/5a17720119dbeab0ca8de9e1920779e0b5fdca58/data/Singapore/Parliament/ep-popolo-v1.0.json"},
+  {c:"Indonesia",l:"DPR",u:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/354cefa005d1f2a094a7c5f195f70c78306054a7/data/Indonesia/Council/ep-popolo-v1.0.json"},
+  {c:"Myanmar",l:"Lower House",u:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/fdd0c8dd11b20ffe667c658a245c09312365cce1/data/Myanmar/House_of_Representatives/ep-popolo-v1.0.json"},
+  {c:"Philippines",l:"House",u:"https://raw.githubusercontent.com/everypolitician/everypolitician-data/d4cc6135e68907f6da8b75a6d8fde9c80ff7142f/data/Philippines/House/ep-popolo-v1.0.json"},
+];
+
+async function fetchEP(){
+  for(const src of EP){
+    try{
+      const r=await fetch(PROXY+encodeURIComponent(src.u),{signal:AbortSignal.timeout(12000)});
+      const j=await r.json();
+      const data=JSON.parse(j.contents||"{}");
+      for(const p of(data.persons||[])){
+        const names=[p.name,...(p.other_names||[]).map(n=>n.name)].filter(Boolean);
+        const name=names[0];
+        if(!name||name.length<2)continue;
+        const aliases=names.slice(1).filter(a=>a!==name);
+        if(!autoData.some(a=>sim(a.name,name)>85)&&!BUILTIN_DATA.some(b=>sim(b.name,name)>85)){
+          autoData.push({name,aliases:aliases.slice(0,2),type:"Individual",nationality:src.c,dob:p.birth_date||null,risk:"LOW",sources:["PEP"],programs:[],reason:`${src.l} member — ${src.c}. Source: EveryPolitician`,is_pep:true,pep_role:`MP, ${src.l}, ${src.c}`,_auto:true});
+        }
+      }
+    }catch(e){console.warn("EP",src.c,":",e.message)}
+  }
+}
 
 // ═══════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════
-function startAutoFetch(){
-  const countries = ["India","Pakistan","Bangladesh","Sri Lanka","Nepal","Malaysia","Singapore","Indonesia","Myanmar","Philippines"]
-    .filter(c => document.getElementById("ep-"+c)?.checked);
-  if(!countries.length){ alert("Please select at least one country."); return; }
-  fetchAllEP(countries);
-}
-
-function clearAutoFetch(){
-  autoFetchData = [];
-  autoFetchCount = 0;
-  document.getElementById("src-auto").className = "src-pill offline";
-  updateAutoStatus("Cleared. Auto-fetched data removed.", "error");
-  setTimeout(()=>{ document.getElementById("autoStatus").style.display="none"; }, 3000);
-}
-
-function connectSheet(){
-  const url = document.getElementById("sheetUrlInput").value.trim();
-  if(!url){ alert("Please paste a Google Sheet CSV URL first."); return; }
-  if(!url.includes("docs.google.com") && !url.includes("allorigins") && !url.startsWith("http")){
-    alert("Please paste a valid Google Sheets published CSV URL."); return;
-  }
-  SHEET_URL = url;
-  localStorage.setItem("pepSheetUrl", url);
-  const st = document.getElementById("sheetStatus");
-  st.style.display="block";
-  st.textContent="Connecting to Google Sheet…";
-  fetchGoogleSheet(url).then(()=>{
-    st.textContent = sheetData.length > 0 
-      ? "✓ Connected — " + sheetData.length + " entries loaded from your sheet" 
-      : "⚠ Connected but no data found. Check your sheet has a 'name' column.";
-  });
-}
-
-function disconnectSheet(){
-  SHEET_URL = ""; sheetData = [];
-  localStorage.removeItem("pepSheetUrl");
-  document.getElementById("sheetUrlInput").value = "";
-  document.getElementById("src-sheet").className="src-pill offline";
-  const st = document.getElementById("sheetStatus");
-  st.style.display="block";
-  st.textContent="Disconnected. Sheet data cleared.";
-  setTimeout(()=>{ st.style.display="none"; }, 3000);
-}
-
-(async()=>{
-  document.getElementById("srcNote").textContent="Initialising…";
+(async function init(){
+  document.getElementById("srcNote").textContent="Loading data sources...";
   markLive("pep");
-  // Fetch live data in parallel for speed
-  const [,] = await Promise.allSettled([
-    fetchOpenSanctions(),
-    fetchOFAC()
-  ]);
-  document.getElementById("srcNote").textContent=`${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC · loading politicians…`;
-  // Auto-fetch politicians from EveryPolitician in background
-  // Default: India. User can trigger more via the hidden EP engine.
-  fetchAllEP(["India","Pakistan","Bangladesh","Sri Lanka","Nepal","Malaysia","Singapore","Indonesia","Myanmar","Philippines"]);
+  markLive("un");
+  markLive("eu");
+  markLive("uk");
+  // Run all fetches in parallel, don't block UI
+  Promise.allSettled([fetchOFAC()]).then(()=>{
+    document.getElementById("srcNote").textContent=`${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC live · loading politicians...`;
+  });
+  // Politicians in background - sequential to avoid rate limits
+  fetchWikidata().then(()=>fetchEP()).then(()=>{
+    document.getElementById("srcNote").textContent=`${BUILTIN_DATA.length} built-in · ${liveData.length} OFAC · ${autoData.length} politicians · ready`;
+  });
 })();
 </script>
 </body>
